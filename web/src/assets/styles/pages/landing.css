@@ -2,4 +2,79 @@
     width: 100vw;
     height: 100vh;
     background: linear-gradient(329.54deg, #29B6D1 0%, #00C7C7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#page-landing .content-wrapper {
+    position: relative;
+    
+    width: 100%;
+    max-width: 110rem;
+    
+    height: 100%;
+    max-height: 60rem;
+    
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background: url("../../images/landing-kids.svg") 70% center no-repeat;
+    background-size: contain;
+}
+
+#page-landing .content-wrapper main {
+    max-width: 35rem;
+}
+
+#page-landing .content-wrapper main #main-heading {
+    margin-bottom: 7rem;
+}
+
+#page-landing .content-wrapper main #main-heading h1 {
+    font-size: 7.6rem;
+    font-weight: 900;
+    line-height: 7.6rem;
+}
+
+#page-landing .content-wrapper main #main-heading p {
+    margin-top: 4rem;
+    font-size: 2.4rem;
+    line-height: 3.4rem;
+}
+
+.content-wrapper .location {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-weight: 800;
+    font-size: 2.4rem;
+    line-height: 3.4rem;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper .enter-app {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    
+    width: 8rem;
+    height: 8rem;
+
+    background: #FFD666;
+    border-radius: 3rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background-color 300ms ease;
+}
+
+.content-wrapper .enter-app:hover {
+    background: #96FEFF;
 }
