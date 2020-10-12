@@ -1,0 +1,67 @@
+#page-map {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+}
+
+#page-map aside {
+    width: 44rem;
+    background: linear-gradient(329.54deg, #15B6D6 0%, #15D6D6 100%);
+    padding: 6rem 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#page-map aside header {
+    max-width: 25rem;
+}
+
+#page-map aside header img {
+    margin-bottom: 4rem;
+}
+
+#page-map aside header h2 {
+    margin-bottom: 2.4rem;
+    font-size: 4rem;
+    font-weight: 800;
+}
+
+#page-map aside header p {
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 2.8rem;
+}
+
+#page-map aside footer {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.8rem;
+}
+
+#page-map aside footer strong {
+    font-weight: 800;
+}
+
+#page-map aside footer span {
+    font-weight: 600;
+}
+
+#page-map #create-orphanage-btn {
+    position: absolute;
+    right: 4rem;
+    bottom: 4rem;
+    width: 6.4rem;
+    height: 6.4rem;
+    background: #15C3D6;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 300ms ease;
+}
+
+#page-map #create-orphanage-btn:hover {
+    background: #17D6EB;
+}
