@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { FiArrowRight } from 'react-icons/fi'
 
 // Images
@@ -25,9 +26,9 @@ function Landing() {
           </div>
         </main>
 
-        <a href="go" className="enter-app">
+        <Link to="/orfanatos" className="enter-app">
           <FiArrowRight size={32} color="#8D734B" />
-        </a>
+        </Link>
       </div>
     </div>
   )
