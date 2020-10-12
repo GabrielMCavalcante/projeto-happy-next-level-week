@@ -15,8 +15,10 @@ function App() {
         <img src={appLogo} alt="Logo Happy" />
 
         <main>
-          <h1>Leve felicidade para o mundo</h1>
-          <p>Visite orfanatos e mude o dia de muitas crianças.</p>
+          <div id="main-heading">
+            <h1>Leve felicidade para o mundo</h1>
+            <p>Visite orfanatos e mude o dia de muitas crianças.</p>
+          </div>
 
           <div className="location">
             <strong>Manaus</strong>
@@ -25,7 +27,7 @@ function App() {
         </main>
 
         <a href="go" className="enter-app">
-          <FiArrowRight size={32} color="#8D734B"/>
+          <FiArrowRight size={32} color="#8D734B" />
         </a>
       </div>
     </div>
