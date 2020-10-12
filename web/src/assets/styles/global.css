@@ -12,3 +12,11 @@ body {
     color: #FFF;
     background-color: #EBF2F5;
 }
+
+body,
+input,
+button,
+textarea {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem;
+}
