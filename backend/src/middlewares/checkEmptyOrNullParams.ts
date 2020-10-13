@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { requiredFieldNullOrEmpty } from '../requestErrors'
+import { requiredFieldNullOrEmpty } from '../errors/requestErrors'
 
 export default function(req: Request, res: Response, next: NextFunction) {
     const invalidFields = []
