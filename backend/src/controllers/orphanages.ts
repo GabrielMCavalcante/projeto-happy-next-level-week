@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
+import * as yup from 'yup'
 import OrphanageModel from '../models/Orphanage'
 import OrphanageView from '../views/orphanages'
 
@@ -7,11 +8,11 @@ export default class OrphanagesController {
     static async index(req: Request, res: Response) {
         const orphanagesRepository = getRepository(OrphanageModel)
 
-        const fetchedOrphanages = await orphanagesRepository.find({ 
+        const fetchedOrphanages = await orphanagesRepository.find({
             relations: ["images"]
         })
-        
-        return res.status(200).json({ result: OrphanageView.renderMany(fetchedOrphanages)})
+
+        return res.status(200).json({ result: OrphanageView.renderMany(fetchedOrphanages) })
     }
 
     static async findById(req: Request, res: Response) {
@@ -19,7 +20,7 @@ export default class OrphanagesController {
 
         const orphanagesRepository = getRepository(OrphanageModel)
 
-        const fetchedOrphanage = await orphanagesRepository.findOne(id, { 
+        const fetchedOrphanage = await orphanagesRepository.findOne(id, {
             relations: ["images"]
         })
 
@@ -55,7 +56,7 @@ export default class OrphanagesController {
             path: image.filename
         }))
 
-        const createdOrphanage = orphanagesRepository.create({
+        const data = {
             name,
             about,
             latitude,
@@ -64,7 +65,26 @@ export default class OrphanagesController {
             opening_hours,
             open_on_weekends,
             images
+        }
+
+        const schema = yup.object().shape({
+            name: yup.string().required(),
+            about: yup.string().required().max(300),
+            latitude: yup.number().required(),
+            longitude: yup.number().required(),
+            instructions: yup.string().required(),
+            opening_hours: yup.string().required(),
+            open_on_weekends: yup.boolean().required(),
+            images: yup.array(
+                yup.object().shape({
+                    path: yup.string().required()
+                })
+            )
         })
+
+        await schema.validate(data, { abortEarly: false })
+
+        const createdOrphanage = orphanagesRepository.create(data)
 
         await orphanagesRepository.save(createdOrphanage)
 
