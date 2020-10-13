@@ -16,22 +16,6 @@ routes.post('/orphanages', async (req, res) => {
     } = req.body
 
     const orphanagesRepository = getRepository(OrphanageModel)
-    
-    const arrayOfEmptyAttributes = []
-    for (const attr in req.body) {
-        if (req.body[attr] === null || req.body[attr] === "") {
-            arrayOfEmptyAttributes.push(attr)
-        }
-    }
-
-    if (arrayOfEmptyAttributes.length > 0) {
-        return res.status(400).json({
-            status: 400,
-            type: "Required field empty or null",
-            message: "The following fields are required: "
-            + arrayOfEmptyAttributes.join(", ")
-        })
-    }
 
     const createdOrphanage = orphanagesRepository.create({
         name, 
