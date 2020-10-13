@@ -44,6 +44,12 @@ export default class OrphanagesController {
 
         const orphanagesRepository = getRepository(OrphanageModel)
 
+        const requestImages = req.files as Express.Multer.File[]
+
+        const images = requestImages.map(image => ({
+            path: image.filename
+        }))
+
         const createdOrphanage = orphanagesRepository.create({
             name,
             about,
@@ -51,7 +57,8 @@ export default class OrphanagesController {
             longitude,
             instructions,
             opening_hours,
-            open_on_weekends
+            open_on_weekends,
+            images
         })
 
         await orphanagesRepository.save(createdOrphanage)
@@ -59,7 +66,8 @@ export default class OrphanagesController {
         return res.status(200).json({
             status: 200,
             type: "Post successfull",
-            message: "Orphanage created successfully."
+            message: "Orphanage created successfully.",
+            debug: createdOrphanage
         })
     }
 }
