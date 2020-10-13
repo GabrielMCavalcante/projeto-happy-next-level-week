@@ -6,7 +6,9 @@ export default class OrphanagesController {
     static async index(req: Request, res: Response) {
         const orphanagesRepository = getRepository(OrphanageModel)
 
-        const fetchedOrphanages = await orphanagesRepository.find()
+        const fetchedOrphanages = await orphanagesRepository.find({ 
+            relations: ["images"]
+        })
         
         return res.status(200).json({ orphanages: fetchedOrphanages})
     }
@@ -16,7 +18,9 @@ export default class OrphanagesController {
 
         const orphanagesRepository = getRepository(OrphanageModel)
 
-        const fetchedOrphanage = await orphanagesRepository.findOne(id)
+        const fetchedOrphanage = await orphanagesRepository.findOne(id, { 
+            relations: ["images"]
+        })
 
         if (fetchedOrphanage) {
             return res.status(200).json({
