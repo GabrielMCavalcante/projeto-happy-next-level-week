@@ -5,7 +5,6 @@ import multerConfig from './config/upload'
 
 const upload = multer(multerConfig)
 
-
 // Middlewares
 import checkEmptyOrNullParams from './middlewares/checkEmptyOrNullParams'
 
