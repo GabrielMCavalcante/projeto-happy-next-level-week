@@ -1,6 +1,7 @@
 import express from 'express'
 import routes from './routes'
 import path from 'path'
+import 'express-async-errors'
 import './database/connection'
 
 const app = express()
