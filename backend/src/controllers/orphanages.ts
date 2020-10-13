@@ -5,10 +5,30 @@ import OrphanageModel from '../models/Orphanage'
 export default class OrphanagesController {
     static async index(req: Request, res: Response) {
         const orphanagesRepository = getRepository(OrphanageModel)
-        
+
         const fetchedOrphanages = await orphanagesRepository.find()
         
         return res.status(200).json({ orphanages: fetchedOrphanages})
+    }
+
+    static async findById(req: Request, res: Response) {
+        const { id } = req.params
+
+        const orphanagesRepository = getRepository(OrphanageModel)
+
+        const fetchedOrphanage = await orphanagesRepository.findOne(id)
+
+        if (fetchedOrphanage) {
+            return res.status(200).json({
+                found: true,
+                fetchedOrphanage
+            })
+        } else {
+            return res.status(404).json({
+                found: false,
+                message: "No orphanage found with given ID."
+            })
+        }
     }
 
     static async create(req: Request, res: Response) {
