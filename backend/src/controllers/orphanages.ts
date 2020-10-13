@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
 import OrphanageModel from '../models/Orphanage'
+import OrphanageView from '../views/orphanages'
 
 export default class OrphanagesController {
     static async index(req: Request, res: Response) {
@@ -10,7 +11,7 @@ export default class OrphanagesController {
             relations: ["images"]
         })
         
-        return res.status(200).json({ orphanages: fetchedOrphanages})
+        return res.status(200).json({ result: OrphanageView.renderMany(fetchedOrphanages)})
     }
 
     static async findById(req: Request, res: Response) {
@@ -25,7 +26,7 @@ export default class OrphanagesController {
         if (fetchedOrphanage) {
             return res.status(200).json({
                 found: true,
-                fetchedOrphanage
+                result: OrphanageView.render(fetchedOrphanage)
             })
         } else {
             return res.status(404).json({
