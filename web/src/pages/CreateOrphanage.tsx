@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import Leaflet from 'leaflet'
 import { FiPlus } from "react-icons/fi"
@@ -21,6 +21,12 @@ const happyMapIcon = Leaflet.icon({
 })
 
 export default function CreateOrphanage() {
+    const [markerPosition, setMarkerPosition] = useState<[number, number]>([0, 0])
+    
+    function handleMapClick(e: { latlng: { lat: number, lng: number } }) {
+        setMarkerPosition([e.latlng.lat, e.latlng.lng])    
+    }
+
     return (
         <div id="page-create-orphanage">
             <Sidebar />
@@ -34,12 +40,17 @@ export default function CreateOrphanage() {
                             center={[-27.2092052, -49.6401092]}
                             style={{ width: '100%', height: 280 }}
                             zoom={15}
+                            onClick={handleMapClick}
                         >
                             <TileLayer
                                 url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                             />
 
-                            <Marker interactive={false} icon={happyMapIcon} position={[-27.2092052, -49.6401092]} />
+                            <Marker 
+                                interactive={false} 
+                                icon={happyMapIcon} 
+                                position={[markerPosition[0], markerPosition[1]]} 
+                            />
                         </Map>
 
                         <div className="input-block">
