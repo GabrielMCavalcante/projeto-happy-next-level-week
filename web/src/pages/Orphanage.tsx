@@ -51,16 +51,16 @@ export default function Orphanage() {
       const path = location.pathname.split('/')
       const orphanageID = path[path.length - 1]
 
-      const response = await api.get(`/orphanages/${orphanageID}`)
+      try {
+        const response = await api.get(`/orphanages/${orphanageID}`)
 
-      const data = response.data
+        const data = response.data
 
-      if (data.found) {
         setOrphanage(data.result)
         setImages([...data.result.images])
         setSelectedImage(data.result.images[0].id)
-      } else {
-        alert(data.message)
+      } catch(err) {
+        await window.confirm({...err}.response.data.message)
         goBack()
       }
     })()
@@ -76,9 +76,9 @@ export default function Orphanage() {
               {
                 images && (
                   <>
-                    <img 
-                      src={images.filter(image => image.id === selectedImage)[0]?.url} 
-                      alt={orphanage.name} 
+                    <img
+                      src={images.filter(image => image.id === selectedImage)[0]?.url}
+                      alt={orphanage.name}
                     />
 
                     <div className="images">
