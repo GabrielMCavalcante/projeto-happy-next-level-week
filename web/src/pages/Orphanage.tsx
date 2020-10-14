@@ -3,7 +3,7 @@ import { FaWhatsapp } from "react-icons/fa"
 import { FiClock, FiInfo } from "react-icons/fi"
 import { Map, Marker, TileLayer } from "react-leaflet"
 import Leaflet from 'leaflet'
-import { useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 // Services
 import api from 'services/axios-config'
@@ -40,19 +40,21 @@ interface Orphanage {
   open_on_weekends: boolean
 }
 
+interface DetailsRouteParams {
+  id: string
+}
+
 export default function Orphanage() {
   const [orphanage, setOrphanage] = useState<Orphanage>()
   const [images, setImages] = useState<Image[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
-  const { location, goBack } = useHistory()
+  const { id } = useParams() as unknown as DetailsRouteParams
+  const { goBack } = useHistory()
 
   useEffect(() => {
     (async function () {
-      const path = location.pathname.split('/')
-      const orphanageID = path[path.length - 1]
-
       try {
-        const response = await api.get(`/orphanages/${orphanageID}`)
+        const response = await api.get(`/orphanages/${id}`)
 
         const data = response.data
 
@@ -64,7 +66,7 @@ export default function Orphanage() {
         goBack()
       }
     })()
-  }, [location.pathname, goBack])
+  }, [goBack, id])
 
   return (
     <div id="page-orphanage">
