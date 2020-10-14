@@ -7,13 +7,13 @@ import { FiPlus } from "react-icons/fi"
 import Sidebar from "components/Sidebar"
 
 // Images
-import mapMarkerImg from 'assets/images/happy-face-logo.svg'
+import { happyFaceLogo } from 'utils/images'
 
 // Styles
 import 'assets/styles/pages/create-orphanage.css'
 
 const happyMapIcon = Leaflet.icon({
-    iconUrl: mapMarkerImg,
+    iconUrl: happyFaceLogo,
 
     iconSize: [58, 68],
     iconAnchor: [29, 68],

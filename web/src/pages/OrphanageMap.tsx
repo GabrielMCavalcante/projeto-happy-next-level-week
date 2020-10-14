@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom'
 import { FiPlus, FiArrowRight } from 'react-icons/fi'
 
 // Images
-import happyFace from 'assets/images/happy-face-logo.svg'
+import { happyFaceLogo } from 'utils/images'
 
 // Styles
 import 'assets/styles/pages/orphanageMap.css'
 
 function OrphanageMap() {
-
     const [lat, setLat] = useState(-3.0828679)
     const [lng, setLng] = useState(-60.0115209)
     const [zoom, setZoom] = useState(15)
@@ -19,7 +18,7 @@ function OrphanageMap() {
     const position: [number, number] = [lat, lng]
 
     const mapIcon = Leaflet.icon({
-        iconUrl: happyFace,
+        iconUrl: happyFaceLogo,
         iconSize: [58, 68],
         iconAnchor: [29, 68],
         popupAnchor: [178, 2]
@@ -29,7 +28,7 @@ function OrphanageMap() {
         <div id="page-map">
             <aside>
                 <header>
-                    <img src={happyFace} alt="Happy Face Logo" />
+                    <img src={happyFaceLogo} alt="Happy Face Logo" />
 
                     <h2>Escolha um orfanato no mapa</h2>
                     <p>Muitas crianças estão esperando a sua visita :)</p>
