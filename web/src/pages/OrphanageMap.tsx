@@ -53,7 +53,10 @@ function OrphanageMap() {
                 <TileLayer
                     url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
-                <Marker icon={mapIcon} position={position}>
+                <Marker 
+                    icon={mapIcon} 
+                    position={position}
+                >
                     <Popup
                         closeButton={false}
                         minWidth={240}
@@ -61,14 +64,14 @@ function OrphanageMap() {
                         className="map-popup"
                     >
                         Lar das meninas
-                        <Link to="/">
+                        <Link to="/orfanatos/1">
                             <FiArrowRight size={24} color="#FFFFFF" />
                         </Link>
                     </Popup>
                 </Marker>
             </Map>
 
-            <Link to="/" id="create-orphanage-btn">
+            <Link to="/orfanatos/criar" id="create-orphanage-btn">
                 <FiPlus size={32} color="#FFFFFF" />
             </Link>
         </div>
