@@ -5,9 +5,9 @@ import { Map, Marker, TileLayer } from "react-leaflet"
 import { useHistory } from 'react-router-dom'
 import Leaflet from 'leaflet'
 
-import mapMarkerImg from '../images/map-marker.svg'
+import mapMarkerImg from 'assets/images/happy-face-logo.svg'
 
-import '../styles/pages/orphanage.css'
+import 'assets/styles/pages/orphanage.css'
 
 const happyMapIcon = Leaflet.icon({
   iconUrl: mapMarkerImg,
