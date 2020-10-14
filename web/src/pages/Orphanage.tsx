@@ -48,21 +48,20 @@ export default function Orphanage() {
   const [orphanage, setOrphanage] = useState<Orphanage>()
   const [images, setImages] = useState<Image[]>([])
   const [selectedImage, setSelectedImage] = useState(0)
-  const { id } = useParams() as unknown as DetailsRouteParams
+  const { id } = useParams<DetailsRouteParams>()
   const { goBack } = useHistory()
 
   useEffect(() => {
     (async function () {
       try {
         const response = await api.get(`/orphanages/${id}`)
+        const data = response.data.result
 
-        const data = response.data
-
-        setOrphanage(data.result)
-        setImages([...data.result.images])
-        setSelectedImage(data.result.images[0].id)
-      } catch(err) {
-        await window.confirm({...err}.response.data.message)
+        setOrphanage(data)
+        setImages([...data.images])
+        setSelectedImage(data.images[0].id)
+      } catch (err) {
+        await window.confirm({ ...err }.response.data.message)
         goBack()
       }
     })()
@@ -132,7 +131,7 @@ export default function Orphanage() {
                     <a
                       rel="noopener noreferrer"
                       target="_blank"
-                      href={`https://www.google.com.br/maps/search/${orphanage.latitude},${orphanage.longitude}/@-3.0660933,-60.0149106,15z`}
+                      href={`https://www.google.com/maps/dir/?api=1&&destination=${orphanage.latitude},${orphanage.longitude}`}
                     >
                       Ver rotas no Google Maps
                     </a>
@@ -149,9 +148,11 @@ export default function Orphanage() {
                     <FiClock size={32} color="#15B6D6" />
                     {orphanage.opening_hours}
                   </div>
-                  <div className={orphanage.open_on_weekends
-                    ? "open-on-weekends"
-                    : "not-open-on-weekends"}>
+                  <div className={
+                    orphanage.open_on_weekends
+                      ? "open-on-weekends"
+                      : "not-open-on-weekends"
+                  }>
                     <FiInfo
                       size={32}
                       color={
