@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import Leaflet from 'leaflet'
-import { FiPlus } from "react-icons/fi"
+import { FiPlus, FiX } from "react-icons/fi"
 import { useHistory } from 'react-router-dom'
 
 // Services
@@ -29,6 +29,7 @@ export default function CreateOrphanage() {
     const [markerPosition, setMarkerPosition] = useState<[number, number]>([0, 0])
 
     const [images, setImages] = useState<FileList>()
+    const [imagesPreview, setImagesPreview] = useState<string[]>([])
     const [name, setName] = useState("")
     const [about, setAbout] = useState("")
     const [instructions, setInstructions] = useState("")
@@ -52,7 +53,15 @@ export default function CreateOrphanage() {
 
     function handleImageSelection(e: React.ChangeEvent<HTMLInputElement>) {
         e.persist()
-        setImages(e.target.files!)
+        const imgs = e.target.files!
+        setImages(imgs)
+
+        const selectedImagesPreview: string[] = []
+        for (let i = 0; i < imgs.length; i++) {
+            selectedImagesPreview.push(URL.createObjectURL(imgs[i]))
+        }
+
+        setImagesPreview([...imagesPreview, ...selectedImagesPreview])
     }
 
     async function handleCreateOrphanage(e: React.FormEvent<HTMLFormElement>) {
@@ -71,7 +80,7 @@ export default function CreateOrphanage() {
         for (let i = 0; i < images!.length; i++) {
             formData.append("images", images!.item(i)!)
         }
-        
+
         try {
             await api.post("/orphanages", formData)
             await window.confirm("Orfanato cadastrado com sucesso!")
@@ -79,6 +88,10 @@ export default function CreateOrphanage() {
         } catch (err) {
             console.log(err.message)
         }
+    }
+
+    function removeImagePreview(imageURL: string) {
+        setImagesPreview([...imagesPreview.filter(imagePreview => imagePreview !== imageURL)])
     }
 
     return (
@@ -130,14 +143,38 @@ export default function CreateOrphanage() {
                             <label htmlFor="images">Fotos</label>
 
                             <div className="images-container">
+                                {
+                                    imagesPreview.map((imageURL, i) => (
+                                        <div 
+                                            key={i} 
+                                            className="image-preview-container"
+                                        >
+                                            <img
+                                                className="image-preview"
+                                                src={imageURL}
+                                                alt={name}
+                                                draggable={false}
+                                            />
+
+                                            <button 
+                                                type="button" 
+                                                className="remove-image-btn"
+                                                onClick={() => removeImagePreview(imageURL)}
+                                            >
+                                              <FiX size={24} color="#FF669D"/>  
+                                            </button>
+                                        </div>
+                                    ))
+                                }
+
                                 <label className="new-image" htmlFor="imagesInput">
                                     <FiPlus size={24} color="#15b6d6" />
                                 </label>
-                                <input 
+                                <input
                                     type="file"
                                     multiple
-                                    onChange={handleImageSelection} 
-                                    id="imagesInput" 
+                                    onChange={handleImageSelection}
+                                    id="imagesInput"
                                     style={{ display: 'none' }}
                                 />
                             </div>
