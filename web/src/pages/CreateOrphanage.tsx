@@ -22,9 +22,33 @@ const happyMapIcon = Leaflet.icon({
 
 export default function CreateOrphanage() {
     const [markerPosition, setMarkerPosition] = useState<[number, number]>([0, 0])
-    
+
+    const [name, setName] = useState("")
+    const [about, setAbout] = useState("")
+    const [instructions, setInstructions] = useState("")
+    const [openingHours, setOpeningHours] = useState("")
+    const [openOnWeekends, setOpenOnWeekends] = useState(false)
+
     function handleMapClick(e: { latlng: { lat: number, lng: number } }) {
-        setMarkerPosition([e.latlng.lat, e.latlng.lng])    
+        setMarkerPosition([e.latlng.lat, e.latlng.lng])
+    }
+
+    function handleCreateOrphanage(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+
+        console.log({
+            data: {
+                name,
+                about,
+                instructions,
+                openingHours,
+                openOnWeekends,
+                location: {
+                    latitude: markerPosition[0],
+                    longitude: markerPosition[1]
+                }
+            }
+        })
     }
 
     return (
@@ -32,7 +56,7 @@ export default function CreateOrphanage() {
             <Sidebar />
 
             <main>
-                <form className="create-orphanage-form">
+                <form className="create-orphanage-form" onSubmit={handleCreateOrphanage}>
                     <fieldset>
                         <legend>Dados</legend>
 
@@ -46,21 +70,30 @@ export default function CreateOrphanage() {
                                 url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                             />
 
-                            <Marker 
-                                interactive={false} 
-                                icon={happyMapIcon} 
-                                position={[markerPosition[0], markerPosition[1]]} 
+                            <Marker
+                                interactive={false}
+                                icon={happyMapIcon}
+                                position={[markerPosition[0], markerPosition[1]]}
                             />
                         </Map>
 
                         <div className="input-block">
                             <label htmlFor="name">Nome</label>
-                            <input id="name" />
+                            <input
+                                id="name"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
                         </div>
 
                         <div className="input-block">
                             <label htmlFor="about">Sobre <span>Máximo de 300 caracteres</span></label>
-                            <textarea id="name" maxLength={300} />
+                            <textarea
+                                id="about"
+                                maxLength={300}
+                                value={about}
+                                onChange={e => setAbout(e.target.value)}
+                            />
                         </div>
 
                         <div className="input-block">
@@ -81,31 +114,45 @@ export default function CreateOrphanage() {
 
                         <div className="input-block">
                             <label htmlFor="instructions">Instruções</label>
-                            <textarea id="instructions" />
+                            <textarea
+                                id="instructions"
+                                value={instructions}
+                                onChange={e => setInstructions(e.target.value)}
+                            />
                         </div>
 
                         <div className="input-block">
-                            <label htmlFor="opening_hours">Nome</label>
-                            <input id="opening_hours" />
+                            <label htmlFor="opening_hours">Horário das visitas</label>
+                            <input
+                                id="opening_hours"
+                                value={openingHours}
+                                onChange={e => setOpeningHours(e.target.value)}
+                            />
                         </div>
 
                         <div className="input-block">
                             <label htmlFor="open_on_weekends">Atende fim de semana</label>
 
                             <div className="button-select">
-                                <button type="button" className="active">Sim</button>
-                                <button type="button">Não</button>
+                                <button 
+                                    type="button" 
+                                    className={["yes", openOnWeekends ? "active" : ""].join(" ")}
+                                    onClick={() => setOpenOnWeekends(true)}
+                                >Sim</button>
+                                <button 
+                                    type="button" 
+                                    className={["no", !openOnWeekends ? "active" : ""].join(" ")}
+                                    onClick={() => setOpenOnWeekends(false)}
+                                >Não</button>
                             </div>
                         </div>
                     </fieldset>
 
                     <button className="confirm-button" type="submit">
                         Confirmar
-          </button>
+                    </button>
                 </form>
             </main>
         </div>
     )
 }
-
-// return `https://a.tile.openstreetmap.org/${z}/${x}/${y}.png`
