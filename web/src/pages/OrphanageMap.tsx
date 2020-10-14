@@ -24,12 +24,20 @@ function OrphanageMap() {
   const zoom = 15
 
   const [orphanages, setOrphanages] = useState<OrphanageMarker[]>([])
+  const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0])
 
   useEffect(() => {
     (async function () {
       const response = await api.get("/orphanages")
       setOrphanages(response.data.result)
     })()
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(params => {
+        const coords = params.coords
+        setMapCenter([coords.latitude, coords.longitude])
+      })
+    }
   }, [])
 
   const mapIcon = Leaflet.icon({
@@ -58,7 +66,7 @@ function OrphanageMap() {
       {
         orphanages && (
           <Map
-            center={[-3.0819022, -60.0117348]}
+            center={mapCenter}
             zoom={zoom}
             style={{
               width: "100%",

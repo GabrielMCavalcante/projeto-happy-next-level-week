@@ -50,6 +50,7 @@ export default function Orphanage() {
   const [selectedImage, setSelectedImage] = useState(0)
   const { id } = useParams<DetailsRouteParams>()
   const { goBack } = useHistory()
+  const [userLocation, setUserLocation] = useState<[number, number]>([0, 0])
 
   useEffect(() => {
     (async function () {
@@ -65,6 +66,13 @@ export default function Orphanage() {
         goBack()
       }
     })()
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(params => {
+        const coords = params.coords
+        setUserLocation([coords.latitude, coords.longitude])
+      })
+    }
   }, [goBack, id])
 
   return (
@@ -131,7 +139,7 @@ export default function Orphanage() {
                     <a
                       rel="noopener noreferrer"
                       target="_blank"
-                      href={`https://www.google.com/maps/dir/?api=1&&destination=${orphanage.latitude},${orphanage.longitude}`}
+                      href={`https://www.google.com/maps/dir/?api=1&origin=${userLocation[0]},${userLocation[1]}&destination=${orphanage.latitude},${orphanage.longitude}`}
                     >
                       Ver rotas no Google Maps
                     </a>
