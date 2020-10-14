@@ -1,8 +1,11 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { FaWhatsapp } from "react-icons/fa"
 import { FiClock, FiInfo } from "react-icons/fi"
 import { Map, Marker, TileLayer } from "react-leaflet"
 import Leaflet from 'leaflet'
+
+// Services
+import api from 'services/axios-config'
 
 // Components
 import Sidebar from 'components/Sidebar'
@@ -21,7 +24,29 @@ const happyMapIcon = Leaflet.icon({
 	popupAnchor: [0, -60]
 })
 
+interface Image {
+	id: number,
+	url: string
+}
+
+interface Orphanage {
+	name: string,
+	latitude: number,
+	longitude: number,
+	about: string,
+	instructions: string,
+	opening_hours: string,
+	open_on_weekends: boolean,
+	images: Image[]
+}
+
 export default function Orphanage() {
+	const [orphanage, setOrphanage] = useState<Orphanage>()
+
+	useEffect(() => {
+		
+	}, [])
+
 	return (
 		<div id="page-orphanage">
 			<Sidebar />
