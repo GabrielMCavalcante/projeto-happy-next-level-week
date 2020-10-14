@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Leaflet from 'leaflet'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import { FiPlus } from 'react-icons/fi'
@@ -17,6 +18,13 @@ function OrphanageMap() {
     const [zoom, setZoom] = useState(15)
 
     const position: [number, number] = [lat, lng]
+
+    const mapIcon = Leaflet.icon({
+        iconUrl: happyFace,
+        iconSize: [58, 68],
+        iconAnchor: [29, 68],
+        popupAnchor: [178, 2]
+    })
 
     return (
         <div id="page-map">
@@ -45,9 +53,14 @@ function OrphanageMap() {
                 <TileLayer 
                     url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
-                <Marker position={position}>
-                    <Popup>
-                        A pretty CSS3 popup. <br /> Easily customizable.
+                <Marker icon={mapIcon} position={position}>
+                    <Popup 
+                        closeButton={false} 
+                        minWidth={240} 
+                        maxWidth={240}
+                        className="map-popup"
+                    >
+                        Lar das meninas
                     </Popup>
                 </Marker>
             </Map>
