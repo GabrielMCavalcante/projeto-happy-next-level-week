@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Leaflet from 'leaflet'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Link } from 'react-router-dom'
-import { FiPlus } from 'react-icons/fi'
+import { FiPlus, FiArrowRight } from 'react-icons/fi'
 
 // Images
 import happyFace from 'assets/images/happy-face-logo.svg'
@@ -42,25 +42,28 @@ function OrphanageMap() {
                 </footer>
             </aside>
 
-            <Map 
-                center={position} 
-                zoom={zoom} 
+            <Map
+                center={position}
+                zoom={zoom}
                 style={{
                     width: "100%",
                     height: "100%",
                 }}
             >
-                <TileLayer 
+                <TileLayer
                     url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
                 />
                 <Marker icon={mapIcon} position={position}>
-                    <Popup 
-                        closeButton={false} 
-                        minWidth={240} 
+                    <Popup
+                        closeButton={false}
+                        minWidth={240}
                         maxWidth={240}
                         className="map-popup"
                     >
                         Lar das meninas
+                        <Link to="/">
+                            <FiArrowRight size={24} color="#FFFFFF" />
+                        </Link>
                     </Popup>
                 </Marker>
             </Map>
