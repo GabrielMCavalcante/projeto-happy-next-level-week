@@ -63,7 +63,7 @@ export default class OrphanagesController {
             longitude,
             instructions,
             opening_hours,
-            open_on_weekends,
+            open_on_weekends: open_on_weekends === "true" ? true : false,
             images
         }
 
