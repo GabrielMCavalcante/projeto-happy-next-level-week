@@ -9,7 +9,6 @@ import happyFace from 'assets/images/happy-face-logo.svg'
 
 // Styles
 import 'assets/styles/pages/orphanageMap.css'
-import 'leaflet/dist/leaflet.css'
 
 function OrphanageMap() {
 
