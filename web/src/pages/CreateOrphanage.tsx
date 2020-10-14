@@ -99,13 +99,11 @@ export default function CreateOrphanage() {
                         <div className="input-block">
                             <label htmlFor="images">Fotos</label>
 
-                            <div className="uploaded-image">
-
+                            <div className="images-container">
+                                <button className="new-image">
+                                    <FiPlus size={24} color="#15b6d6" />
+                                </button>
                             </div>
-
-                            <button className="new-image">
-                                <FiPlus size={24} color="#15b6d6" />
-                            </button>
                         </div>
                     </fieldset>
 
@@ -134,13 +132,13 @@ export default function CreateOrphanage() {
                             <label htmlFor="open_on_weekends">Atende fim de semana</label>
 
                             <div className="button-select">
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     className={["yes", openOnWeekends ? "active" : ""].join(" ")}
                                     onClick={() => setOpenOnWeekends(true)}
                                 >Sim</button>
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     className={["no", !openOnWeekends ? "active" : ""].join(" ")}
                                     onClick={() => setOpenOnWeekends(false)}
                                 >Não</button>
