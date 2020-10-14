@@ -4,6 +4,7 @@ import App from './App'
 
 // Styles
 import 'assets/styles/global.css'
+import 'leaflet/dist/leaflet.css'
 
 const app = (
   <App />
