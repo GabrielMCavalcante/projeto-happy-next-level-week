@@ -1,7 +1,11 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Map, Marker, TileLayer } from 'react-leaflet'
 import Leaflet from 'leaflet'
 import { FiPlus } from "react-icons/fi"
+import { useHistory } from 'react-router-dom'
+
+// Services
+import api from 'services/axios-config'
 
 // Components
 import Sidebar from "components/Sidebar"
@@ -21,34 +25,60 @@ const happyMapIcon = Leaflet.icon({
 })
 
 export default function CreateOrphanage() {
+    const navigation = useHistory()
     const [markerPosition, setMarkerPosition] = useState<[number, number]>([0, 0])
 
+    const [images, setImages] = useState<FileList>()
     const [name, setName] = useState("")
     const [about, setAbout] = useState("")
     const [instructions, setInstructions] = useState("")
     const [openingHours, setOpeningHours] = useState("")
     const [openOnWeekends, setOpenOnWeekends] = useState(false)
 
+    const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0])
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(params => {
+                const coords = params.coords
+                setMapCenter([coords.latitude, coords.longitude])
+            })
+        }
+    }, [])
+
     function handleMapClick(e: { latlng: { lat: number, lng: number } }) {
         setMarkerPosition([e.latlng.lat, e.latlng.lng])
     }
 
-    function handleCreateOrphanage(e: React.FormEvent<HTMLFormElement>) {
+    function handleImageSelection(e: React.ChangeEvent<HTMLInputElement>) {
+        e.persist()
+        setImages(e.target.files!)
+    }
+
+    async function handleCreateOrphanage(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
 
-        console.log({
-            data: {
-                name,
-                about,
-                instructions,
-                openingHours,
-                openOnWeekends,
-                location: {
-                    latitude: markerPosition[0],
-                    longitude: markerPosition[1]
-                }
-            }
-        })
+        const formData = new FormData()
+
+        formData.set("name", name)
+        formData.set("about", about)
+        formData.set("instructions", instructions)
+        formData.set("opening_hours", openingHours)
+        formData.set("open_on_weekends", String(openOnWeekends))
+        formData.set("latitude", String(markerPosition[0]))
+        formData.set("longitude", String(markerPosition[1]))
+
+        for (let i = 0; i < images!.length; i++) {
+            formData.append("images", images!.item(i)!)
+        }
+        
+        try {
+            await api.post("/orphanages", formData)
+            await window.confirm("Orfanato cadastrado com sucesso!")
+            navigation.replace("/orfanatos")
+        } catch (err) {
+            console.log(err.message)
+        }
     }
 
     return (
@@ -61,7 +91,7 @@ export default function CreateOrphanage() {
                         <legend>Dados</legend>
 
                         <Map
-                            center={[-27.2092052, -49.6401092]}
+                            center={mapCenter}
                             style={{ width: '100%', height: 280 }}
                             zoom={15}
                             onClick={handleMapClick}
@@ -100,9 +130,16 @@ export default function CreateOrphanage() {
                             <label htmlFor="images">Fotos</label>
 
                             <div className="images-container">
-                                <button className="new-image">
+                                <label className="new-image" htmlFor="imagesInput">
                                     <FiPlus size={24} color="#15b6d6" />
-                                </button>
+                                </label>
+                                <input 
+                                    type="file"
+                                    multiple
+                                    onChange={handleImageSelection} 
+                                    id="imagesInput" 
+                                    style={{ display: 'none' }}
+                                />
                             </div>
                         </div>
                     </fieldset>
