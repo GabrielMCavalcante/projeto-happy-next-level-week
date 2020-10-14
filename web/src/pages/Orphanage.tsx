@@ -1,15 +1,15 @@
-import React from "react";
-import { FaWhatsapp } from "react-icons/fa";
-import { FiClock, FiInfo, FiArrowLeft } from "react-icons/fi";
-import { Map, Marker, TileLayer } from "react-leaflet";
-import { useHistory } from 'react-router-dom';
-import L from 'leaflet';
+import React from "react"
+import { FaWhatsapp } from "react-icons/fa"
+import { FiClock, FiInfo, FiArrowLeft } from "react-icons/fi"
+import { Map, Marker, TileLayer } from "react-leaflet"
+import { useHistory } from 'react-router-dom'
+import Leaflet from 'leaflet'
 
-import mapMarkerImg from '../images/map-marker.svg';
+import mapMarkerImg from '../images/map-marker.svg'
 
-import '../styles/pages/orphanage.css';
+import '../styles/pages/orphanage.css'
 
-const happyMapIcon = L.icon({
+const happyMapIcon = Leaflet.icon({
   iconUrl: mapMarkerImg,
 
   iconSize: [58, 68],
@@ -18,7 +18,7 @@ const happyMapIcon = L.icon({
 })
 
 export default function Orphanage() {
-  const { goBack } = useHistory();
+  const { goBack } = useHistory()
 
   return (
     <div id="page-orphanage">
@@ -109,5 +109,5 @@ export default function Orphanage() {
         </div>
       </main>
     </div>
-  );
+  )
 }

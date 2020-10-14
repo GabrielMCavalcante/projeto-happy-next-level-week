@@ -1,15 +1,15 @@
-import React from "react";
-import { Map, Marker, TileLayer } from 'react-leaflet';
-import L from 'leaflet';
-import { useHistory } from "react-router-dom";
+import React from "react"
+import { Map, Marker, TileLayer } from 'react-leaflet'
+import Leaflet from 'leaflet'
+import { useHistory } from "react-router-dom"
 
-import { FiArrowLeft, FiPlus } from "react-icons/fi";
+import { FiArrowLeft, FiPlus } from "react-icons/fi"
 
-import mapMarkerImg from '../images/map-marker.svg';
+import mapMarkerImg from '../images/map-marker.svg'
 
-import '../styles/pages/create-orphanage.css';
+import '../styles/pages/create-orphanage.css'
 
-const happyMapIcon = L.icon({
+const happyMapIcon = Leaflet.icon({
   iconUrl: mapMarkerImg,
 
   iconSize: [58, 68],
@@ -18,7 +18,7 @@ const happyMapIcon = L.icon({
 })
 
 export default function CreateOrphanage() {
-  const { goBack } = useHistory();
+  const { goBack } = useHistory()
 
   return (
     <div id="page-create-orphanage">
@@ -101,7 +101,7 @@ export default function CreateOrphanage() {
         </form>
       </main>
     </div>
-  );
+  )
 }
 
-// return `https://a.tile.openstreetmap.org/${z}/${x}/${y}.png`;
+// return `https://a.tile.openstreetmap.org/${z}/${x}/${y}.png`
