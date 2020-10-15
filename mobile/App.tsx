@@ -10,7 +10,8 @@ import {
   Nunito_800ExtraBold
 } from '@expo-google-fonts/nunito'
 
-import OrphanagesMap from 'pages/OrphanagesMap'
+// Routes
+import Routes from 'routes'
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -26,7 +27,7 @@ export default function App() {
     return (
       <View style={styles.container}>
         <StatusBar style="auto" hidden/>
-        <OrphanagesMap />
+        <Routes />
       </View>
     )
   }
@@ -35,8 +36,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })
