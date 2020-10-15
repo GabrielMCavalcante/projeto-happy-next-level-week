@@ -1,84 +1,108 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image, Dimensions, StyleSheet } from 'react-native'
+import { View, Text, Image, Dimensions, StyleSheet, ActivityIndicator } from 'react-native'
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps'
 import * as Location from 'expo-location'
-import { AppLoading } from 'expo'
 import { Entypo } from '@expo/vector-icons'
 import { RectButton } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
+
 import HappyFaceLogo from 'assets/images/happy-face-logo.png'
 
 function OrphanagesMap() {
   const [location, setLocation] = useState<[number, number]>([0, 0])
+  const navigation = useNavigation()
 
   useEffect(() => {
     (async function () {
       let { status } = await Location.requestPermissionsAsync()
       if (status !== 'granted') {
         setLocation([-3.1189334, -60.0207567])
+      } else {
+        const loc = await Location.getCurrentPositionAsync({})
+        const coords: [number, number] = [loc.coords.latitude, loc.coords.longitude]
+        setLocation(coords)
       }
-
-      const loc = await Location.getCurrentPositionAsync({})
-      const coords: [number, number] = [loc.coords.latitude, loc.coords.longitude]
-      setLocation(coords)
     })()
   }, [])
 
   return (
     <View>
       {
-        location[0] !== 0
-          && location[1] !== 0
+        location[0] !== 0 && location[1] !== 0
           ? (
-            <>
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                initialRegion={{
+            <MapView
+              provider={PROVIDER_GOOGLE}
+              initialRegion={{
+                latitude: location[0],
+                longitude: location[1],
+                latitudeDelta: 0.008,
+                longitudeDelta: 0.008
+              }}
+              style={styles.mapStyle}
+            >
+              <Marker
+                coordinate={{
                   latitude: location[0],
-                  longitude: location[1],
-                  latitudeDelta: 0.008,
-                  longitudeDelta: 0.008
+                  longitude: location[1]
                 }}
-                style={styles.mapStyle}
+                calloutAnchor={{
+                  x: 0.5,
+                  y: -0.1
+                }}
               >
-                <Marker
-                  coordinate={{
-                    latitude: location[0],
-                    longitude: location[1]
-                  }}
-                  calloutAnchor={{
-                    x: 0.7,
-                    y: -0.1
-                  }}
-                >
-                  <Image
-                    source={HappyFaceLogo}
-                    style={{ width: 60, height: 60 }}
-                    resizeMode="contain"
-                  />
-                  <Callout tooltip onPress={() => alert("oi")}>
-                    <View style={styles.calloutContainer}>
-                      <Text style={styles.calloutText}>
-                        Lar das Meninas
-                      </Text>
-                    </View>
-                  </Callout>
-                </Marker>
-              </MapView>
-
-              <View style={styles.footer}>
-                <Text style={styles.footerText}>2 orfanatos encontrados</Text>
-                <RectButton style={styles.addBtn}>
-                  <Entypo name="plus" size={24} color="#FFFFFF" />
-                </RectButton>
-              </View>
-            </>
-          ) : <AppLoading />
+                <Image
+                  source={HappyFaceLogo}
+                  style={{ width: 60, height: 60 }}
+                  resizeMode="contain"
+                />
+                <Callout tooltip onPress={() => navigation.navigate("OtherScreenOne")}>
+                  <View style={styles.calloutContainer}>
+                    <Text style={styles.calloutText}>
+                      Lar das Meninas
+              </Text>
+                  </View>
+                </Callout>
+              </Marker>
+            </MapView>
+          ) : (
+            <View style={styles.loadingMapContainer}>
+              <Image style={styles.loadingMapLogo} source={HappyFaceLogo} />
+              <Text style={styles.loadingMapText}>Carregando mapa</Text>
+              <ActivityIndicator size={80} color='#FFFFFF' />
+            </View>
+          )
       }
+
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>2 orfanatos encontrados</Text>
+        <RectButton style={styles.addBtn} onPress={() => navigation.navigate("OtherScreenTwo")}>
+          <Entypo name="plus" size={24} color="#FFFFFF" />
+        </RectButton>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  loadingMapContainer: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00C7C7',
+  },
+  
+  loadingMapLogo: {
+    marginBottom: 20
+  },
+  
+  loadingMapText: {
+    fontFamily: 'Nunito_800ExtraBold',
+    fontSize: 20,
+    color: '#FFFFFF',
+    marginBottom: 20
+  },
+  
   mapStyle: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
