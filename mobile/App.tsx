@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import { AppLoading } from 'expo'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import {
   useFonts,
   Nunito_400Regular,
@@ -10,8 +10,9 @@ import {
   Nunito_800ExtraBold
 } from '@expo-google-fonts/nunito'
 
-export default function App() {
+import OrphanagesMap from 'pages/OrphanagesMap'
 
+export default function App() {
   let [fontsLoaded] = useFonts({
     Nunito_400Regular,
     Nunito_600SemiBold,
@@ -24,8 +25,8 @@ export default function App() {
   } else {
     return (
       <View style={styles.container}>
-        <Text style={{ fontFamily: "Nunito_700Bold" }}>Open up App.tsx to start working on your app!</Text>
-        <StatusBar style="auto" />
+        <StatusBar style="auto" hidden/>
+        <OrphanagesMap />
       </View>
     )
   }
