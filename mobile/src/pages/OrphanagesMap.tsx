@@ -102,7 +102,12 @@ function OrphanagesMap() {
                 </Text>
                 <RectButton
                   style={styles.addBtn}
-                  onPress={() => navigation.navigate("SelectMapPosition")}
+                  onPress={() => navigation.navigate("SelectMapPosition", { 
+                    userCoords: {
+                      latitude: location[0],
+                      longitude: location[1]
+                    } 
+                  })}
                 >
                   <Entypo name="plus" size={24} color="#FFFFFF" />
                 </RectButton>
