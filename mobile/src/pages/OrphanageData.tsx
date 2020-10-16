@@ -9,14 +9,15 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native"
 import { Entypo } from "@expo/vector-icons"
-import * as ImagePicker from 'expo-image-picker'
+import * as ImagePicker from "expo-image-picker"
 import { RectButton } from "react-native-gesture-handler"
+import { useRoute, useNavigation } from "@react-navigation/native"
+import api from "services/api"
 
 export default function OrphanageData() {
-
   const [name, setName] = useState("")
   const [about, setAbout] = useState("")
   const [instructions, setInstructions] = useState("")
@@ -24,19 +25,45 @@ export default function OrphanageData() {
   const [opening_hours, setOpeningHours] = useState("")
   const [open_on_weekends, setOpenOnWeekends] = useState(false)
 
+  const navigation = useNavigation()
+  const { params } = useRoute()
+
   useEffect(() => {
     (async function () {
-      if (Platform.OS !== 'web') {
+      if (Platform.OS !== "web") {
         const { status } = await ImagePicker.requestCameraRollPermissionsAsync()
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!')
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!")
         }
       }
     })()
   }, [])
 
   async function handleCreateOrphanage() {
-    // ...
+    const orphanageCoords = (params as any).orphanageCoords
+
+    const formData = new FormData()
+
+    formData.append("name", name)
+    formData.append("about", about)
+    formData.append("instructions", instructions)
+    formData.append("opening_hours", opening_hours)
+    formData.append("open_on_weekends", String(open_on_weekends))
+    formData.append("latitude", String(orphanageCoords.latitude))
+    formData.append("longitude", String(orphanageCoords.longitude))
+
+    const date = Date.now()
+    images.forEach((image, index) => {
+      formData.append("images", {
+        name: `${date}imagem${index}.jpg`,
+        type: "image/jpg",
+        uri: image
+      } as any)
+    })
+
+    await api.post("/orphanages", formData)
+    await alert("Orfanato criado com sucesso!")
+    navigation.navigate("OrphanagesMap")
   }
 
   async function handleImageSelection() {
@@ -46,6 +73,7 @@ export default function OrphanageData() {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true
     })
 
     if (!result.cancelled) {
