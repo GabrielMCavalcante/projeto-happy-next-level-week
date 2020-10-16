@@ -4,7 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps"
 import * as Location from "expo-location"
 import { Entypo } from "@expo/vector-icons"
 import { RectButton } from "react-native-gesture-handler"
-import { useNavigation } from "@react-navigation/native"
+import { useFocusEffect, useNavigation } from "@react-navigation/native"
 
 // Services
 import api from "services/api"
@@ -25,7 +25,7 @@ function OrphanagesMap() {
   const navigation = useNavigation()
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
+  useFocusEffect(() => {
     (async function () {
       const response = await api.get("orphanages")
       const data = response.data.result
@@ -40,7 +40,7 @@ function OrphanagesMap() {
 
       setLoading(false)
     })()
-  }, [])
+  })
 
   function handleNavigateToOrphanageDetails(orphanageId: number) {
     navigation.navigate("OrphanageDetails", { orphanageId })
@@ -102,11 +102,11 @@ function OrphanagesMap() {
                 </Text>
                 <RectButton
                   style={styles.addBtn}
-                  onPress={() => navigation.navigate("SelectMapPosition", { 
+                  onPress={() => navigation.navigate("SelectMapPosition", {
                     userCoords: {
                       latitude: location[0],
                       longitude: location[1]
-                    } 
+                    }
                   })}
                 >
                   <Entypo name="plus" size={24} color="#FFFFFF" />
