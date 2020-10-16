@@ -5,22 +5,8 @@ import { Text, View } from 'react-native'
 
 // Pages
 import OrphanagesMap from 'pages/OrphanagesMap'
-
-function OtherScreenOne() {
-  return (
-    <View>
-      <Text>This is another screen one</Text>
-    </View>
-  )
-}
-
-function OtherScreenTwo() {
-  return (
-    <View>
-      <Text>This is another screen two</Text>
-    </View>
-  )
-}
+import SelectMapPosition from 'pages/SelectMapPosition'
+import OrphanageDetails from 'pages/OrphanageDetails'
 
 function Routes() {
   const { Navigator, Screen } = createStackNavigator()
@@ -29,8 +15,8 @@ function Routes() {
     <NavigationContainer>
       <Navigator headerMode="none" initialRouteName="OrphanagesMap">
         <Screen name="OrphanagesMap" component={OrphanagesMap} />
-        <Screen name="OtherScreenOne" component={OtherScreenOne} />
-        <Screen name="OtherScreenTwo" component={OtherScreenTwo} />
+        <Screen name="SelectMapPosition" component={SelectMapPosition} />
+        <Screen name="OrphanageDetails" component={OrphanageDetails} />
       </Navigator>
     </NavigationContainer>
   )
