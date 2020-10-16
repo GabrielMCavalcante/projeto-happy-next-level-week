@@ -1,17 +1,17 @@
-import React from 'react'
-import { View, StyleSheet, Dimensions, Text } from 'react-native'
+import React from "react"
+import { View, StyleSheet, Dimensions, Text } from "react-native"
 
-import { useNavigation } from '@react-navigation/native'
-import { RectButton } from 'react-native-gesture-handler'
-import MapView, { Marker } from 'react-native-maps'
+import { useNavigation } from "@react-navigation/native"
+import { RectButton } from "react-native-gesture-handler"
+import MapView, { Marker } from "react-native-maps"
 
-import happyFaceLogo from 'assets/images/happy-face-logo.png'
+import happyFaceLogo from "assets/images/happy-face-logo.png"
 
 export default function SelectMapPosition() {
   const navigation = useNavigation()
 
   function handleNextStep() {
-    navigation.navigate('OrphanageData')
+    navigation.navigate("OrphanageData")
   }
 
   return (
@@ -41,30 +41,30 @@ export default function SelectMapPosition() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative'
+    position: "relative"
   },
 
   mapStyle: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 
   nextButton: {
-    backgroundColor: '#15c3d6',
+    backgroundColor: "#15c3d6",
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 56,
 
-    position: 'absolute',
+    position: "absolute",
     left: 24,
     right: 24,
     bottom: 40,
   },
 
   nextButtonText: {
-    fontFamily: 'Nunito_800ExtraBold',
+    fontFamily: "Nunito_800ExtraBold",
     fontSize: 16,
-    color: '#FFF',
+    color: "#FFF",
   }
 })

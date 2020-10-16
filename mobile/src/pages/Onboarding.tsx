@@ -1,12 +1,12 @@
-import React from 'react'
-import { View, Text, Image, ImageSourcePropType, StyleSheet, Dimensions } from 'react-native'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { Ionicons } from '@expo/vector-icons'
-import { RectButton } from 'react-native-gesture-handler'
+import React from "react"
+import { View, Text, Image, ImageSourcePropType, StyleSheet, Dimensions } from "react-native"
+import { NavigationContainer, useNavigation } from "@react-navigation/native"
+import { createStackNavigator } from "@react-navigation/stack"
+import { Ionicons } from "@expo/vector-icons"
+import { RectButton } from "react-native-gesture-handler"
 
-import happyWorld from 'assets/images/happy-planet.png'
-import happyKids from 'assets/images/happy-kids.png'
+import happyWorld from "assets/images/happy-planet.png"
+import happyKids from "assets/images/happy-kids.png"
 
 interface OnboardingScreenProps {
   image: ImageSourcePropType,
@@ -116,15 +116,15 @@ const Onboarding: React.FC<OnboardingProps> = ({ onDismiss }) => {
 
 const styles = StyleSheet.create({
   onboardingScreenContainer: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
     backgroundColor: "#EBF2F5"
   },
 
   onboardingScreenContent: {
     padding: 15,
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
+    justifyContent: "space-evenly",
+    alignItems: "center"
   },
 
   image: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: 'Nunito_800ExtraBold',
+    fontFamily: "Nunito_800ExtraBold",
     fontSize: 40,
     color: "#00C7C7",
     lineHeight: 43,
@@ -143,17 +143,17 @@ const styles = StyleSheet.create({
 
   subtitle: {
     marginTop: 10,
-    fontFamily: 'Nunito_600SemiBold',
+    fontFamily: "Nunito_600SemiBold",
     fontSize: 20,
     color: "#5C8599",
     maxWidth: 300
   },
 
   onboardingScreenControls: {
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: Dimensions.get('window').width,
+    width: Dimensions.get("window").width,
     paddingHorizontal: 20,
     position: "absolute",
     bottom: 10
