@@ -21,11 +21,11 @@ const Header: React.FC<HeaderProps> = ({ title, showCloseBtn = true }) => {
       <Text style={styles.headerTitle}>{title}</Text>
       
       {
-        showCloseBtn && (
+        showCloseBtn ? (
           <BorderlessButton onPress={() => navigation.navigate("OrphanagesMap")}>
             <Entypo name="cross" size={24} color="#8FA7B3" />
           </BorderlessButton>
-        )
+        ) : <View />
       }
     </View>
   )
