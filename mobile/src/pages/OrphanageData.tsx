@@ -1,6 +1,6 @@
 import React from "react"
 import { ScrollView, View, StyleSheet, Switch, Text, TextInput, TouchableOpacity } from "react-native"
-import { Feather } from "@expo/vector-icons"
+import { Entypo } from "@expo/vector-icons"
 import { RectButton } from "react-native-gesture-handler"
 
 export default function OrphanageData() {
@@ -26,7 +26,7 @@ export default function OrphanageData() {
 
       <Text style={styles.label}>Fotos</Text>
       <TouchableOpacity style={styles.imagesInput} onPress={() => {}}>
-        <Feather name="plus" size={24} color="#15B6D6" />
+        <Entypo name="plus" size={24} color="#15B6D6" />
       </TouchableOpacity>
 
       <Text style={styles.title}>Visitação</Text>
