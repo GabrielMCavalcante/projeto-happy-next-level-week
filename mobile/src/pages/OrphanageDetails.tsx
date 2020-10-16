@@ -153,7 +153,11 @@ export default function OrphanageDetails() {
                         ? styles.scheduleTextGreen
                         : styles.scheduleTextRed
                     ]}
-                  >Atendemos fim de semana</Text>
+                  >{
+                    orphanage.open_on_weekends
+                    ? "Atendemos fim de semana"
+                    : "Não atendemos fim de semana"
+                  }</Text>
                 </View>
               </View>
 
