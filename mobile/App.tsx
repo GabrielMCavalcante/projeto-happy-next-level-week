@@ -38,7 +38,6 @@ export default function App() {
           setRoute(<Onboarding onDismiss={dismissOnboarding} />)
         } else {
           setRoute(Routes)
-          await AsyncStorage.setItem("happy:app:alreadyopened", "false") // REMOVE LATER
         }
       }
     })()
