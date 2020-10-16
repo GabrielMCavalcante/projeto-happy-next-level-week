@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { RectButton } from 'react-native-gesture-handler'
 import MapView, { Marker } from 'react-native-maps'
 
-import mapMarkerImg from '../../images/map-marker.png'
+import happyFaceLogo from 'assets/images/happy-face-logo.png'
 
 export default function SelectMapPosition() {
   const navigation = useNavigation()
@@ -26,7 +26,7 @@ export default function SelectMapPosition() {
         style={styles.mapStyle}
       >
         <Marker 
-          icon={mapMarkerImg}
+          icon={happyFaceLogo}
           coordinate={{ latitude: -27.2092052, longitude: -49.6401092 }}
         />
       </MapView>

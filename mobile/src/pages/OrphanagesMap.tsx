@@ -55,7 +55,7 @@ function OrphanagesMap() {
                   style={{ width: 60, height: 60 }}
                   resizeMode="contain"
                 />
-                <Callout tooltip onPress={() => navigation.navigate("OtherScreenOne")}>
+                <Callout tooltip onPress={() => navigation.navigate("OrphanageDetails")}>
                   <View style={styles.calloutContainer}>
                     <Text style={styles.calloutText}>
                       Lar das Meninas
@@ -75,7 +75,7 @@ function OrphanagesMap() {
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>2 orfanatos encontrados</Text>
-        <RectButton style={styles.addBtn} onPress={() => navigation.navigate("OtherScreenTwo")}>
+        <RectButton style={styles.addBtn} onPress={() => navigation.navigate("SelectMapPosition")}>
           <Entypo name="plus" size={24} color="#FFFFFF" />
         </RectButton>
       </View>
