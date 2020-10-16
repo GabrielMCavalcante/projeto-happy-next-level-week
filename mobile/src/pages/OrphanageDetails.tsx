@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { Image, View, ScrollView, Text, StyleSheet, Dimensions } from "react-native"
+import { Image, View, ScrollView, Text, StyleSheet, Dimensions, Linking } from "react-native"
 import { useRoute, useNavigation } from "@react-navigation/native"
 import MapView, { Marker } from "react-native-maps"
 import * as Location from "expo-location"
 import { Feather, FontAwesome } from "@expo/vector-icons"
-import { RectButton } from "react-native-gesture-handler"
+import { BorderlessButton, RectButton } from "react-native-gesture-handler"
 import api from "services/api"
 
 import happyFaceLogo from "assets/images/happy-face-logo.png"
@@ -63,10 +63,10 @@ export default function OrphanageDetails() {
               <ScrollView horizontal pagingEnabled>
                 {
                   images.map(image => (
-                    <Image 
-                      key={image.id} 
-                      style={styles.image} 
-                      source={{ uri: image.url }} 
+                    <Image
+                      key={image.id}
+                      style={styles.image}
+                      source={{ uri: image.url }}
                     />
                   ))
                 }
@@ -106,7 +106,11 @@ export default function OrphanageDetails() {
                 </MapView>
 
                 <View style={styles.routesContainer}>
-                  <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
+                  <BorderlessButton onPress={() => {
+                    Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${orphanage.latitude},${orphanage.longitude}`)
+                  }}>
+                    <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
+                  </BorderlessButton>
                 </View>
               </View>
 
@@ -133,21 +137,21 @@ export default function OrphanageDetails() {
                       : styles.scheduleItemRed
                   ]}
                 >
-                  <Feather 
-                    name="info" 
-                    size={40} 
+                  <Feather
+                    name="info"
+                    size={40}
                     color={
                       orphanage.open_on_weekends
-                      ? "#39CC83"
-                      : "#FF669D"
-                    } 
+                        ? "#39CC83"
+                        : "#FF669D"
+                    }
                   />
                   <Text
                     style={[
                       styles.scheduleText,
                       orphanage.open_on_weekends
-                      ? styles.scheduleTextGreen
-                      : styles.scheduleTextRed
+                        ? styles.scheduleTextGreen
+                        : styles.scheduleTextRed
                     ]}
                   >Atendemos fim de semana</Text>
                 </View>
