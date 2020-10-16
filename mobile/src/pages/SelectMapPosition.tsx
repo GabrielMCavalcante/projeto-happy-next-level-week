@@ -12,7 +12,12 @@ export default function SelectMapPosition() {
   const [position, setPosition] = useState<[number, number]>([0, 0])
 
   function handleNextStep() {
-    navigation.navigate("OrphanageData")
+    navigation.navigate("OrphanageData", {
+      orphanageCoords: {
+        latitude: position[0],
+        longitude: position[1]
+      }
+    })
   }
 
   return (
