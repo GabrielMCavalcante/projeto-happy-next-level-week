@@ -12,15 +12,16 @@ interface OnboardingScreenProps {
   image: ImageSourcePropType,
   title: string,
   subtitle?: string,
-  position: "first" | "last"
+  position: "first" | "last",
+  onDismiss?: () => void 
 }
 
-async function onOnboardingDismiss() {
-
+interface OnboardingProps { 
+  onDismiss: () => void 
 }
 
 const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
-  const { image, title, subtitle, position } = props
+  const { image, title, subtitle, position, onDismiss } = props
   const navigation = useNavigation()
 
   return (
@@ -54,7 +55,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           onPress={() => {
             position === "first"
               ? navigation.navigate("Onboarding2")
-              : onOnboardingDismiss()
+              : onDismiss!()
           }}
         >
           <Ionicons name="md-arrow-forward" size={24} color="#E3A800"/>
@@ -64,7 +65,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
   )
 }
 
-function Onboarding() {
+const Onboarding: React.FC<OnboardingProps> = ({ onDismiss }) => {
   const { Navigator, Screen } = createStackNavigator()
 
   const screens: OnboardingScreenProps[] = [
@@ -103,6 +104,7 @@ function Onboarding() {
                 image={screens[1].image}
                 title={screens[1].title}
                 position={screens[1].position}
+                onDismiss={onDismiss}
               />
             )
           }  
