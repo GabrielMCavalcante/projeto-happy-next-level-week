@@ -16,7 +16,7 @@ import Routes from "routes"
 import Onboarding from "pages/Onboarding"
 
 export default function App() {
-  const [route, setRoute] = useState(Routes)
+  const [route, setRoute] = useState<JSX.Element|null>(null)
 
   function dismissOnboarding() {
     AsyncStorage.setItem("happy:app:alreadyopened", "true")
@@ -37,7 +37,8 @@ export default function App() {
         if (!check || check === "false") {
           setRoute(<Onboarding onDismiss={dismissOnboarding} />)
         } else {
-          await AsyncStorage.setItem("happy:app:alreadyopened", "false")
+          setRoute(Routes)
+          await AsyncStorage.setItem("happy:app:alreadyopened", "false") // REMOVE LATER
         }
       }
     })()
