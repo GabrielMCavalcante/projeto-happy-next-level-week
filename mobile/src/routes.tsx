@@ -27,7 +27,7 @@ function Routes() {
 
   return (
     <NavigationContainer>
-      <Navigator headerMode="none">
+      <Navigator headerMode="none" initialRouteName="OrphanagesMap">
         <Screen name="OrphanagesMap" component={OrphanagesMap} />
         <Screen name="OtherScreenOne" component={OtherScreenOne} />
         <Screen name="OtherScreenTwo" component={OtherScreenTwo} />
