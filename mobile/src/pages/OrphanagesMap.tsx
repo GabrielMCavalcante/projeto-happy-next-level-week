@@ -6,29 +6,50 @@ import { Entypo } from "@expo/vector-icons"
 import { RectButton } from "react-native-gesture-handler"
 import { useNavigation } from "@react-navigation/native"
 
+// Services
+import api from "services/api"
+
+// Images
 import HappyFaceLogo from "assets/images/happy-face-logo.png"
 
+interface OrphanageMarker {
+  name: string,
+  id: number,
+  latitude: number,
+  longitude: number
+}
+
 function OrphanagesMap() {
-  const [location, setLocation] = useState<[number, number]>([0, 0])
+  const [location, setLocation] = useState<[number, number]>([-3.1189334, -60.0207567])
+  const [orphanages, setOrphanages] = useState<OrphanageMarker[]>([])
   const navigation = useNavigation()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     (async function () {
-      let { status } = await Location.requestPermissionsAsync()
-      if (status !== "granted") {
-        setLocation([-3.1189334, -60.0207567])
-      } else {
+      const response = await api.get("orphanages")
+      const data = response.data.result
+      setOrphanages([...data])
+
+      const { status } = await Location.requestPermissionsAsync()
+      if (status === "granted") {
         const loc = await Location.getCurrentPositionAsync({})
         const coords: [number, number] = [loc.coords.latitude, loc.coords.longitude]
         setLocation(coords)
       }
+
+      setLoading(false)
     })()
   }, [])
+
+  function handleNavigateToOrphanageDetails(orphanageId: number) {
+    navigation.navigate("OrphanageDetails", { orphanageId })
+  }
 
   return (
     <View>
       {
-        location[0] !== 0 && location[1] !== 0
+        !loading
           ? (
             <>
               <MapView
@@ -41,34 +62,48 @@ function OrphanagesMap() {
                 }}
                 style={styles.mapStyle}
               >
-                <Marker
-                  coordinate={{
-                    latitude: location[0],
-                    longitude: location[1]
-                  }}
-                  calloutAnchor={{
-                    x: 0.5,
-                    y: -0.1
-                  }}
-                >
-                  <Image
-                    source={HappyFaceLogo}
-                    style={{ width: 60, height: 60 }}
-                    resizeMode="contain"
-                  />
-                  <Callout tooltip onPress={() => navigation.navigate("OrphanageDetails")}>
-                    <View style={styles.calloutContainer}>
-                      <Text style={styles.calloutText}>
-                        Lar das Meninas
-                      </Text>
-                    </View>
-                  </Callout>
-                </Marker>
+                {
+                  orphanages.map(orphanage => (
+                    <Marker
+                      key={orphanage.id}
+                      coordinate={{
+                        latitude: orphanage.latitude,
+                        longitude: orphanage.longitude
+                      }}
+                      calloutAnchor={{
+                        x: 0.5,
+                        y: -0.1
+                      }}
+                    >
+                      <Image
+                        source={HappyFaceLogo}
+                        style={{ width: 60, height: 60 }}
+                        resizeMode="contain"
+                      />
+                      <Callout
+                        tooltip
+                        onPress={() => handleNavigateToOrphanageDetails(orphanage.id)}>
+                        <View style={styles.calloutContainer}>
+                          <Text style={styles.calloutText}>
+                            {orphanage.name}
+                          </Text>
+                        </View>
+                      </Callout>
+                    </Marker>
+                  ))
+                }
               </MapView>
 
               <View style={styles.footer}>
-                <Text style={styles.footerText}>2 orfanatos encontrados</Text>
-                <RectButton style={styles.addBtn} onPress={() => navigation.navigate("SelectMapPosition")}>
+                <Text style={styles.footerText}>
+                  {orphanages.length}{" "}
+                  orfanato{orphanages.length !== 1 ? "s" : ""}{" "}
+                  encontrado{orphanages.length !== 1 ? "s" : ""}
+                </Text>
+                <RectButton
+                  style={styles.addBtn}
+                  onPress={() => navigation.navigate("SelectMapPosition")}
+                >
                   <Entypo name="plus" size={24} color="#FFFFFF" />
                 </RectButton>
               </View>
@@ -147,7 +182,9 @@ const styles = StyleSheet.create({
   footerText: {
     color: "#8FA7B3",
     fontSize: 15,
-    fontFamily: "Nunito_700Bold"
+    fontFamily: "Nunito_700Bold",
+    textAlign: "center",
+    flex: 1
   },
 
   addBtn: {
