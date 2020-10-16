@@ -1,7 +1,7 @@
-import { StatusBar } from 'expo-status-bar'
-import { AppLoading } from 'expo'
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StatusBar } from "expo-status-bar"
+import { AppLoading } from "expo"
+import React, { useState, useEffect } from "react"
+import { StyleSheet, View } from "react-native"
 import AsyncStorage from "@react-native-community/async-storage"
 import {
   useFonts,
@@ -9,11 +9,11 @@ import {
   Nunito_600SemiBold,
   Nunito_700Bold,
   Nunito_800ExtraBold
-} from '@expo-google-fonts/nunito'
+} from "@expo-google-fonts/nunito"
 
 // Routes
-import Routes from 'routes'
-import Onboarding from 'pages/Onboarding'
+import Routes from "routes"
+import Onboarding from "pages/Onboarding"
 
 export default function App() {
   const [route, setRoute] = useState(Routes)
