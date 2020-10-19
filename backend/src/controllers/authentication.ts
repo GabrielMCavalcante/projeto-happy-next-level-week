@@ -3,6 +3,8 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { getRepository } from "typeorm"
 import User from "../models/User"
+import PasswordRecoveryTokens from "../models/PasswordRecoveryTokens"
+import sendMail from "../services/mail"
 
 function generateToken(id: string, expires: boolean, expiresIn: number = 86400) {
   if (expires) {
@@ -11,8 +13,6 @@ function generateToken(id: string, expires: boolean, expiresIn: number = 86400) 
     return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET!)
   }
 }
-
-let tokenTimer: NodeJS.Timeout
 
 export default class AuthenticationController {
   static async signup(req: Request, res: Response) {
@@ -142,11 +142,55 @@ export default class AuthenticationController {
   }
 
   static async requestRecoveryToken(req: Request, res: Response) {
-    
+    const { email } = req.body
+    const usersRepository = getRepository(User)
+    const tokenExpirationTimeInSeconds = 3600
 
+    // Verifying if email exists
+    const usersFound = await usersRepository.find({
+      where: {
+        email
+      }
+    })
+
+    if (usersFound.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        message: "There is no account associated with the specified email address."
+      })
+    }
+
+    const user = usersFound[0]
+
+    const recoveryToken = generateToken(user.id, true, tokenExpirationTimeInSeconds)
+
+    const passwordRecoveryToken = new PasswordRecoveryTokens()
+    
+    passwordRecoveryToken.token = recoveryToken
+    
+    user.password_recovery_token = passwordRecoveryToken
+
+    try {
+      await sendMail(email, recoveryToken)
+
+      return res.status(200).json({
+        status: 200,
+        message: "Password recovery token sent to email successfully."
+      })
+    } catch (err) {
+      return res.status(500).json({
+        status: 500,
+        message: "Could not send recovery token to email due" + 
+        "to an unknown error. Please, try again later."
+      })
+    }
+    
   }
 
   static async resetPassword(req: Request, res: Response) {
+    
+
+
 
   }
 }
