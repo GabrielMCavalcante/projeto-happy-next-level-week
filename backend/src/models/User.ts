@@ -13,6 +13,6 @@ export default class User {
     password: string;
 
     @OneToOne(() => PasswordRecoveryTokens)
-    @JoinColumn()
+    @JoinColumn({ name: "password_recovery_token_id" })
     password_recovery_token: PasswordRecoveryTokens;
 }
