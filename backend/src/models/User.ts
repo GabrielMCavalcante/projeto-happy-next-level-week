@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm"
+import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from "typeorm"
 import PasswordRecoveryTokens from "./PasswordRecoveryTokens"
 
 @Entity("users")
 export default class User {
-    @PrimaryGeneratedColumn("increment")
-    id: number;
+    @PrimaryColumn()
+    id: string;
 
     @Column({ unique: true })
     email: string;
