@@ -4,16 +4,17 @@ import jwt from "jsonwebtoken"
 import { getRepository } from "typeorm"
 import User from "../models/User"
 
-export default class AuthenticationController {
-
-  private tokenTimer: NodeJS.Timeout
-
-  private generateToken(id: string, expires: boolean, expiresIn: number = 86400) {
-    if (expires) {
-      return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET!, { expiresIn })
-    } else return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET!)
+function generateToken(id: string, expires: boolean, expiresIn: number = 86400) {
+  if (expires) {
+    return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET!, { expiresIn })
+  } else {
+    return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET!)
   }
+}
 
+let tokenTimer: NodeJS.Timeout
+
+export default class AuthenticationController {
   static async signup(req: Request, res: Response) {
     const { email, password } = req.body
     const usersRepository = getRepository(User)
@@ -96,7 +97,51 @@ export default class AuthenticationController {
     })
   }
 
-  static async signin() {
+  static async signin(req: Request, res: Response) {
+    const { email, password, remember_user } = req.body
+    const usersRepository = getRepository(User)
 
+    // Verifying if email exists
+    const usersFound = await usersRepository.find({
+      where: {
+        email
+      }
+    })
+
+    if (usersFound.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        message: "There is no account associated with the specified email address."
+      })
+    }
+
+    // Verifying password
+    const user = usersFound[0]
+
+    await bcrypt.compare(password, user.password, (err, same) => {
+      if (err) {
+        return res.status(500).json({
+          status: 500,
+          message: "Internal server error. Please, try again later.",
+          TAG: "COMPARE_PASSWORD_ON_SIGNIN: " + err.message
+        })
+      }
+
+      if (!same) {
+        return res.status(400).json({
+          status: 400,
+          message: "The password is incorrect."
+        })
+      }
+
+      const token = generateToken(user.id, !remember_user)
+
+      return res.status(200).json({
+        status: 200,
+        message: "Signin successfull.",
+        user_id: user.id,
+        token
+      })
+    })
   }
 }
