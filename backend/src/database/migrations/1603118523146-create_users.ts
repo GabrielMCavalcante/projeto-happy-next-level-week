@@ -14,9 +14,8 @@ export class createUsers1603118523146 implements MigrationInterface {
           isGenerated: false
         },
         {
-          name: "password_recovery_token_id",
-          type: "integer",
-          unsigned: true,
+          name: "password_recovery_token",
+          type: "varchar",
           isNullable: true
         },
         {
@@ -28,16 +27,6 @@ export class createUsers1603118523146 implements MigrationInterface {
           name: "password",
           type: "varchar",
           isNullable: false
-        }
-      ],
-      foreignKeys: [
-        {
-          name: "fk_password_recovery_token",
-          columnNames: ["password_recovery_token_id"],
-          referencedColumnNames: ["id"],
-          referencedTableName: "password_recovery_tokens",
-          onDelete: "CASCADE",
-          onUpdate: "CASCADE"
         }
       ]
     }))
