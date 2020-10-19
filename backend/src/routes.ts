@@ -7,6 +7,7 @@ const upload = multer(multerConfig)
 
 // Middlewares
 import checkEmptyOrNullParams from './middlewares/checkEmptyOrNullParams'
+import AuthenticationController from './controllers/authentication'
 
 const routes = Router()
 
@@ -17,5 +18,9 @@ routes.post('/orphanages',
     checkEmptyOrNullParams, 
     upload.array("images"), 
 OrphanagesController.create)
+
+// Authentication
+routes.post("/auth/signup", AuthenticationController.signup)
+routes.post("/auth/signin", AuthenticationController.signin)
 
 export default routes
