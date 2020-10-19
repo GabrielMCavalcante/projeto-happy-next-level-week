@@ -61,8 +61,7 @@ export default class AuthenticationController {
           if (err) {
             return res.status(500).json({
               status: 500,
-              message: "Internal server error. Please, try again later.",
-              TAG: "ENCRYPT_USERID_ON_SIGNUP"
+              message: "Internal server error. Please, try again later."
             })
           }
 
@@ -82,18 +81,16 @@ export default class AuthenticationController {
           } catch (e) {
             return res.status(500).json({
               status: 500,
-              message: "Internal server error. Please, try again later.",
-              TAG: "SAVE_USER_ON_SIGNUP: " + e.message,
+              message: "Internal server error. Please, try again later."
             })
           }
         })
       } catch (err) {
         return res.status(500).json({
           status: 500,
-          message: "Internal server error. Please, try again later.",
-          TAG: "ENCRYPT_PASSWORD_ON_SIGNUP"
+          message: "Internal server error. Please, try again later."
         })
-      } // TODO: REMOVE "TAG" ON RESPONSE ERROR MESSAGES
+      }
     })
   }
 
@@ -122,8 +119,7 @@ export default class AuthenticationController {
       if (err) {
         return res.status(500).json({
           status: 500,
-          message: "Internal server error. Please, try again later.",
-          TAG: "COMPARE_PASSWORD_ON_SIGNIN: " + err.message
+          message: "Internal server error. Please, try again later."
         })
       }
 
@@ -143,5 +139,14 @@ export default class AuthenticationController {
         token
       })
     })
+  }
+
+  static async requestRecoveryToken(req: Request, res: Response) {
+    
+
+  }
+
+  static async resetPassword(req: Request, res: Response) {
+
   }
 }
