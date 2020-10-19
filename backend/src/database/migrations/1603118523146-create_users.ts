@@ -16,7 +16,8 @@ export class createUsers1603118523146 implements MigrationInterface {
         {
           name: "password_recovery_token_id",
           type: "integer",
-          unsigned: true
+          unsigned: true,
+          isNullable: true
         },
         {
           name: "email",
