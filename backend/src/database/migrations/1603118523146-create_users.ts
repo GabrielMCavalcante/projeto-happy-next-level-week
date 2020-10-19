@@ -8,11 +8,10 @@ export class createUsers1603118523146 implements MigrationInterface {
       columns: [
         {
           name: "id",
-          type: "integer",
+          type: "varchar",
           unsigned: true,
           isPrimary: true,
-          isGenerated: true,
-          generationStrategy: "increment"
+          isGenerated: false
         },
         {
           name: "password_recovery_token_id",
