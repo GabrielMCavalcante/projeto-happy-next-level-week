@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from "typeorm"
-import PasswordRecoveryTokens from "./PasswordRecoveryTokens"
 
 @Entity("users")
 export default class User {
@@ -12,7 +11,6 @@ export default class User {
     @Column()
     password: string;
 
-    @OneToOne(() => PasswordRecoveryTokens)
-    @JoinColumn({ name: "password_recovery_token_id" })
-    password_recovery_token: PasswordRecoveryTokens;
+    @Column()
+    password_recovery_token?: string;
 }
