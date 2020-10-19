@@ -12,7 +12,7 @@ export default class User {
     @Column()
     password: string;
 
-    @OneToOne(() => PasswordRecoveryTokens || null)
+    @OneToOne(() => PasswordRecoveryTokens)
     @JoinColumn({ name: "password_recovery_token_id" })
-    password_recovery_token: PasswordRecoveryTokens | null;
+    password_recovery_token: PasswordRecoveryTokens;
 }
