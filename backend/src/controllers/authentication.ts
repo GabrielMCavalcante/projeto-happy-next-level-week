@@ -3,7 +3,6 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { getRepository } from "typeorm"
 import User from "../models/User"
-import PasswordRecoveryTokens from "../models/PasswordRecoveryTokens"
 import sendMail from "../services/mail"
 
 function generateToken(id: string, expires: boolean, expiresIn: number = 86400) {
@@ -164,14 +163,12 @@ export default class AuthenticationController {
 
     const recoveryToken = generateToken(user.id, true, tokenExpirationTimeInSeconds)
 
-    const passwordRecoveryToken = new PasswordRecoveryTokens()
-    
-    passwordRecoveryToken.token = recoveryToken
-    
-    user.password_recovery_token = passwordRecoveryToken
+    user.password_recovery_token = recoveryToken
 
     try {
       await sendMail(email, recoveryToken)
+
+      await usersRepository.save(user)
 
       return res.status(200).json({
         status: 200,
@@ -180,17 +177,66 @@ export default class AuthenticationController {
     } catch (err) {
       return res.status(500).json({
         status: 500,
-        message: "Could not send recovery token to email due" + 
-        "to an unknown error. Please, try again later."
+        message: "Could not send recovery token to email due" +
+          "to an unknown error. Please, try again later."
       })
     }
-    
+
   }
 
   static async resetPassword(req: Request, res: Response) {
-    
+    const recoveryToken = req.headers.recovery_token as string
+    const { password } = req.body
+    const usersRepository = getRepository(User)
 
+    // Verifying if recovery token is still valid
+    const users = await usersRepository.find({
+      where: {
+        password_recovery_token: recoveryToken
+      }
+    })
 
+    const user = users[0]
 
+    if (
+      users.length === 0 ||
+      user.password_recovery_token === null ||
+      user.password_recovery_token === undefined
+    ) {
+      return res.status(400).json({
+        status: 400,
+        message: "No password recovery token found for this user."
+      })
+    }
+
+    const decodedToken: any = jwt.verify(user.password_recovery_token, process.env.JWT_TOKEN_SECRET!)
+
+    if (Date.now() / 1000 >= Number(decodedToken.exp)) {
+      return res.status(401).json({
+        status: 401,
+        message: "The password recovery token expired. Request another one and try again."
+      })
+    }
+
+    await bcrypt.genSalt(10, async (_, salt) => {
+      await bcrypt.hash(password, salt, async (err, encryptedPassword) => {
+        if (err) {
+          return res.status(500).json({
+            status: 500,
+            message: "Internal server error. Please, try again later."
+          })
+        }
+
+        user.password = encryptedPassword
+        user.password_recovery_token = undefined
+
+        await usersRepository.save(user)
+
+        return res.status(200).json({
+          status: 200,
+          message: "Password changed successfully."
+        })
+      })
+    })
   }
 }
