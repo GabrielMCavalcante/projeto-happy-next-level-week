@@ -1,11 +1,11 @@
-import { ErrorRequestHandler } from 'express'
+import { Response } from 'express'
 import { ValidationError } from 'yup'
 
 interface ValidationErrors {
     [key: string]: string[]
 }
 
-const serverErrors: ErrorRequestHandler = (error, req, res, next) => {
+const serverErrors = (error: any, res: Response, message?: string) => {
     if (error instanceof ValidationError) {
         let errors: ValidationErrors = {}
 
@@ -13,13 +13,17 @@ const serverErrors: ErrorRequestHandler = (error, req, res, next) => {
             errors[err.path] = err.errors
         })
 
-        return res.status(400).json(errors)
+        return res.status(400).json({
+            status: 400,
+            errors
+        })
     }
+
+    const defaultMessage = "Internal server error. Please, try again later."
 
     return res.status(500).json({
         status: 500,
-        type: "Internal server error",
-        message: "An error occurred whilst processing the request. Try again later."
+        message: message || defaultMessage
     })
 }
 
