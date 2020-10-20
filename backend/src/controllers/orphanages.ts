@@ -52,33 +52,6 @@ export default class OrphanagesController {
       whatsapp
     } = req.body
 
-    const parameters: { [key: string]: any } = {
-      name,
-      about,
-      latitude,
-      longitude,
-      instructions,
-      opening_hours,
-      open_on_weekends,
-      whatsapp
-    }
-
-    const missingParameters: string[] = []
-
-    for (const param in parameters) {
-      if (!parameters[param]) {
-        missingParameters.push(param)
-      }
-    }
-
-    if (missingParameters.length > 0) {
-      return res.status(400).json({
-        status: 400,
-        message: "The following parameters are missing: "
-          + missingParameters.join(", ")
-      })
-    }
-
     const orphanagesRepository = getRepository(OrphanageModel)
 
     const requestImages = req.files as Express.Multer.File[]
@@ -97,7 +70,7 @@ export default class OrphanagesController {
       open_on_weekends: open_on_weekends === "true" ? true : false,
       pending_approval: true,
       images,
-      whatsapp: Number(whatsapp)
+      whatsapp
     }
 
     const schema = yup.object().shape({
