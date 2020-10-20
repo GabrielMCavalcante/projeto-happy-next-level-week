@@ -46,6 +46,7 @@ export default class DashboardController {
     } = req.body
 
     const id = Number(req.params.id)
+
     if (!id || isNaN(id)) {
       return res.status(400).json({
         status: 400,
@@ -54,6 +55,16 @@ export default class DashboardController {
     }
 
     const orphanagesRepository = getRepository(OrphanageModel)
+
+    // Verifying if an orphanage exists with given id
+    const orphanage = await orphanagesRepository.findOne(id)
+
+    if (!orphanage) {
+      return res.status(404).json({
+        status: 404,
+        message: "No orphanage exists with given id."
+      })
+    }
 
     const requestImages = req.files as Express.Multer.File[]
 
@@ -111,6 +122,30 @@ export default class DashboardController {
   }
 
   static async delete(req: Request, res: Response) {
+    const id = Number(req.params.id)
+    if (!id || isNaN(id)) {
+      return res.status(400).json({
+        status: 400,
+        message: "Missing orphanage id on request parameters."
+      })
+    }
 
+    const orphanagesRepository = getRepository(OrphanageModel)
+
+    // Verifying if an orphanage exists with given id
+    const orphanage = await orphanagesRepository.findOne(id)
+
+    if (!orphanage) {
+      return res.status(404).json({
+        status: 404,
+        message: "No orphanage exists with given id or it has been deleted."
+      })
+    }
+
+    await orphanagesRepository.delete(id)
+    return res.status(200).json({
+      status: 200,
+      message: "Deleted orphanage successfully."
+    })
   }
 }
