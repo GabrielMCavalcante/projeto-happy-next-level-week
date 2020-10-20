@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken"
 import { getRepository } from "typeorm"
 import User from "../models/User"
 import sendMail from "../services/mail"
+import serverErrors from "../errors/serverErrors"
 
 function generateToken(id: string, expires: boolean, expiresIn: number = 86400) {
   if (expires) {
@@ -58,10 +59,7 @@ export default class AuthenticationController {
 
         await bcrypt.hash(userId, 5, async (err, hashUserId) => {
           if (err) {
-            return res.status(500).json({
-              status: 500,
-              message: "Internal server error. Please, try again later."
-            })
+            return serverErrors(err, res)
           }
 
           const newUser = new User()
@@ -78,17 +76,11 @@ export default class AuthenticationController {
               message: "User successfully created."
             })
           } catch (e) {
-            return res.status(500).json({
-              status: 500,
-              message: "Internal server error. Please, try again later."
-            })
+            return serverErrors(e, res)
           }
         })
       } catch (err) {
-        return res.status(500).json({
-          status: 500,
-          message: "Internal server error. Please, try again later."
-        })
+        return serverErrors(err, res)
       }
     })
   }
@@ -116,10 +108,7 @@ export default class AuthenticationController {
 
     await bcrypt.compare(password, user.password, (err, same) => {
       if (err) {
-        return res.status(500).json({
-          status: 500,
-          message: "Internal server error. Please, try again later."
-        })
+        return serverErrors(err, res)
       }
 
       if (!same) {
@@ -175,11 +164,8 @@ export default class AuthenticationController {
         message: "Password recovery token sent to email successfully."
       })
     } catch (err) {
-      return res.status(500).json({
-        status: 500,
-        message: "Could not send recovery token to email due" +
-          "to an unknown error. Please, try again later."
-      })
+      return serverErrors(err, res, "Could not send recovery token to email due" +
+      "to an unknown error. Please, try again later.")
     }
 
   }
@@ -221,10 +207,7 @@ export default class AuthenticationController {
     await bcrypt.genSalt(10, async (_, salt) => {
       await bcrypt.hash(password, salt, async (err, encryptedPassword) => {
         if (err) {
-          return res.status(500).json({
-            status: 500,
-            message: "Internal server error. Please, try again later."
-          })
+          return serverErrors(err, res)
         }
 
         user.password = encryptedPassword
