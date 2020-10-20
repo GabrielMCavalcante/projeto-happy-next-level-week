@@ -30,6 +30,9 @@ export default class Orphanage {
     @Column()
     pending_approval: boolean;
 
+    @Column()
+    whatsapp: number;
+
     @OneToMany(() => Image, image => image.orphanage, {
         cascade: ["insert", "update"]
     })

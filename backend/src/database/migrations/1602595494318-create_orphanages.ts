@@ -56,6 +56,11 @@ export class createOrphanages1602595494318 implements MigrationInterface {
           name: "pending_approval",
           type: "boolean",
           default: true
+        },
+        {
+          name: "whatsapp",
+          type: "integer",
+          isNullable: false
         }
       ]
     }))
