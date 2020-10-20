@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import * as yup from "yup"
 import { getRepository } from "typeorm"
 import OrphanageModel from "../models/Orphanage"
 import DashboardView from "../views/dashboard"
@@ -33,11 +34,80 @@ export default class DashboardController {
   }
 
   static async update(req: Request, res: Response) {
+    const {
+      name,
+      about,
+      latitude,
+      longitude,
+      instructions,
+      opening_hours,
+      open_on_weekends,
+      whatsapp
+    } = req.body
 
-  }
+    const id = Number(req.params.id)
+    if (!id || isNaN(id)) {
+      return res.status(400).json({
+        status: 400,
+        message: "Missing orphanage id on request parameters."
+      })
+    }
 
-  static async updatePending(req: Request, res: Response) {
+    const orphanagesRepository = getRepository(OrphanageModel)
 
+    const requestImages = req.files as Express.Multer.File[]
+
+    const images = requestImages.map(image => ({
+      path: image.filename
+    }))
+
+    const data = {
+      name,
+      about,
+      latitude,
+      longitude,
+      instructions,
+      opening_hours,
+      open_on_weekends: open_on_weekends === "true" ? true : false,
+      pending_approval: false,
+      images,
+      whatsapp
+    }
+
+    const schema = yup.object().shape({
+      name: yup.string().required(),
+      about: yup.string().required().max(300),
+      latitude: yup.number().required(),
+      longitude: yup.number().required(),
+      instructions: yup.string().required(),
+      opening_hours: yup.string().required(),
+      open_on_weekends: yup.boolean().required(),
+      images: yup.array(
+        yup.object().shape({
+          path: yup.string().required()
+        })
+      ),
+      whatsapp: yup.number().required()
+    })
+
+    try {
+      await schema.validate(data, { abortEarly: false })
+    } catch (err) {
+      return res.status(400).json({
+        status: 400,
+        message: err.errors
+      })
+    }
+
+    await orphanagesRepository.delete(id)
+    
+    const updatedOrphanage = orphanagesRepository.create({id, ...data})
+    await orphanagesRepository.save(updatedOrphanage)
+
+    return res.status(200).json({
+      status: 200,
+      message: "Orphanage updated successfully.",
+    })
   }
 
   static async delete(req: Request, res: Response) {
