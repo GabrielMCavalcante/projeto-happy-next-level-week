@@ -15,9 +15,7 @@ async function fetchOrphanages(pending_approval: boolean) {
 
 export default class DashboardController {
   static async index(req: Request, res: Response) {
-    const result = await fetchOrphanages(true)
-
-    console.log(result)
+    const result = await fetchOrphanages(false)
 
     return res.status(200).json({
       status: 200,
@@ -26,7 +24,12 @@ export default class DashboardController {
   }
 
   static async indexPending(req: Request, res: Response) {
+    const result = await fetchOrphanages(true)
 
+    return res.status(200).json({
+      status: 200,
+      results: DashboardView.renderMany(result)
+    })
   }
 
   static async update(req: Request, res: Response) {
