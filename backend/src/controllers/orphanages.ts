@@ -102,8 +102,8 @@ export default class OrphanagesController {
 
     await orphanagesRepository.save(createdOrphanage)
 
-    return res.status(200).json({
-      status: 200,
+    return res.status(201).json({
+      status: 201,
       type: "Post successfull",
       message: "Orphanage created successfully.",
       debug: createdOrphanage
