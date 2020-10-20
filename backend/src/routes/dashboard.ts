@@ -11,11 +11,12 @@ const baseURL = "/dashboard"
 
 routes.get(`${baseURL}`, AuthMiddleware, Controller.index)
 routes.get(`${baseURL}/pending`, AuthMiddleware, Controller.indexPending)
-routes.put(`${baseURL}/update-orphanage/:id`,
+routes.get(`${baseURL}/orphanage/details/:id`, AuthMiddleware, Controller.indexById)
+routes.put(`${baseURL}/orphanage/update/:id`,
   ParamsMiddleware,
   AuthMiddleware,
   upload.array("images"),
   Controller.update)
-routes.delete(`${baseURL}/orphanage/:id`, AuthMiddleware, Controller.delete)
+routes.delete(`${baseURL}/orphanage/delete/:id`, AuthMiddleware, Controller.delete)
 
 export default routes
