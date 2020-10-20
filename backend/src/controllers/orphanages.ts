@@ -94,7 +94,7 @@ export default class OrphanagesController {
     } catch (err) {
       return res.status(400).json({
         status: 400,
-        message: err.message
+        message: err.errors
       })
     }
 
