@@ -9,6 +9,4 @@ function requiredFieldNullOrEmpty(res: Response, invalidFields: string[]) {
     })
 }
 
-export { 
-    requiredFieldNullOrEmpty 
-}
+export { requiredFieldNullOrEmpty }
