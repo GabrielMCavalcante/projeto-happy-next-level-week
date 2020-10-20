@@ -9,7 +9,10 @@ export default class OrphanagesController {
         const orphanagesRepository = getRepository(OrphanageModel)
 
         const fetchedOrphanages = await orphanagesRepository.find({
-            relations: ["images"]
+            relations: ["images"],
+            where: {
+                pending_approval: false
+            }
         })
 
         return res.status(200).json({ result: OrphanageView.renderMany(fetchedOrphanages) })
@@ -64,6 +67,7 @@ export default class OrphanagesController {
             instructions,
             opening_hours,
             open_on_weekends: open_on_weekends === "true" ? true : false,
+            pending_approval: true,
             images
         }
 
