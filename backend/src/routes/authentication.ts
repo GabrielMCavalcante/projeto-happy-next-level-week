@@ -1,16 +1,17 @@
 import { Router } from "express"
-import checkEmptyOrNullParams from "../middlewares/checkEmptyOrNullParams"
-import AuthController from "../controllers/authentication"
+import ParamsMiddleware from "../middlewares/checkEmptyOrNullParams"
+import Controller from "../controllers/authentication"
 
 const routes = Router()
+const baseURL = "/auth"
 
-routes.post("/auth/signup", checkEmptyOrNullParams, AuthController.signup)
-routes.post("/auth/signin", checkEmptyOrNullParams, AuthController.signin)
-routes.post("/auth/password-recovery/request-token",
-  checkEmptyOrNullParams,
-  AuthController.requestRecoveryToken)
-routes.put("/auth/password-recovery/reset-password",
-  checkEmptyOrNullParams,
-  AuthController.resetPassword)
+routes.post(`${baseURL}/signup`, ParamsMiddleware, Controller.signup)
+routes.post(`${baseURL}/signin`, ParamsMiddleware, Controller.signin)
+routes.post(`${baseURL}/password-recovery/request-token`,
+  ParamsMiddleware,
+  Controller.requestRecoveryToken)
+routes.put(`${baseURL}/password-recovery/reset-password`,
+  ParamsMiddleware,
+  Controller.resetPassword)
 
 export default routes

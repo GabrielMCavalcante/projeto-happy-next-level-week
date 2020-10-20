@@ -3,16 +3,17 @@ import multer from "multer"
 import multerConfig from "../config/upload"
 const upload = multer(multerConfig)
 
-import OrphanagesController from "../controllers/orphanages"
-import checkEmptyOrNullParams from "../middlewares/checkEmptyOrNullParams"
+import Controller from "../controllers/orphanages"
+import ParamsMiddleware from "../middlewares/checkEmptyOrNullParams"
 
 const routes = Router()
+const baseURL = "/orphanages"
 
-routes.get("/orphanages", OrphanagesController.index)
-routes.get("/orphanages/:id", OrphanagesController.findById)
-routes.post("/orphanages",
-  checkEmptyOrNullParams,
+routes.get(`${baseURL}`, Controller.index)
+routes.get(`${baseURL}/:id`, Controller.findById)
+routes.post(`${baseURL}`,
+  ParamsMiddleware,
   upload.array("images"),
-  OrphanagesController.create)
+  Controller.create)
 
 export default routes
