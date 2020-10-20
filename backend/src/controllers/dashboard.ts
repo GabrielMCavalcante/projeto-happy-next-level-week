@@ -3,6 +3,7 @@ import * as yup from "yup"
 import { getRepository } from "typeorm"
 import OrphanageModel from "../models/Orphanage"
 import DashboardView from "../views/dashboard"
+import OrphanageView from "../views/orphanages"
 
 async function fetchOrphanages(pending_approval: boolean) {
   const orphanagesRepository = getRepository(OrphanageModel)
@@ -30,6 +31,28 @@ export default class DashboardController {
     return res.status(200).json({
       status: 200,
       results: DashboardView.renderMany(result)
+    })
+  }
+
+  static async indexById(req: Request, res: Response) {
+    const id = Number(req.params.id)
+
+    const orphanagesRepository = getRepository(OrphanageModel)
+
+    const orphanage = await orphanagesRepository.findOne(id, {
+      relations: ["images"]
+    })
+
+    if (!orphanage) {
+      return res.status(404).json({
+        status: 404,
+        message: "No orphanage found with given id."
+      })
+    }
+
+    return res.status(200).json({
+      status: 200,
+      result: OrphanageView.render(orphanage)
     })
   }
 
