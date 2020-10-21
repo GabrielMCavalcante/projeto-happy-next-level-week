@@ -1,21 +1,36 @@
 import React, { useState } from "react"
 import { FiEye, FiEyeOff } from "react-icons/fi"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
+import Loader from "react-loader-spinner"
+
+// Components
+import Feedback from "components/Feedback"
+
+// Contexts
+import useAuth from "contexts/auth"
 
 function Signin() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [rememberUser, setRememberUser] = useState(false)
+  const [remember_user, setRememberUser] = useState(false)
+  const navigation = useHistory()
+  const authContext = useAuth()
 
   async function handleSignin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    console.log({
-      email,
-      password,
-      rememberUser
-    })
+    const sts = await authContext.signin({ email, password, remember_user })
+
+    let status: string
+
+    if (sts === 200) {
+      status = "sucesso"
+    } else {
+      status = "erro"
+    }
+
+    navigation.replace("/acesso-restrito/login/" + status)
   }
 
   return (
@@ -44,8 +59,8 @@ function Signin() {
           />
 
           <button
-            type="button" 
-            onClick={() => setShowPassword(!showPassword)} 
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
             className="show-hide-btn"
           >
             {
@@ -58,18 +73,31 @@ function Signin() {
 
         <div className="horizontal-group">
           <label htmlFor="rememberMe">
-            <input type="checkbox" id="rememberMe" onClick={() => setRememberUser(!rememberUser)} />
+            <input type="checkbox" id="rememberMe" onClick={() => setRememberUser(!remember_user)} />
             <span id="checkmark"></span>
             Lembrar-me
           </label>
 
-          <Link 
-            className="forgot-password" 
+          <Link
+            className="forgot-password"
             to="/acesso-restrito/esqueci-minha-senha"
           >Esqueci minha senha</Link>
         </div>
 
-        <button className="form-action-btn" type="submit">Entrar</button>
+        <button
+          disabled={
+            authContext.loading ||
+            !email || !password
+          }
+          className="form-action-btn"
+          type="submit"
+        >
+          {
+            authContext.loading
+              ? <Loader type="ThreeDots" color="#FFFFFF" height={60} width={60} />
+              : "Entrar"
+          }
+        </button>
       </form>
     </div>
   )
