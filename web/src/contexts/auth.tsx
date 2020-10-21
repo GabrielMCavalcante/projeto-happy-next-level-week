@@ -7,16 +7,15 @@ const AuthContext = createContext({} as AT.AuthContextValues)
 export const AuthProvider: React.FC = ({ children }) => {
 
   const [token, setToken] = useState<AT.Token>(null)
-  const [error, setError] = useState<AT.Error>(null)
   const [loading, setLoading] = useState(false)
 
   async function signin(userAccount: AT.UserAccount) {
     setLoading(true)
-    setError(null)
+
     const response = await api.post("/auth/signin", userAccount)
-    
+
     const data = response.data as AT.SigninResponseData
-    
+
     if (data.status === 200) {
       setToken(data.token)
 
@@ -25,8 +24,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       if (userAccount.remember_user) {
         localStorage.setItem("happy:signin:token", data.token)
       }
-    } else {
-      setError(data.message)
     }
 
     setLoading(false)
@@ -34,8 +31,24 @@ export const AuthProvider: React.FC = ({ children }) => {
     return data.status
   }
 
-  async function signup() {
+  async function signup(userData: AT.UserData) {
+    setLoading(true)
 
+    try {
+      const response = await api.post("/auth/signup", userData)
+
+      const data = response.data as AT.SignupResponseData
+
+      setLoading(false)
+
+      return data.status
+    } catch (err) {
+      const error = {...err}.response.data as AT.SignupResponseData
+
+      setLoading(false)
+
+      return error.status
+    }
   }
 
   async function signout() {
@@ -56,7 +69,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       signedIn: !!token,
       token,
       loading,
-      error,
       signin,
       signup,
       signout,
