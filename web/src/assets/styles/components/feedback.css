@@ -45,9 +45,8 @@
 }
 
 .feedback .feedback-content main .action-buttons-container {
-  width: 50rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
@@ -82,6 +81,10 @@
 
 .feedback .feedback-content main .action-buttons-container .action-btn.danger:hover {
   background-color: #F0698C;
+}
+
+.feedback .feedback-content main .action-buttons-container :nth-child(n+2) {
+  margin-left: 1rem;
 }
 
 .feedback .feedback-content img {
