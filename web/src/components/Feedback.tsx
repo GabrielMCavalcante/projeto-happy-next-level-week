@@ -27,13 +27,16 @@ const Feedback: React.FC<FeedbackProps> = (props) => {
     <div className={`feedback ${type}`}>
       <div className="feedback-content">
         <main>
-          <h1>{title}</h1>
-          <h3>{subtitle}</h3>
+          <hgroup>
+            <h1>{title}</h1>
+            <h3>{subtitle}</h3>
+          </hgroup>
 
           <div className="action-buttons-container">
             {
-              actionButtons.map(button => (
+              actionButtons.map((button, i) => (
                 <button
+                  key={i}
                   onClick={button.action}
                   className={`action-btn ${button.type}`}
                 >
