@@ -12,7 +12,13 @@ function Landing() {
   return (
     <div id="page-landing">
       <div className="content-wrapper">
-        <img src={appLogo} alt="Logo Happy" />
+        <div className="logo-location-container">
+          <img src={appLogo} alt="Logo Happy" />
+          <div className="location">
+            <span>Manaus</span>
+            <strong>Amazonas</strong>
+          </div>
+        </div>
 
         <main>
           <div id="main-heading">
@@ -20,10 +26,7 @@ function Landing() {
             <p>Visite orfanatos e mude o dia de muitas crianças.</p>
           </div>
 
-          <div className="location">
-            <strong>Manaus</strong>
-            <span>Amazonas</span>
-          </div>
+          <button className="strict-access-btn">Acesso Restrito</button>
         </main>
 
         <Link to="/orfanatos" className="enter-app">
