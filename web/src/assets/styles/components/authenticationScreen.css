@@ -260,3 +260,8 @@
 .authentication-screen main .content-wrapper .form-action-btn:hover {
   background: #36CF82;
 }
+
+.authentication-screen main .content-wrapper .form-action-btn:disabled {
+  background-color: #37C77F;
+  cursor: not-allowed;
+}
