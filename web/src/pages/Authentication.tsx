@@ -48,6 +48,75 @@ function SigninFeedback() {
   return status === "sucesso" ? successFeedback : failureFeedback
 }
 
+function SignupFeedback() {
+  const navigation = useHistory()
+  const { status } = useParams<{ status: string }>()
+
+  const successFeedback = (
+    <Feedback
+      title="Sucesso!"
+      subtitle="Cadastro realizado com sucesso. Aproveite!"
+      type="success"
+      actionButtons={[{
+        type: "success",
+        label: "Fazer login",
+        action: () => navigation.replace("/acesso-restrito/login")
+      }]}
+    />
+  )
+
+  const failureByUserFeedback = (
+    <Feedback
+      title="Oops!"
+      subtitle="Já existe uma conta com este endereço de email!"
+      type="error"
+      actionButtons={[
+        {
+          type: "danger",
+          label: "Voltar ao cadastro",
+          action: () => navigation.replace("/acesso-restrito/cadastro")
+        },
+        {
+          type: "danger",
+          label: "Esqueci minha senha",
+          action: () => navigation.replace("/acesso-restrito/esqueci-minha-senha")
+        }
+      ]}
+    />
+  )
+
+  const failureFeedback = (
+    <Feedback
+      title="Oops!"
+      subtitle="Ocorreu algum erro ao tentar fazer login.
+      Tente novamente mais tarde."
+      type="error"
+      actionButtons={[
+        {
+          type: "danger",
+          label: "Voltar ao cadastro",
+          action: () => navigation.replace("/acesso-restrito/cadastro")
+        },
+        {
+          type: "danger",
+          label: "Voltar à tela principal",
+          action: () => navigation.replace("/")
+        }
+      ]}
+    />
+  )
+
+  return (
+    status === "sucesso" 
+      ? successFeedback 
+      : (
+        status === "usuario-ja-existe" 
+          ? failureByUserFeedback
+          : failureFeedback
+      )
+  )
+}
+
 function Authentication() {
   return (
     <>
@@ -59,9 +128,7 @@ function Authentication() {
           <AuthenticationScreen type="inverted" formElement={<Signup />} />
         </Route>
         <Route path="/acesso-restrito/login/:status" component={SigninFeedback} />
-        {/* <Route path="/acesso-restrito/cadastro" component={} />
-        <Route path="/acesso-restrito/esqueci-minha-senha" component={} />
-        <Route path="/acesso-restrito/recuperar-senha/:token" component={} /> */}
+        <Route path="/acesso-restrito/cadastro/:status" component={SignupFeedback} />
         <Redirect to="/acesso-restrito/login" />
       </Switch>
     </>
