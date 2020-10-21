@@ -83,6 +83,11 @@
   color: #5C8599;
 }
 
+.authentication-screen main .content-wrapper h3 {
+  font: 600 1.8rem "Nunito", sans-serif;
+  color: #5C8599;
+}
+
 .authentication-screen main .content-wrapper form {
   margin-top: 5rem;
 }
@@ -216,7 +221,13 @@
   position: relative;
 }
 
-.authentication-screen main .content-wrapper .horizontal-group .forgot-password {
+.authentication-screen main .content-wrapper .change-method-text {
+  color: #6A6180;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.authentication-screen main .content-wrapper .styled-link {
   text-decoration: none;
   color: #6A6180;
   text-align: right;
@@ -225,7 +236,7 @@
   position: relative;
 }
 
-.authentication-screen main .content-wrapper .horizontal-group .forgot-password::after {
+.authentication-screen main .content-wrapper .styled-link::after {
   content: "";
   transition: width 300ms ease-in-out;
   width: 0%;
@@ -233,10 +244,10 @@
   background-color: #FFD666;
   position: absolute;
   bottom: 0;
-  left: 0.5rem;
+  left: 0;
 }
 
-.authentication-screen main .content-wrapper .horizontal-group .forgot-password:hover::after {
+.authentication-screen main .content-wrapper .styled-link:hover::after {
   width: 100%;
 }
 
