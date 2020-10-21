@@ -3,9 +3,6 @@ import { FiEye, FiEyeOff } from "react-icons/fi"
 import { Link, useHistory } from "react-router-dom"
 import Loader from "react-loader-spinner"
 
-// Components
-import Feedback from "components/Feedback"
-
 // Contexts
 import useAuth from "contexts/auth"
 
@@ -79,7 +76,7 @@ function Signin() {
           </label>
 
           <Link
-            className="forgot-password"
+            className="styled-link"
             to="/acesso-restrito/esqueci-minha-senha"
           >Esqueci minha senha</Link>
         </div>
@@ -98,6 +95,13 @@ function Signin() {
               : "Entrar"
           }
         </button>
+
+        <p className="change-method-text">
+          Não tem uma conta?&nbsp;
+          <Link to="/acesso-restrito/cadastro" className="styled-link">
+            Cadastre uma conta aqui.
+          </Link>
+        </p>
       </form>
     </div>
   )
