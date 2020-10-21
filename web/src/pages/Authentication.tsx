@@ -5,6 +5,7 @@ import Feedback from "components/Feedback"
 
 // Pages
 import Signin from "./Signin"
+import Signup from "./Signup"
 
 function SigninFeedback() {
   const navigation = useHistory()
@@ -53,6 +54,9 @@ function Authentication() {
       <Switch>
         <Route path="/acesso-restrito/login" exact>
           <AuthenticationScreen formElement={<Signin />} />
+        </Route>
+        <Route path="/acesso-restrito/cadastro" exact>
+          <AuthenticationScreen type="inverted" formElement={<Signup />} />
         </Route>
         <Route path="/acesso-restrito/login/:status" component={SigninFeedback} />
         {/* <Route path="/acesso-restrito/cadastro" component={} />
