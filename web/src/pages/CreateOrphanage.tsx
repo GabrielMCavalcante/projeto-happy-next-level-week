@@ -91,7 +91,6 @@ export default function CreateOrphanage() {
     } catch (err) {
       setError(true)
       setShowFeedback(true)
-      console.log(err.message)
     }
   }
 
