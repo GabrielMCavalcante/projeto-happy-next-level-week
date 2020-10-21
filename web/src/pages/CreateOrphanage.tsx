@@ -32,10 +32,11 @@ export default function CreateOrphanage() {
   const [imagesPreview, setImagesPreview] = useState<string[]>([])
   const [name, setName] = useState("")
   const [about, setAbout] = useState("")
+  const [whatsapp, setWhatsapp] = useState("")
   const [instructions, setInstructions] = useState("")
   const [openingHours, setOpeningHours] = useState("")
   const [openOnWeekends, setOpenOnWeekends] = useState(false)
-  const [error, setError] = useState(true)
+  const [error, setError] = useState(false)
   const [showFeedback, setShowFeedback] = useState(true)
 
   const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0])
@@ -73,6 +74,7 @@ export default function CreateOrphanage() {
 
     formData.set("name", name)
     formData.set("about", about)
+    formData.set("whatsapp", whatsapp)
     formData.set("instructions", instructions)
     formData.set("opening_hours", openingHours)
     formData.set("open_on_weekends", String(openOnWeekends))
@@ -99,7 +101,7 @@ export default function CreateOrphanage() {
 
   const successFeedback = (
     <Feedback
-      type="success" 
+      type="success"
       title="Ebaaa!"
       subtitle="O cadastro deu certo e foi enviado
       ao administrador para ser aprovado.
@@ -116,7 +118,7 @@ export default function CreateOrphanage() {
 
   const errorFeedback = (
     <Feedback
-      type="error" 
+      type="error"
       title="Ahhh!"
       subtitle="Ocorreu algum erro ao processar o cadastro :(.
       Por favor, tente novamente mais tarde."
@@ -127,9 +129,9 @@ export default function CreateOrphanage() {
           action: () => setShowFeedback(false)
         },
         {
-         type: "danger",
-         label: "Voltar para o mapa",
-         action: () => navigation.replace("/orfanatos") 
+          type: "danger",
+          label: "Voltar para o mapa",
+          action: () => navigation.replace("/orfanatos")
         }
       ]}
     />
@@ -138,9 +140,9 @@ export default function CreateOrphanage() {
   return (
     showFeedback
       ? (
-        !error 
+        !error
           ? successFeedback
-          : errorFeedback 
+          : errorFeedback
       ) : (
         <div id="page-create-orphanage">
           <Sidebar />
@@ -170,6 +172,7 @@ export default function CreateOrphanage() {
                 <div className="input-block">
                   <label htmlFor="name">Nome</label>
                   <input
+                    required
                     id="name"
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -179,10 +182,21 @@ export default function CreateOrphanage() {
                 <div className="input-block">
                   <label htmlFor="about">Sobre <span>Máximo de 300 caracteres</span></label>
                   <textarea
+                    required
                     id="about"
                     maxLength={300}
                     value={about}
                     onChange={e => setAbout(e.target.value)}
+                  />
+                </div>
+
+                <div className="input-block">
+                  <label htmlFor="whatsapp">Whatsapp</label>
+                  <input
+                    required
+                    id="whatsapp"
+                    value={whatsapp}
+                    onChange={e => setWhatsapp(e.target.value)}
                   />
                 </div>
 
@@ -219,6 +233,7 @@ export default function CreateOrphanage() {
                     </label>
                     <input
                       type="file"
+                      accept="image/*"
                       multiple
                       onChange={handleImageSelection}
                       id="imagesInput"
@@ -234,6 +249,7 @@ export default function CreateOrphanage() {
                 <div className="input-block">
                   <label htmlFor="instructions">Instruções</label>
                   <textarea
+                    required
                     id="instructions"
                     value={instructions}
                     onChange={e => setInstructions(e.target.value)}
@@ -243,6 +259,7 @@ export default function CreateOrphanage() {
                 <div className="input-block">
                   <label htmlFor="opening_hours">Horário das visitas</label>
                   <input
+                    required
                     id="opening_hours"
                     value={openingHours}
                     onChange={e => setOpeningHours(e.target.value)}
@@ -269,7 +286,7 @@ export default function CreateOrphanage() {
 
               <button className="confirm-button" type="submit">
                 Confirmar
-                    </button>
+              </button>
             </form>
           </main>
         </div>
