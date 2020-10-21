@@ -71,8 +71,8 @@ export default class AuthenticationController {
           try {
             await usersRepository.save(newUser)
 
-            return res.status(200).json({
-              status: 200,
+            return res.status(201).json({
+              status: 201,
               message: "User successfully created."
             })
           } catch (e) {
