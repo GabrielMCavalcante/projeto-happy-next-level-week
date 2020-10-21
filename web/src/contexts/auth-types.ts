@@ -13,7 +13,6 @@ export interface PasswordResetData {
 }
 
 export type Token = string | null
-export type Error = string | null
 
 export interface AuthContextValues {
   signedIn: boolean,
@@ -23,8 +22,7 @@ export interface AuthContextValues {
   signout(): void,
   requestPasswordResetToken(accountEmail: string): Promise<any>,
   updateUserPassword(resetData: PasswordResetData): Promise<any>
-  loading: boolean,
-  error: Error
+  loading: boolean
 }
 
 interface SigninSuccessData {
@@ -38,3 +36,14 @@ interface SigninFailureData {
 }
 
 export type SigninResponseData = SigninSuccessData | SigninFailureData
+
+interface SignupSuccessData {
+  status: 201
+}
+
+interface SignupFailureData {
+  status: 409 | 500,
+  message: string
+}
+
+export type SignupResponseData = SignupSuccessData | SignupFailureData
