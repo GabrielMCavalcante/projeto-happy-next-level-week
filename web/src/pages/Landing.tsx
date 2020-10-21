@@ -26,7 +26,10 @@ function Landing() {
             <p>Visite orfanatos e mude o dia de muitas crianças.</p>
           </div>
 
-          <button className="strict-access-btn">Acesso Restrito</button>
+          <Link 
+            to="/acesso-restrito" 
+            className="strict-access-btn"
+          >Acesso Restrito</Link>
         </main>
 
         <Link to="/orfanatos" className="enter-app">
