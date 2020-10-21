@@ -61,6 +61,7 @@
   transition: background-color 300ms ease;
   outline: none;
   border: none;
+  cursor: pointer;
 }
 
 .feedback .feedback-content main .action-buttons-container .action-btn.success {
