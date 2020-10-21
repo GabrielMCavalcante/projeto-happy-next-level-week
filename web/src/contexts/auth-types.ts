@@ -4,7 +4,7 @@ export interface UserData {
 }
 
 export interface UserAccount extends UserData {  
-  rememberUser: boolean 
+  remember_user: boolean 
 }
 
 export interface PasswordResetData { 
@@ -13,6 +13,7 @@ export interface PasswordResetData {
 }
 
 export type Token = string | null
+export type Error = string | null
 
 export interface AuthContextValues {
   signedIn: boolean,
@@ -22,5 +23,18 @@ export interface AuthContextValues {
   signout(): void,
   requestPasswordResetToken(accountEmail: string): Promise<any>,
   updateUserPassword(resetData: PasswordResetData): Promise<any>
-  loading: boolean
+  loading: boolean,
+  error: Error
 }
+
+interface SigninSuccessData {
+  status: 200,
+  token: string
+}
+
+interface SigninFailureData {
+  status: 500,
+  message: string
+}
+
+export type SigninResponseData = SigninSuccessData | SigninFailureData
