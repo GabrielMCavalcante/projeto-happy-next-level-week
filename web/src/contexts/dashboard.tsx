@@ -11,11 +11,13 @@ export const DashboardProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false)
   const authContext = useAuth()
 
-  async function fetchRegisteredOrphanages() {
+  async function fetchOrphanages(pending?: boolean) {
     setLoading(true)
 
+    const url = !pending ? "/dashboard" : "/dashboard/pending" 
+
     try {
-      const response = await api.get("/dashboard", {
+      const response = await api.get(url, {
         headers: {
           authorization: `Bearer ${authContext.token}`,
         }
@@ -25,18 +27,14 @@ export const DashboardProvider: React.FC = ({ children }) => {
 
       setLoading(false)
 
-      return data.status
+      return data
     } catch (err) {
       const error = {...err}.response.data as DT.FetchOrphanagesData
 
       setLoading(false)
 
-      return error.status
+      return error
     }
-  }
-
-  async function fetchPendingOrphanages() {
-
   }
 
   async function fetchOrphanageDetails(id: number) {
@@ -54,8 +52,7 @@ export const DashboardProvider: React.FC = ({ children }) => {
   return (
     <DashboardContext.Provider
       value={{
-        fetchRegisteredOrphanages,
-        fetchPendingOrphanages,
+        fetchOrphanages,
         fetchOrphanageDetails,
         updateOrphanage,
         deleteOrphanage,
