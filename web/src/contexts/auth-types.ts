@@ -47,3 +47,15 @@ interface SignupFailureData {
 }
 
 export type SignupResponseData = SignupSuccessData | SignupFailureData
+
+interface RequestPasswordRecoveryTokenSuccessData {
+  status: 200
+}
+
+interface RequestPasswordRecoveryTokenFailureData {
+  status: 404 | 500,
+  message: string
+}
+
+export type RequestPasswordRecoveryTokenData = 
+  RequestPasswordRecoveryTokenSuccessData | RequestPasswordRecoveryTokenFailureData
