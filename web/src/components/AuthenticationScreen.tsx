@@ -11,13 +11,14 @@ import "assets/styles/components/authenticationScreen.css"
 interface AuthenticationScreenProps {
   type?: "normal" | "inverted",
   returnBtn?: boolean,
+  returnTo?: string,
   formElement: JSX.Element
 }
 
 const AuthenticationScreen: React.FC<AuthenticationScreenProps> = (props) => {
 
-  const { type = "normal", returnBtn = true, formElement } = props
-  const { goBack } = useHistory()
+  const { type = "normal", returnBtn = true, formElement, returnTo } = props
+  const { replace: navigate } = useHistory()
 
   return (
     <div className={`authentication-screen ${type}`}>
@@ -33,7 +34,7 @@ const AuthenticationScreen: React.FC<AuthenticationScreenProps> = (props) => {
       <main>
         {
           returnBtn && (
-            <button onClick={goBack} className="return-btn">
+            <button onClick={() => navigate(returnTo!)} className="return-btn">
               <FiArrowLeft size={24} color="#11AEC5" />
             </button>
           )
