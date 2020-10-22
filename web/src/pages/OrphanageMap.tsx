@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Leaflet from 'leaflet'
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import { Link } from 'react-router-dom'
-import { FiPlus, FiArrowRight } from 'react-icons/fi'
+import { Link, useHistory } from 'react-router-dom'
+import { FiPlus, FiArrowRight, FiArrowLeft } from 'react-icons/fi'
 
 // Services
 import api from 'services/axios-config'
@@ -25,6 +25,7 @@ function OrphanageMap() {
 
   const [orphanages, setOrphanages] = useState<OrphanageMarker[]>([])
   const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0])
+  const { replace } = useHistory()
 
   useEffect(() => {
     (async function () {
@@ -50,6 +51,9 @@ function OrphanageMap() {
   return (
     <div id="page-map">
       <aside>
+        <button type="button" onClick={() => replace("/")}>
+          <FiArrowLeft size={24} color="#FFFFFF" />
+        </button>
         <header>
           <img src={happyFaceLogo} alt="Happy Face Logo" />
 
