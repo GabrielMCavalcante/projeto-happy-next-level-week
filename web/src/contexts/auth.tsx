@@ -9,6 +9,10 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<AT.Token>(null)
   const [loading, setLoading] = useState(false)
 
+  function setContextToken(token: AT.Token) {
+    setToken(token)
+  }
+
   async function signin(userAccount: AT.UserAccount) {
     setLoading(true)
 
@@ -18,8 +22,6 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     if (data.status === 200) {
       setToken(data.token)
-
-      sessionStorage.setItem("happy:signin:token", data.token)
 
       if (userAccount.remember_user) {
         localStorage.setItem("happy:signin:token", data.token)
@@ -52,8 +54,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   async function signout() {
-    sessionStorage.removeItem("happy:signin:token")
     localStorage.removeItem("happy:signin:token")
+    setToken(null)
   }
 
   async function requestPasswordResetToken(email: string) {
@@ -104,6 +106,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       signedIn: !!token,
       token,
       loading,
+      setContextToken,
       signin,
       signup,
       signout,
