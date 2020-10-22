@@ -8,6 +8,7 @@ import Signin from "./Signin"
 import Signup from "./Signup"
 import ForgotPassword from "./ForgotPassword"
 import ResetPassword from "./ResetPassword"
+import Dashboard from "./Dashboard"
 
 function SigninFeedback() {
   const navigation = useHistory()
@@ -21,7 +22,7 @@ function SigninFeedback() {
       actionButtons={[{
         type: "success",
         label: "Entrar na dashboard",
-        action: () => navigation.replace("/dashboard")
+        action: () => navigation.replace("/acesso-restrito/dashboard")
       }]}
     />
   )
@@ -109,10 +110,10 @@ function SignupFeedback() {
   )
 
   return (
-    status === "sucesso" 
-      ? successFeedback 
+    status === "sucesso"
+      ? successFeedback
       : (
-        status === "usuario-ja-existe" 
+        status === "usuario-ja-existe"
           ? failureByUserFeedback
           : failureFeedback
       )
@@ -179,10 +180,10 @@ function ForgotPasswordFeedback() {
   )
 
   return (
-    status === "sucesso" 
-      ? successFeedback 
+    status === "sucesso"
+      ? successFeedback
       : (
-        status === "email-nao-existe" 
+        status === "email-nao-existe"
           ? failureByNoEmailFeedback
           : failureFeedback
       )
@@ -259,10 +260,10 @@ function ResetPasswordFeedback() {
   )
 
   return (
-    status === "sucesso" 
-      ? successFeedback 
+    status === "sucesso"
+      ? successFeedback
       : (
-        status === "token-nao-encontrado" 
+        status === "token-nao-encontrado"
           ? failureByNoTokenFeedback
           : (
             status === "token-invalido"
@@ -281,16 +282,16 @@ function Authentication() {
           <AuthenticationScreen returnTo="/" formElement={<Signin />} />
         </Route>
         <Route path="/acesso-restrito/cadastro" exact>
-          <AuthenticationScreen 
-            type="inverted" 
-            returnTo="/acesso-restrito/login" 
-            formElement={<Signup />} 
+          <AuthenticationScreen
+            type="inverted"
+            returnTo="/acesso-restrito/login"
+            formElement={<Signup />}
           />
         </Route>
         <Route path="/acesso-restrito/esqueci-minha-senha" exact>
-          <AuthenticationScreen 
-            returnTo="/acesso-restrito/login" 
-            formElement={<ForgotPassword />} 
+          <AuthenticationScreen
+            returnTo="/acesso-restrito/login"
+            formElement={<ForgotPassword />}
           />
         </Route>
         <Route path="/acesso-restrito/recuperar-senha/:token" exact>
@@ -300,6 +301,7 @@ function Authentication() {
         <Route path="/acesso-restrito/cadastro/:status" component={SignupFeedback} />
         <Route path="/acesso-restrito/esqueci-minha-senha/:status" component={ForgotPasswordFeedback} />
         <Route path="/acesso-restrito/recuperar-senha/status/:status" component={ResetPasswordFeedback} />
+        <Route path="/acesso-restrito/dashboard" component={Dashboard} />
         <Redirect to="/acesso-restrito/login" />
       </Switch>
     </>
