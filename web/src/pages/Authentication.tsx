@@ -1,7 +1,12 @@
-import AuthenticationScreen from "components/AuthenticationScreen"
-import React from "react"
+import React, { useEffect } from "react"
 import { Route, Redirect, Switch, useHistory, useParams } from "react-router-dom"
 import Feedback from "components/Feedback"
+
+// Contexts
+import useAuth from "contexts/auth"
+
+// Components
+import AuthenticationScreen from "components/AuthenticationScreen"
 
 // Pages
 import Signin from "./Signin"
@@ -13,6 +18,13 @@ import Dashboard from "./Dashboard"
 function SigninFeedback() {
   const navigation = useHistory()
   const { status } = useParams<{ status: string }>()
+  const authContext = useAuth()
+
+  useEffect(() => {
+    if (!authContext.signedIn) {
+      navigation.replace("/acesso-restrito/login")
+    }
+  }, [authContext.signedIn, navigation])
 
   const successFeedback = (
     <Feedback
@@ -275,6 +287,17 @@ function ResetPasswordFeedback() {
 }
 
 function Authentication() {
+  const authContext = useAuth()
+  const { replace } = useHistory()
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("happy:signin:token")
+    if (storedToken) {
+      authContext.setContextToken(storedToken)
+      replace("/acesso-restrito/dashboard")
+    }
+  }, []) // eslint-disable-line
+
   return (
     <>
       <Switch>
