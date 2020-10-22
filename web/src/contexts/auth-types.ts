@@ -3,13 +3,13 @@ export interface UserData {
   password: string
 }
 
-export interface UserAccount extends UserData {  
-  remember_user: boolean 
+export interface UserAccount extends UserData {
+  remember_user: boolean
 }
 
-export interface PasswordResetData { 
-  password: string, 
-  token: string 
+export interface PasswordResetData {
+  password: string,
+  token: string
 }
 
 export type Token = string | null
@@ -21,7 +21,7 @@ export interface AuthContextValues {
   signup(userData: UserData): Promise<any>,
   signout(): void,
   requestPasswordResetToken(accountEmail: string): Promise<any>,
-  updateUserPassword(resetData: PasswordResetData): Promise<any>
+  resetPassword(resetData: PasswordResetData): Promise<any>
   loading: boolean
 }
 
@@ -57,5 +57,17 @@ interface RequestPasswordRecoveryTokenFailureData {
   message: string
 }
 
-export type RequestPasswordRecoveryTokenData = 
+export type RequestPasswordRecoveryTokenData =
   RequestPasswordRecoveryTokenSuccessData | RequestPasswordRecoveryTokenFailureData
+
+
+interface ResetPasswordSuccessData {
+  status: 200
+}
+
+interface ResetPasswordFailureData {
+  status: 401 | 404 | 500,
+  message: string
+}
+
+export type ResetPasswordData = ResetPasswordSuccessData | ResetPasswordFailureData
