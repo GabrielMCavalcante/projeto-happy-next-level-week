@@ -13,11 +13,11 @@ export const DashboardProvider: React.FC = ({ children }) => {
   const [orphanages, setOrphanages] = useState<OrphanagesData | null>(null)
   const authContext = useAuth()
 
-  async function fetchOrphanages() {
+  async function fetchOrphanages(storedToken: string | null) {
     setLoading(true)
 
     const headers = {
-      authorization: `Bearer ${authContext.token}`,
+      authorization: `Bearer ${storedToken ? storedToken : authContext.token}`,
     }
 
     try {
@@ -32,7 +32,7 @@ export const DashboardProvider: React.FC = ({ children }) => {
 
       return response.data.status
     } catch (err) {
-      const error = {...err}.response.data
+      const error = {...err}.response.status
 
       setLoading(false)
 
