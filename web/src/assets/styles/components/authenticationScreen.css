@@ -251,6 +251,16 @@
   width: 100%;
 }
 
+.authentication-screen main .content-wrapper .feedback-msg {
+  text-align: center;
+  color: #FF669D;
+  font-family: "Nunito", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-top: 3.4rem;
+  margin-bottom: -2.5rem;
+}
+
 .authentication-screen main .content-wrapper .form-action-btn {
   margin-top: 3.4rem;
   width: 100%;
