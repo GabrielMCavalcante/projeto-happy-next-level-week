@@ -6,6 +6,7 @@ import Feedback from "components/Feedback"
 // Pages
 import Signin from "./Signin"
 import Signup from "./Signup"
+import ForgotPassword from "./ForgotPassword"
 
 function SigninFeedback() {
   const navigation = useHistory()
@@ -117,6 +118,76 @@ function SignupFeedback() {
   )
 }
 
+function ForgotPasswordFeedback() {
+  const navigation = useHistory()
+  const { status } = useParams<{ status: string }>()
+
+  const successFeedback = (
+    <Feedback
+      title="Sucesso!"
+      subtitle="Agora é só acessar o seu email e clicar no link de recuperação de senha
+      e resetar sua senha!"
+      type="success"
+      actionButtons={[{
+        type: "success",
+        label: "Voltar ao login",
+        action: () => navigation.replace("/acesso-restrito/login")
+      }]}
+    />
+  )
+
+  const failureByUserFeedback = (
+    <Feedback
+      title="Oops!"
+      subtitle="Não existe nenhuma conta com este endereço de email!"
+      type="error"
+      actionButtons={[
+        {
+          type: "danger",
+          label: "Tentar novamente",
+          action: () => navigation.replace("/acesso-restrito/esqueci-minha-senha")
+        },
+        {
+          type: "danger",
+          label: "Voltar ao login",
+          action: () => navigation.replace("/acesso-restrito/login")
+        }
+      ]}
+    />
+  )
+
+  const failureFeedback = (
+    <Feedback
+      title="Oops!"
+      subtitle="Ocorreu algum erro ao enviar o email. 
+      Por favor, tente novamente mais tarde."
+      type="error"
+      actionButtons={[
+        {
+          type: "danger",
+          label: "Voltar ao login",
+          action: () => navigation.replace("/acesso-restrito/login")
+        },
+        {
+          type: "danger",
+          label: "Voltar à tela principal",
+          action: () => navigation.replace("/")
+        }
+      ]}
+    />
+  )
+
+  return (
+    status === "sucesso" 
+      ? successFeedback 
+      : (
+        status === "email-nao-existe" 
+          ? failureByUserFeedback
+          : failureFeedback
+      )
+  )
+}
+
 function Authentication() {
   return (
     <>
@@ -127,8 +198,12 @@ function Authentication() {
         <Route path="/acesso-restrito/cadastro" exact>
           <AuthenticationScreen type="inverted" formElement={<Signup />} />
         </Route>
+        <Route path="/acesso-restrito/esqueci-minha-senha" exact>
+          <AuthenticationScreen formElement={<ForgotPassword />} />
+        </Route>
         <Route path="/acesso-restrito/login/:status" component={SigninFeedback} />
         <Route path="/acesso-restrito/cadastro/:status" component={SignupFeedback} />
+        <Route path="/acesso-restrito/esqueci-minha-senha/:status" component={ForgotPasswordFeedback} />
         <Redirect to="/acesso-restrito/login" />
       </Switch>
     </>
