@@ -19,10 +19,10 @@ const Sidebar: React.FC<SidebarProps> = ({ showNavigation = false }) => {
   function handleButtonClick(btn: 0 | 1) {
     if (btn === 0) {
       setButtonsSelectionState(["selected", ""])
-      replace("/dashboard/orfanatos/cadastrados")
+      replace("/acesso-restrito/dashboard/orfanatos/cadastrados")
     } else {
       setButtonsSelectionState(["", "selected"])
-      replace("/dashboard/orfanatos/pendentes")
+      replace("/acesso-restrito/dashboard/orfanatos/pendentes")
     }
   }
 
