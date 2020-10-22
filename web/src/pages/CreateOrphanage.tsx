@@ -37,7 +37,7 @@ export default function CreateOrphanage() {
   const [openingHours, setOpeningHours] = useState("")
   const [openOnWeekends, setOpenOnWeekends] = useState(false)
   const [error, setError] = useState(false)
-  const [showFeedback, setShowFeedback] = useState(true)
+  const [showFeedback, setShowFeedback] = useState(false)
 
   const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0])
 
