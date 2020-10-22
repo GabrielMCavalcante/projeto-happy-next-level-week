@@ -16,21 +16,29 @@ export const AuthProvider: React.FC = ({ children }) => {
   async function signin(userAccount: AT.UserAccount) {
     setLoading(true)
 
-    const response = await api.post("/auth/signin", userAccount)
+    try {
+      const response = await api.post("/auth/signin", userAccount)
 
-    const data = response.data as AT.SigninResponseData
+      const data = response.data as AT.SigninResponseData
 
-    if (data.status === 200) {
-      setToken(data.token)
+      if (data.status === 200) {
+        setToken(data.token)
 
-      if (userAccount.remember_user) {
-        localStorage.setItem("happy:signin:token", data.token)
+        if (userAccount.remember_user) {
+          localStorage.setItem("happy:signin:token", data.token)
+        }
       }
+
+      setLoading(false)
+
+      return data.status
+    } catch (err) {
+      const errorStatus = {...err}.response.status
+
+      setLoading(false)
+
+      return errorStatus
     }
-
-    setLoading(false)
-
-    return data.status
   }
 
   async function signup(userData: AT.UserData) {
@@ -45,11 +53,11 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       return data.status
     } catch (err) {
-      const error = { ...err }.response.data as AT.SignupResponseData
+      const errorStatus = { ...err }.response.status
 
       setLoading(false)
 
-      return error.status
+      return errorStatus
     }
   }
 
@@ -70,11 +78,11 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       return data.status
     } catch (err) {
-      const error = { ...err }.response.data as AT.RequestPasswordRecoveryTokenData
+      const errorStatus = { ...err }.response.status
 
       setLoading(false)
 
-      return error.status
+      return errorStatus
     }
   }
 
@@ -93,11 +101,11 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       return data.status
     } catch (err) {
-      const error = {...err}.response.data as AT.ResetPasswordData
+      const errorStatus = { ...err }.response.status
 
       setLoading(false)
 
-      return error.status
+      return errorStatus
     }
   }
 
