@@ -68,7 +68,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       return data.status
     } catch (err) {
-      const error = {...err}.response.data as AT.RequestPasswordRecoveryTokenData
+      const error = { ...err }.response.data as AT.RequestPasswordRecoveryTokenData
 
       setLoading(false)
 
@@ -76,8 +76,27 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
-  async function updateUserPassword() {
+  async function resetPassword(resetData: AT.PasswordResetData) {
+    setLoading(true)
 
+    try {
+      const response = await api.put("/auth/password-recovery/reset-password",
+        { password: resetData.password },
+        { headers: { recovery_token: resetData.token } }
+      )
+
+      const data = response.data as AT.ResetPasswordData
+
+      setLoading(false)
+
+      return data.status
+    } catch (err) {
+      const error = {...err}.response.data as AT.ResetPasswordData
+
+      setLoading(false)
+
+      return error.status
+    }
   }
 
   return (
@@ -89,7 +108,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       signup,
       signout,
       requestPasswordResetToken,
-      updateUserPassword
+      resetPassword
     }}>{children}</AuthContext.Provider>
   )
 }
