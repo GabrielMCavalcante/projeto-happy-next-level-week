@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react"
-import { Map, Marker, TileLayer } from 'react-leaflet'
-import Leaflet from 'leaflet'
+import { Map, Marker, TileLayer } from "react-leaflet"
+import Leaflet from "leaflet"
 import { FiPlus, FiX } from "react-icons/fi"
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom"
+import Loader from "react-loader-spinner"
 
 // Services
-import api from 'services/axios-config'
+import api from "services/axios-config"
 
 // Components
 import Sidebar from "components/Sidebar"
 import Feedback from "components/Feedback"
 
 // Images
-import { happyFaceLogo } from 'utils/images'
+import { happyFaceLogo } from "utils/images"
 
 // Styles
-import 'assets/styles/pages/create-orphanage.css'
+import "assets/styles/pages/create-orphanage.css"
 
 const happyMapIcon = Leaflet.icon({
   iconUrl: happyFaceLogo,
@@ -27,7 +28,6 @@ const happyMapIcon = Leaflet.icon({
 export default function CreateOrphanage() {
   const navigation = useHistory()
   const [markerPosition, setMarkerPosition] = useState<[number, number]>([0, 0])
-
   const [images, setImages] = useState<FileList>()
   const [imagesPreview, setImagesPreview] = useState<string[]>([])
   const [name, setName] = useState("")
@@ -37,8 +37,8 @@ export default function CreateOrphanage() {
   const [openingHours, setOpeningHours] = useState("")
   const [openOnWeekends, setOpenOnWeekends] = useState(false)
   const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [showFeedback, setShowFeedback] = useState(false)
-
   const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0])
 
   useEffect(() => {
@@ -86,9 +86,12 @@ export default function CreateOrphanage() {
     }
 
     try {
+      setLoading(true)
       await api.post("/orphanages", formData)
+      setLoading(false)
       setShowFeedback(true)
     } catch (err) {
+      setLoading(false)
       setError(true)
       setShowFeedback(true)
     }
@@ -153,7 +156,7 @@ export default function CreateOrphanage() {
 
                 <Map
                   center={mapCenter}
-                  style={{ width: '100%', height: 280 }}
+                  style={{ width: "100%", height: 280 }}
                   zoom={15}
                   onClick={handleMapClick}
                 >
@@ -231,12 +234,13 @@ export default function CreateOrphanage() {
                       <FiPlus size={24} color="#15b6d6" />
                     </label>
                     <input
+                      required
                       type="file"
                       accept="image/*"
                       multiple
                       onChange={handleImageSelection}
                       id="imagesInput"
-                      style={{ display: 'none' }}
+                      style={{ display: "none" }}
                     />
                   </div>
                 </div>
@@ -283,8 +287,16 @@ export default function CreateOrphanage() {
                 </div>
               </fieldset>
 
-              <button className="confirm-button" type="submit">
-                Confirmar
+              <button
+                className="confirm-button"
+                type="submit"
+                disabled={loading}
+              >
+                {
+                  loading
+                    ? <Loader type="ThreeDots" color="#FFFFFF" height={60} width={60} />
+                    : "Cadastrar"
+                }
               </button>
             </form>
           </main>
