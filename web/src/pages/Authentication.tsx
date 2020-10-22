@@ -278,13 +278,20 @@ function Authentication() {
     <>
       <Switch>
         <Route path="/acesso-restrito/login" exact>
-          <AuthenticationScreen formElement={<Signin />} />
+          <AuthenticationScreen returnTo="/" formElement={<Signin />} />
         </Route>
         <Route path="/acesso-restrito/cadastro" exact>
-          <AuthenticationScreen type="inverted" formElement={<Signup />} />
+          <AuthenticationScreen 
+            type="inverted" 
+            returnTo="/acesso-restrito/login" 
+            formElement={<Signup />} 
+          />
         </Route>
         <Route path="/acesso-restrito/esqueci-minha-senha" exact>
-          <AuthenticationScreen formElement={<ForgotPassword />} />
+          <AuthenticationScreen 
+            returnTo="/acesso-restrito/login" 
+            formElement={<ForgotPassword />} 
+          />
         </Route>
         <Route path="/acesso-restrito/recuperar-senha/:token" exact>
           <AuthenticationScreen returnBtn={false} formElement={<ResetPassword />} />
