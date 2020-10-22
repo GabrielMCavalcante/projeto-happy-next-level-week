@@ -1,3 +1,22 @@
+export interface AuthContextValues {
+  signedIn: boolean,
+  token: Token,
+  setContextToken: (token: Token) => void,
+  signin(userAccount: UserAccount): Promise<any>,
+  signup(userData: UserData): Promise<any>,
+  signout(): void,
+  requestPasswordResetToken(accountEmail: string): Promise<any>,
+  resetPassword(resetData: PasswordResetData): Promise<any>
+  loading: boolean
+}
+
+export type Token = string | null
+export type SigninResponseData = SigninSuccessData | SigninFailureData
+export type ResetPasswordData = ResetPasswordSuccessData | ResetPasswordFailureData
+export type SignupResponseData = SignupSuccessData | SignupFailureData
+export type RequestPasswordRecoveryTokenData =
+  RequestPasswordRecoveryTokenSuccessData | RequestPasswordRecoveryTokenFailureData
+
 export interface UserData {
   email: string,
   password: string
@@ -12,19 +31,6 @@ export interface PasswordResetData {
   token: string
 }
 
-export type Token = string | null
-
-export interface AuthContextValues {
-  signedIn: boolean,
-  token: Token,
-  signin(userAccount: UserAccount): Promise<any>,
-  signup(userData: UserData): Promise<any>,
-  signout(): void,
-  requestPasswordResetToken(accountEmail: string): Promise<any>,
-  resetPassword(resetData: PasswordResetData): Promise<any>
-  loading: boolean
-}
-
 interface SigninSuccessData {
   status: 200,
   token: string
@@ -35,8 +41,6 @@ interface SigninFailureData {
   message: string
 }
 
-export type SigninResponseData = SigninSuccessData | SigninFailureData
-
 interface SignupSuccessData {
   status: 201
 }
@@ -45,8 +49,6 @@ interface SignupFailureData {
   status: 409 | 500,
   message: string
 }
-
-export type SignupResponseData = SignupSuccessData | SignupFailureData
 
 interface RequestPasswordRecoveryTokenSuccessData {
   status: 200
@@ -57,10 +59,6 @@ interface RequestPasswordRecoveryTokenFailureData {
   message: string
 }
 
-export type RequestPasswordRecoveryTokenData =
-  RequestPasswordRecoveryTokenSuccessData | RequestPasswordRecoveryTokenFailureData
-
-
 interface ResetPasswordSuccessData {
   status: 200
 }
@@ -69,5 +67,3 @@ interface ResetPasswordFailureData {
   status: 401 | 404 | 500,
   message: string
 }
-
-export type ResetPasswordData = ResetPasswordSuccessData | ResetPasswordFailureData
