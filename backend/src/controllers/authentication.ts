@@ -186,11 +186,10 @@ export default class AuthenticationController {
 
     if (
       users.length === 0 ||
-      user.password_recovery_token === null ||
-      user.password_recovery_token === undefined
+      !user.password_recovery_token
     ) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(404).json({
+        status: 404,
         message: "No password recovery token found for this user."
       })
     }
@@ -211,7 +210,7 @@ export default class AuthenticationController {
         }
 
         user.password = encryptedPassword
-        user.password_recovery_token = undefined
+        user.password_recovery_token = ""
 
         await usersRepository.save(user)
 
