@@ -1,104 +1,126 @@
 #page-map {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
 }
 
 #page-map aside {
-    width: 50rem;
-    background: linear-gradient(329.54deg, #15B6D6 0%, #15D6D6 100%);
-    padding: 6rem 8rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  width: 50rem;
+  background: linear-gradient(329.54deg, #15B6D6 0%, #15D6D6 100%);
+  padding: 6rem 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+#page-map aside button {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: #12AFCB;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 300ms ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+}
+
+#page-map aside button:hover {
+  background: #17D6EB;
 }
 
 #page-map aside header {
-    max-width: 25rem;
+  max-width: 25rem;
 }
 
 #page-map aside header img {
-    margin-bottom: 4rem;
+  margin-bottom: 4rem;
 }
 
 #page-map aside header h2 {
-    margin-bottom: 2.4rem;
-    font-size: 4rem;
-    font-weight: 800;
+  margin-bottom: 2.4rem;
+  font-size: 4rem;
+  font-weight: 800;
 }
 
 #page-map aside header p {
-    font-weight: 600;
-    font-size: 1.8rem;
-    line-height: 2.8rem;
+  font-weight: 600;
+  font-size: 1.8rem;
+  line-height: 2.8rem;
 }
 
 #page-map aside footer {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.8rem;
 }
 
 #page-map aside footer strong {
-    font-weight: 800;
+  font-weight: 800;
 }
 
 #page-map aside footer span {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 #page-map .map-popup .leaflet-popup-content-wrapper {
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: none;
-    border-radius: 2rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: none;
+  border-radius: 2rem;
 }
 
 #page-map .map-popup .leaflet-popup-tip {
-    display: none;
+  display: none;
 }
 
 #page-map .map-popup .leaflet-popup-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Nunito', sans-serif;
-    font-weight: bold;
-    font-size: 2rem;
-    color: #0089A5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  color: #0089A5;
 }
 
 #page-map .map-popup .leaflet-popup-content a {
-    background: #15C3D6;
-    box-shadow: 1.72868rem 2.76589rem 4.14884rem rgba(23, 142, 166, 0.16);
-    border-radius: 1rem;
-    width: 3rem;
-    height: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 300ms background-color ease;
+  background: #15C3D6;
+  box-shadow: 1.72868rem 2.76589rem 4.14884rem rgba(23, 142, 166, 0.16);
+  border-radius: 1rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 300ms background-color ease;
 }
 
 #page-map .map-popup .leaflet-popup-content a:hover {
-    background: #17D6EB;
+  background: #17D6EB;
 }
 
 #page-map #create-orphanage-btn {
-    z-index: 999;
-    position: absolute;
-    right: 4rem;
-    bottom: 4rem;
-    width: 6.4rem;
-    height: 6.4rem;
-    background: #15C3D6;
-    border-radius: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 300ms ease;
+  z-index: 999;
+  position: absolute;
+  right: 4rem;
+  bottom: 4rem;
+  width: 6.4rem;
+  height: 6.4rem;
+  background: #15C3D6;
+  border-radius: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 300ms ease;
 }
 
 #page-map #create-orphanage-btn:hover {
-    background: #17D6EB;
+  background: #17D6EB;
 }
