@@ -11,19 +11,26 @@ function Signin() {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [remember_user, setRememberUser] = useState(false)
+  const [formFeedback, setFormFeedback] = useState("")
   const navigation = useHistory()
   const authContext = useAuth()
 
   async function handleSignin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    
+    setFormFeedback("")
 
     const sts = await authContext.signin({ email, password, remember_user })
+
+    if (sts === 400) {
+      return setFormFeedback("O e-mail ou senha estão incorretos.")
+    }
 
     let status: string
 
     if (sts === 200) {
       status = "sucesso"
-    } else {
+    }  else {
       status = "erro"
     }
 
@@ -70,7 +77,11 @@ function Signin() {
 
         <div className="horizontal-group">
           <label htmlFor="rememberMe">
-            <input type="checkbox" id="rememberMe" onClick={() => setRememberUser(!remember_user)} />
+            <input
+              type="checkbox"
+              id="rememberMe"
+              onClick={() => setRememberUser(!remember_user)}
+            />
             <span id="checkmark"></span>
             Lembrar-me
           </label>
@@ -81,6 +92,7 @@ function Signin() {
           >Esqueci minha senha</Link>
         </div>
 
+        {formFeedback !== "" && <p className="feedback-msg">{formFeedback}</p>}
         <button
           disabled={
             authContext.loading ||
