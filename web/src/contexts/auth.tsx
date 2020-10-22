@@ -43,7 +43,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
       return data.status
     } catch (err) {
-      const error = {...err}.response.data as AT.SignupResponseData
+      const error = { ...err }.response.data as AT.SignupResponseData
 
       setLoading(false)
 
@@ -56,8 +56,24 @@ export const AuthProvider: React.FC = ({ children }) => {
     localStorage.removeItem("happy:signin:token")
   }
 
-  async function requestPasswordResetToken() {
+  async function requestPasswordResetToken(email: string) {
+    setLoading(true)
 
+    try {
+      const response = await api.post("/auth/password-recovery/request-token", { email })
+
+      const data = response.data as AT.RequestPasswordRecoveryTokenData
+
+      setLoading(false)
+
+      return data.status
+    } catch (err) {
+      const error = {...err}.response.data as AT.RequestPasswordRecoveryTokenData
+
+      setLoading(false)
+
+      return error.status
+    }
   }
 
   async function updateUserPassword() {
