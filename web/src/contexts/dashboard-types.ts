@@ -1,7 +1,7 @@
 export type OrphanagesData = { registered: OrphanageCard[], pending: OrphanageCard[] }
 
 export interface DashboardContextValues {
-  fetchOrphanages: () => Promise<any>,
+  fetchOrphanages: (storedToken: string | null) => Promise<any>,
   fetchOrphanageDetails: (id: number) => Promise<any>,
   updateOrphanage: (id: number) => Promise<any>,
   deleteOrphanage: (id: number) => Promise<any>,
