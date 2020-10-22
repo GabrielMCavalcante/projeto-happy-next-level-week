@@ -17,7 +17,7 @@ export default async function sendMail(receiverMail: string, token: string) {
         subject: "Happy - Recuperação de senha",
         text: `Você recebeu este email para acessar o link de recuperação de sua senha no 
         Happy. Para recuperar sua senha, acesse o link a seguir: 
-        http://192.168.100.12:3000/recuperar-senha/${token}
+        http://192.168.100.12:3000/acesso-restrito/recuperar-senha/${token}
         Não foi você? Apenas ignore este email.
         `,
         html: `
@@ -28,7 +28,7 @@ export default async function sendMail(receiverMail: string, token: string) {
             <p>Para recuperar sua senha, acesse o link abaixo:</p>
             <a 
                 target="_blank"  
-                href="http://192.168.100.12:3000/recuperar-senha/${token}"
+                href="http://192.168.100.12:3000/acesso-restrito/recuperar-senha/${token}"
             >Link para recuperação de senha</a> 
             
             <p>Não foi você? Apenas ignore este email.</p>
