@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from "typeorm"
+import { Entity, Column, PrimaryColumn } from "typeorm"
 
 @Entity("users")
 export default class User {
@@ -12,5 +12,5 @@ export default class User {
     password: string;
 
     @Column()
-    password_recovery_token?: string;
+    password_recovery_token: string;
 }
