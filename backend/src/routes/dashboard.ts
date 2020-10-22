@@ -10,7 +10,6 @@ const routes = Router()
 const baseURL = "/dashboard"
 
 routes.get(`${baseURL}`, AuthMiddleware, Controller.index)
-routes.get(`${baseURL}/pending`, AuthMiddleware, Controller.indexPending)
 routes.get(`${baseURL}/orphanage/details/:id`, AuthMiddleware, Controller.indexById)
 routes.put(`${baseURL}/orphanage/update/:id`,
   ParamsMiddleware,
