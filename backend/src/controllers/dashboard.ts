@@ -5,32 +5,21 @@ import OrphanageModel from "../models/Orphanage"
 import DashboardView from "../views/dashboard"
 import OrphanageView from "../views/orphanages"
 
-async function fetchOrphanages(pending_approval: boolean) {
-  const orphanagesRepository = getRepository(OrphanageModel)
-
-  const result = await orphanagesRepository.find({
-    where: { pending_approval }
-  })
-
-  return result
-}
-
 export default class DashboardController {
-  static async index(req: Request, res: Response) {
-    const result = await fetchOrphanages(false)
+  static async index(_req: Request, res: Response) {
+    const orphanagesRepository = getRepository(OrphanageModel)
+
+    const result = await orphanagesRepository.find()
+
+    const registered = result.filter(r => !r.pending_approval)
+    const pending = result.filter(r => r.pending_approval)
 
     return res.status(200).json({
       status: 200,
-      results: DashboardView.renderMany(result)
-    })
-  }
-
-  static async indexPending(req: Request, res: Response) {
-    const result = await fetchOrphanages(true)
-
-    return res.status(200).json({
-      status: 200,
-      results: DashboardView.renderMany(result)
+      results: {
+        registered: DashboardView.renderMany(registered),
+        pending: DashboardView.renderMany(pending)
+      }
     })
   }
 
@@ -134,8 +123,8 @@ export default class DashboardController {
     }
 
     await orphanagesRepository.delete(id)
-    
-    const updatedOrphanage = orphanagesRepository.create({id, ...data})
+
+    const updatedOrphanage = orphanagesRepository.create({ id, ...data })
     await orphanagesRepository.save(updatedOrphanage)
 
     return res.status(200).json({
