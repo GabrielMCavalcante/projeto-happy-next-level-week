@@ -30,10 +30,11 @@
 
 .dashboard-content main {
   width: 100%;
+  margin-top: 3rem;
   flex-wrap: wrap;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
 .dashboard-content main .orphanage-card {
@@ -41,7 +42,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 45%;
   height: 30rem;
   border-radius: 2rem;
   background: #FFFFFF;
