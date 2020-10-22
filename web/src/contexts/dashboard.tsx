@@ -12,7 +12,27 @@ export const DashboardProvider: React.FC = ({ children }) => {
   const authContext = useAuth()
 
   async function fetchRegisteredOrphanages() {
-    
+    setLoading(true)
+
+    try {
+      const response = await api.get("/dashboard", {
+        headers: {
+          authorization: `Bearer ${authContext.token}`,
+        }
+      })
+
+      const data = response.data as DT.FetchOrphanagesData
+
+      setLoading(false)
+
+      return data.status
+    } catch (err) {
+      const error = {...err}.response.data as DT.FetchOrphanagesData
+
+      setLoading(false)
+
+      return error.status
+    }
   }
 
   async function fetchPendingOrphanages() {
