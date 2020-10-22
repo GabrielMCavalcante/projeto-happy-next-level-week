@@ -21,17 +21,16 @@ export const DashboardProvider: React.FC = ({ children }) => {
     }
 
     try {
-      const responseOne = await api.get("/dashboard", { headers })
-      const responseTwo = await api.get("/dashboard/pending", { headers })
+      const response = await api.get("/dashboard", { headers })
 
       setOrphanages({
-        registered: responseOne.data.results,
-        pending: responseTwo.data.results
+        registered: response.data.results.registered,
+        pending: response.data.results.pending
       })
 
       setLoading(false)
 
-      return responseOne.data.status
+      return response.data.status
     } catch (err) {
       const error = {...err}.response.data
 
