@@ -4,32 +4,36 @@ import * as DT from "./dashboard-types"
 
 // Contexts
 import useAuth from "contexts/auth"
+import { OrphanagesData } from "./dashboard-types"
 
 const DashboardContext = createContext({} as DT.DashboardContextValues)
 
 export const DashboardProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false)
+  const [orphanages, setOrphanages] = useState<OrphanagesData | null>(null)
   const authContext = useAuth()
 
-  async function fetchOrphanages(pending?: boolean) {
+  async function fetchOrphanages() {
     setLoading(true)
 
-    const url = !pending ? "/dashboard" : "/dashboard/pending" 
+    const headers = {
+      authorization: `Bearer ${authContext.token}`,
+    }
 
     try {
-      const response = await api.get(url, {
-        headers: {
-          authorization: `Bearer ${authContext.token}`,
-        }
-      })
+      const responseOne = await api.get("/dashboard", { headers })
+      const responseTwo = await api.get("/dashboard/pending", { headers })
 
-      const data = response.data as DT.FetchOrphanagesData
+      setOrphanages({
+        registered: responseOne.data.results,
+        pending: responseTwo.data.results
+      })
 
       setLoading(false)
 
-      return data
+      return responseOne.data.status
     } catch (err) {
-      const error = {...err}.response.data as DT.FetchOrphanagesData
+      const error = {...err}.response.data
 
       setLoading(false)
 
@@ -56,6 +60,7 @@ export const DashboardProvider: React.FC = ({ children }) => {
         fetchOrphanageDetails,
         updateOrphanage,
         deleteOrphanage,
+        orphanages,
         loading
       }}
     >{children}</DashboardContext.Provider>
