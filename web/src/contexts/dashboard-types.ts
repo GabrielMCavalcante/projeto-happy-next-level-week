@@ -1,8 +1,11 @@
+export type OrphanagesData = { registered: OrphanageCard[], pending: OrphanageCard[] }
+
 export interface DashboardContextValues {
-  fetchOrphanages: (pending?: boolean) => Promise<any>,
+  fetchOrphanages: () => Promise<any>,
   fetchOrphanageDetails: (id: number) => Promise<any>,
   updateOrphanage: (id: number) => Promise<any>,
   deleteOrphanage: (id: number) => Promise<any>,
+  orphanages: OrphanagesData | null,
   loading: boolean
 }
 
@@ -12,16 +15,3 @@ export interface OrphanageCard {
   latitude: number,
   longitude: number
 }
-
-interface FetchOrphanagesSuccessData {
-  status: 200,
-  result: OrphanageCard[]
-}
-
-interface FetchOrphanagesFailureData {
-  status: 401 | 500,
-  message: string
-}
-
-export type FetchOrphanagesData = 
-  FetchOrphanagesSuccessData | FetchOrphanagesFailureData
