@@ -5,7 +5,9 @@ export interface DashboardContextValues {
   fetchOrphanageDetails: (id: number) => Promise<any>,
   updateOrphanage: (id: number, formData: FormData) => Promise<any>,
   deleteOrphanage: (id: number) => Promise<any>,
+  callRefetch: () => void,
   orphanages: OrphanagesData | null,
+  reFetch: boolean,
   loading: boolean
 }
 
