@@ -14,6 +14,7 @@ form.create-orphanage-form {
   border-radius: 20px;
   padding: 64px 80px;
   overflow: hidden;
+  position: relative;
 }
 
 form.create-orphanage-form .leaflet-container {
@@ -166,32 +167,70 @@ form.create-orphanage-form .input-block .button-select button:last-child {
   border-left: 0;
 }
 
-form.create-orphanage-form button.confirm-button {
-  margin-top: 64px;
+form.create-orphanage-form footer {
+  display: flex;
+  margin: 3rem -80px -64px;
+  justify-content: space-between;
+  align-items: center;
+  background: #F5F8FA;
+  border: 1px solid #D3E2E5;
+  border-radius: 0 0 2rem 2rem;
+  padding: 4.8rem 8rem;
+}
+
+form.create-orphanage-form .submit-btn {
+  margin-top: 6.4rem;
   width: 100%;
-  height: 64px;
-  border: 0;
+  height: 6.4rem;
   cursor: pointer;
-  background: #3CDC8C;
-  border-radius: 20px;
+  border-radius: 2rem;
   color: #FFFFFF;
   font-weight: 800;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.2s;
+  transition: background-color 300ms ease;
   outline: none;
+  border: none;
 }
 
-form.create-orphanage-form button.confirm-button svg {
-  margin-right: 16px;
+form.create-orphanage-form footer button.accept-button, 
+form.create-orphanage-form footer button.reject-button {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-form.create-orphanage-form button.confirm-button:hover {
+form.create-orphanage-form .submit-btn.confirm-button, 
+form.create-orphanage-form .submit-btn.accept-button {
+  background: #3CDC8C;
+}
+
+form.create-orphanage-form .submit-btn.reject-button {
+  background: #FF669D;
+  margin-right: 0.8rem;
+}
+
+form.create-orphanage-form .accept-button svg, 
+form.create-orphanage-form .reject-button svg {
+  margin-right: 1.6rem;
+}
+
+form.create-orphanage-form .submit-btn.confirm-button:hover, form.create-orphanage-form .submit-btn.accept-button:hover {
   background: #36CF82;
 }
 
-form.create-orphanage-form button.confirm-button:disabled {
+form.create-orphanage-form .submit-btn.reject-button:hover {
+  background: #F95993;
+}
+
+form.create-orphanage-form .submit-btn.confirm-button:disabled, form.create-orphanage-form .submit-btn.accept-button:disabled {
   background-color: #37C77F;
+  cursor: not-allowed;
+}
+
+form.create-orphanage-form .submit-btn.reject-button:disabled {
+  background-color: #FA5690;
   cursor: not-allowed;
 }
