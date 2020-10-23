@@ -14,6 +14,7 @@ import { happyFaceLogo, NoOrphanageFaceLogo } from 'utils/images'
 // Components
 import Sidebar from "components/Sidebar"
 import EditOrphanage from "components/EditOrphanage"
+import DeleteOrphanage from "components/DeleteOrphanage"
 
 // Styles
 import "assets/styles/pages/orphanageList.css"
@@ -61,7 +62,7 @@ const OrphanageList: React.FC<OrphanageListProps> = ({ type }) => {
             orphanages.length === 0
               ? (
                 <div className="no-orphanage">
-                  <img src={NoOrphanageFaceLogo} alt="Nenhum orfanato"/>
+                  <img src={NoOrphanageFaceLogo} alt="Nenhum orfanato" />
                   <p>Nenhum no momento</p>
                 </div>
               ) : (
@@ -93,7 +94,11 @@ const OrphanageList: React.FC<OrphanageListProps> = ({ type }) => {
                           <h3>{orphanage.name}</h3>
 
                           <div>
-                            <Link to={`/dashboard/orfanato/excluir/${orphanage.id}`}>
+                            <Link to={
+                              type === "registered"
+                                ? `/acesso-restrito/dashboard/orfanatos/cadastrados/excluir/${orphanage.id}`
+                                : `/acesso-restrito/dashboard/orfanatos/pendentes/rejeitar/${orphanage.id}`
+                            }>
                               <FiTrash size={24} color="#15C3D6" />
                             </Link>
 
@@ -133,6 +138,12 @@ function Orphanages() {
         </Route>
         <Route path="/acesso-restrito/dashboard/orfanatos/pendentes/editar/:id">
           <EditOrphanage type="pending" method="accept" />
+        </Route>
+        <Route path="/acesso-restrito/dashboard/orfanatos/cadastrados/excluir/:id">
+          <DeleteOrphanage type="registered" />
+        </Route>
+        <Route path="/acesso-restrito/dashboard/orfanatos/pendentes/rejeitar/:id">
+          <DeleteOrphanage type="pending" />
         </Route>
         <Redirect to="/acesso-restrito/dashboard/orfanatos/cadastrados" />
       </Switch>
