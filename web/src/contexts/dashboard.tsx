@@ -11,7 +11,12 @@ const DashboardContext = createContext({} as DT.DashboardContextValues)
 export const DashboardProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false)
   const [orphanages, setOrphanages] = useState<OrphanagesData | null>(null)
+  const [reFetch, setRefetch] = useState(true)
   const authContext = useAuth()
+
+  function callRefetch() {
+    setRefetch(true)
+  }
 
   async function fetchOrphanages(storedToken: string | null) {
     setLoading(true)
@@ -29,12 +34,14 @@ export const DashboardProvider: React.FC = ({ children }) => {
       })
 
       setLoading(false)
+      setRefetch(false)
 
       return response.data.status
     } catch (err) {
       const error = { ...err }.response.status
 
       setLoading(false)
+      setRefetch(false)
 
       return error
     }
@@ -108,6 +115,8 @@ export const DashboardProvider: React.FC = ({ children }) => {
         fetchOrphanageDetails,
         updateOrphanage,
         deleteOrphanage,
+        callRefetch,
+        reFetch,
         orphanages,
         loading
       }}
