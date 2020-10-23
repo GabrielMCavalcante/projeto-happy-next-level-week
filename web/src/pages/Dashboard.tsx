@@ -69,7 +69,6 @@ function Dashboard() {
       : (
         <Switch>
           <Route path="/acesso-restrito/dashboard/orfanatos" component={Orphanages} />
-          <Route path="/acesso-restrito/dashboard/orfanatos/editar" />
           <Redirect to="/acesso-restrito/dashboard/orfanatos" />
         </Switch>
       )
