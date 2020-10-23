@@ -13,9 +13,12 @@ import { happyFaceLogo } from 'utils/images'
 
 // Components
 import Sidebar from "components/Sidebar"
+import EditOrphanage from "components/EditOrphanage"
 
 // Styles
 import "assets/styles/pages/orphanageList.css"
+
+// Interfaces
 import { OrphanageCard } from "contexts/dashboard-types"
 
 interface OrphanageListProps {
@@ -87,7 +90,11 @@ const OrphanageList: React.FC<OrphanageListProps> = ({ type }) => {
                           <FiTrash size={24} color="#15C3D6" />
                         </Link>
 
-                        <Link to={`/dashboard/orfanato/editar/${orphanage.id}`}>
+                        <Link to={
+                          type === "registered"
+                            ? `/acesso-restrito/dashboard/orfanatos/cadastrados/editar/${orphanage.id}`
+                            : `/acesso-restrito/dashboard/orfanatos/pendentes/editar/${orphanage.id}`
+                        }>
                           <FiEdit3 size={24} color="#15C3D6" />
                         </Link>
                       </div>
@@ -112,6 +119,12 @@ function Orphanages() {
         </Route>
         <Route path="/acesso-restrito/dashboard/orfanatos/pendentes" exact>
           <OrphanageList type="pending" />
+        </Route>
+        <Route path="/acesso-restrito/dashboard/orfanatos/cadastrados/editar/:id">
+          <EditOrphanage type="normal" method="update" />
+        </Route>
+        <Route path="/acesso-restrito/dashboard/orfanatos/pendentes/editar/:id">
+          <EditOrphanage type="pending" method="accept" />
         </Route>
         <Redirect to="/acesso-restrito/dashboard/orfanatos/cadastrados" />
       </Switch>
