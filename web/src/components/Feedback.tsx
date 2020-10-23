@@ -9,7 +9,7 @@ import "assets/styles/components/feedback.css"
 
 interface ActionButton {
   type: "success" | "danger",
-  label: string,
+  label: string | JSX.Element,
   action: () => void
 }
 
