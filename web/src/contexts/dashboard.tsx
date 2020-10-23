@@ -96,7 +96,7 @@ export const DashboardProvider: React.FC = ({ children }) => {
     try {
       setLoading(true)
 
-      const response = await api.delete(`/dashboard/orphanage/update/${id}`, { headers })
+      const response = await api.delete(`/dashboard/orphanage/delete/${id}`, { headers })
 
       setLoading(false)
       
