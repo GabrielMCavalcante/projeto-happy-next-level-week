@@ -309,7 +309,7 @@ export default function CreateOrphanage() {
               </fieldset>
 
               <button
-                className="confirm-button"
+                className="submit-btn confirm-button"
                 type="submit"
                 disabled={loading}
               >
