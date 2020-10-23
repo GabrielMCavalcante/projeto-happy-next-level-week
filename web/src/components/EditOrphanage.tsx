@@ -252,7 +252,10 @@ const EditOrphanage: React.FC<EditOrphanage> = (props) => {
         {
           type: "success",
           label: "Voltar para a dashboard",
-          action: () => navigation.replace("/acesso-restrito/dashboard")
+          action: () => {
+            dashboardContext.callRefetch()
+            navigation.replace("/acesso-restrito/dashboard")
+          }
         }
       ]}
     />
@@ -267,7 +270,10 @@ const EditOrphanage: React.FC<EditOrphanage> = (props) => {
         {
           type: "success",
           label: "Voltar para a dashboard",
-          action: () => navigation.replace("/acesso-restrito/dashboard")
+          action: () => {
+            dashboardContext.callRefetch()
+            navigation.replace("/acesso-restrito/dashboard")
+          }
         }
       ]}
     />
@@ -282,7 +288,10 @@ const EditOrphanage: React.FC<EditOrphanage> = (props) => {
         {
           type: "success",
           label: "Voltar para a dashboard",
-          action: () => navigation.replace("/acesso-restrito/dashboard")
+          action: () => {
+            dashboardContext.callRefetch()
+            navigation.replace("/acesso-restrito/dashboard")
+          }
         }
       ]}
     />
