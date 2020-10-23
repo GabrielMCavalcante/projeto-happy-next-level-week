@@ -32,7 +32,7 @@ export const DashboardProvider: React.FC = ({ children }) => {
 
       return response.data.status
     } catch (err) {
-      const error = {...err}.response.status
+      const error = { ...err }.response.status
 
       setLoading(false)
 
@@ -41,15 +41,64 @@ export const DashboardProvider: React.FC = ({ children }) => {
   }
 
   async function fetchOrphanageDetails(id: number) {
+    const headers = {
+      authorization: "Bearer " + authContext.token
+    }
 
+    try {
+      setLoading(true)
+      const response = await api.get(`/dashboard/orphanage/details/${id}`, { headers })
+
+      setLoading(false)
+
+      return response.data
+    } catch (err) {
+      setLoading(false)
+
+      return { ...err }.response
+    }
   }
 
-  async function updateOrphanage(id: number) {
+  async function updateOrphanage(id: number, formData: FormData) {
+    const headers = {
+      authorization: "Bearer " + authContext.token
+    }
 
+    try {
+      setLoading(true)
+
+      const response = await api.put(`/dashboard/orphanage/update/${id}`,
+        formData, { headers }
+      )
+
+      setLoading(false)
+      
+      return response.status
+    } catch (err) {
+      setLoading(false)
+
+      return { ...err }.response.status
+    }
   }
 
   async function deleteOrphanage(id: number) {
+    const headers = {
+      authorization: "Bearer " + authContext.token
+    }
 
+    try {
+      setLoading(true)
+
+      const response = await api.delete(`/dashboard/orphanage/update/${id}`, { headers })
+
+      setLoading(false)
+      
+      return response.status
+    } catch (err) {
+      setLoading(false)
+
+      return { ...err }.response.status
+    }
   }
 
   return (
