@@ -9,7 +9,7 @@ import Loader from "react-loader-spinner"
 import useDashboard from "contexts/dashboard"
 
 // Images
-import { happyFaceLogo } from 'utils/images'
+import { happyFaceLogo, NoOrphanageFaceLogo } from 'utils/images'
 
 // Components
 import Sidebar from "components/Sidebar"
@@ -58,51 +58,59 @@ const OrphanageList: React.FC<OrphanageListProps> = ({ type }) => {
         dashboardContext.loading
           ? <Loader type="ThreeDots" color="#FFFFFF" height={60} width={60} />
           : (
-            <main>
-              {
-                orphanages.map(orphanage => (
-                  <div key={orphanage.id} className="orphanage-card">
-                    <Map
-                      center={[orphanage.latitude, orphanage.longitude]}
-                      zoom={16}
-                      style={{ width: '100%', height: 280, borderRadius: 20 }}
-                      dragging={false}
-                      touchZoom={false}
-                      zoomControl={false}
-                      scrollWheelZoom={false}
-                      doubleClickZoom={false}
-                    >
-                      <TileLayer
-                        url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
-                      />
-                      <Marker
-                        interactive={false}
-                        icon={happyMapIcon}
-                        position={[orphanage.latitude, orphanage.longitude]}
-                      />
-                    </Map>
+            orphanages.length === 0
+              ? (
+                <div className="no-orphanage">
+                  <img src={NoOrphanageFaceLogo} alt="Nenhum orfanato"/>
+                  <p>Nenhum no momento</p>
+                </div>
+              ) : (
+                <main>
+                  {
+                    orphanages.map(orphanage => (
+                      <div key={orphanage.id} className="orphanage-card">
+                        <Map
+                          center={[orphanage.latitude, orphanage.longitude]}
+                          zoom={16}
+                          style={{ width: '100%', height: 280, borderRadius: 20 }}
+                          dragging={false}
+                          touchZoom={false}
+                          zoomControl={false}
+                          scrollWheelZoom={false}
+                          doubleClickZoom={false}
+                        >
+                          <TileLayer
+                            url={`https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+                          />
+                          <Marker
+                            interactive={false}
+                            icon={happyMapIcon}
+                            position={[orphanage.latitude, orphanage.longitude]}
+                          />
+                        </Map>
 
-                    <footer>
-                      <h3>{orphanage.name}</h3>
+                        <footer>
+                          <h3>{orphanage.name}</h3>
 
-                      <div>
-                        <Link to={`/dashboard/orfanato/excluir/${orphanage.id}`}>
-                          <FiTrash size={24} color="#15C3D6" />
-                        </Link>
+                          <div>
+                            <Link to={`/dashboard/orfanato/excluir/${orphanage.id}`}>
+                              <FiTrash size={24} color="#15C3D6" />
+                            </Link>
 
-                        <Link to={
-                          type === "registered"
-                            ? `/acesso-restrito/dashboard/orfanatos/cadastrados/editar/${orphanage.id}`
-                            : `/acesso-restrito/dashboard/orfanatos/pendentes/editar/${orphanage.id}`
-                        }>
-                          <FiEdit3 size={24} color="#15C3D6" />
-                        </Link>
+                            <Link to={
+                              type === "registered"
+                                ? `/acesso-restrito/dashboard/orfanatos/cadastrados/editar/${orphanage.id}`
+                                : `/acesso-restrito/dashboard/orfanatos/pendentes/editar/${orphanage.id}`
+                            }>
+                              <FiEdit3 size={24} color="#15C3D6" />
+                            </Link>
+                          </div>
+                        </footer>
                       </div>
-                    </footer>
-                  </div>
-                ))
-              }
-            </main>
+                    ))
+                  }
+                </main>
+              )
           )
       }
     </div>
