@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { FiArrowLeft, FiMapPin, FiAlertCircle, FiPower } from "react-icons/fi"
 import mapMarkerImg from "assets/images/happy-face-logo.svg"
 import { useHistory } from "react-router-dom"
@@ -12,16 +12,22 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ showNavigation = false }) => {
-  const { goBack, replace } = useHistory()
+  const { goBack, replace, location } = useHistory()
   const [buttonsSelectionState, setButtonsSelectionState] = useState(["selected", ""])
   const authContext = useAuth()
 
+  useEffect(() => {
+    if (location.pathname === "/acesso-restrito/dashboard/orfanatos/cadastrados") {
+      setButtonsSelectionState(["selected", ""])
+    } else if (location.pathname === "/acesso-restrito/dashboard/orfanatos/pendentes") {
+      setButtonsSelectionState(["", "selected"])
+    }
+  }, [location.pathname])
+
   function handleButtonClick(btn: 0 | 1) {
     if (btn === 0) {
-      setButtonsSelectionState(["selected", ""])
       replace("/acesso-restrito/dashboard/orfanatos/cadastrados")
     } else {
-      setButtonsSelectionState(["", "selected"])
       replace("/acesso-restrito/dashboard/orfanatos/pendentes")
     }
   }
