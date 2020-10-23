@@ -28,7 +28,7 @@ const happyMapIcon = Leaflet.icon({
 export default function CreateOrphanage() {
   const navigation = useHistory()
   const [markerPosition, setMarkerPosition] = useState<[number, number]>([0, 0])
-  const [images, setImages] = useState<FileList>()
+  const [images, setImages] = useState<{ id: number, file: File }[]>([])
   const [imagesPreview, setImagesPreview] = useState<string[]>([])
   const [name, setName] = useState("")
   const [about, setAbout] = useState("")
@@ -57,7 +57,20 @@ export default function CreateOrphanage() {
   function handleImageSelection(e: React.ChangeEvent<HTMLInputElement>) {
     e.persist()
     const imgs = e.target.files!
-    setImages(imgs)
+
+    const imgsArray: { id: number, file: File }[] = []
+    let imgIndex =
+      images.length > 0
+        ? images[images.length - 1].id + 1
+        : 0
+
+
+    for (const file of imgs) {
+      imgsArray.push({ id: imgIndex, file })
+      imgIndex++
+    }
+
+    setImages([...images, ...imgsArray])
 
     const selectedImagesPreview: string[] = []
     for (let i = 0; i < imgs.length; i++) {
@@ -81,8 +94,8 @@ export default function CreateOrphanage() {
     formData.set("latitude", String(markerPosition[0]))
     formData.set("longitude", String(markerPosition[1]))
 
-    for (let i = 0; i < images!.length; i++) {
-      formData.append("images", images!.item(i)!)
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i].file)
     }
 
     try {
@@ -97,7 +110,15 @@ export default function CreateOrphanage() {
     }
   }
 
-  function removeImagePreview(imageURL: string) {
+  function removeImage(imageURL: string, imageId: number) {
+    setImages(images.filter(img => {
+      if (img.id !== imageId) {
+        if (img.id > imageId) {
+          img.id--
+        }
+        return img
+      } return false
+    }))
     setImagesPreview([...imagesPreview.filter(imagePreview => imagePreview !== imageURL)])
   }
 
@@ -222,7 +243,7 @@ export default function CreateOrphanage() {
                           <button
                             type="button"
                             className="remove-image-btn"
-                            onClick={() => removeImagePreview(imageURL)}
+                            onClick={() => removeImage(imageURL, images[i].id)}
                           >
                             <FiX size={24} color="#FF669D" />
                           </button>
