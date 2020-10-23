@@ -28,6 +28,22 @@
   color: #8FA7B3;
 }
 
+.dashboard-content .no-orphanage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 3rem;
+}
+
+.dashboard-content .no-orphanage p {
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 2.4rem;
+  color: #8FA7B3;
+}
+
 .dashboard-content main {
   width: 100%;
   margin-top: 3rem;
