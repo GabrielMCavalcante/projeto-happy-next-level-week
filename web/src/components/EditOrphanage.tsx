@@ -165,34 +165,36 @@ const EditOrphanage: React.FC<EditOrphanage> = (props) => {
 
     try {
       setLoading(true)
-      if (method === "update") {
-        await api.post("/orphanages", formData)
 
-        setSuccess("edit")
-      } else {
-        const status = await dashboardContext.updateOrphanage(id, formData)
+      const status = await dashboardContext.updateOrphanage(id, formData)
 
-        switch (status) {
-          case 200: {
+      switch (status) {
+        case 200: {
+          if (method === "update") {
+            await api.post("/orphanages", formData)
+
+            setSuccess("edit")
+          } else {
             setSuccess("accept")
-            break
           }
-          case 401: {
-            setError("unauthorized")
-            setShowFeedback(true)
-            break
-          }
-          case 404: {
-            setError("not-found")
-            setShowFeedback(true)
-            break
-          }
-          default: {
-            setError("error")
-            setShowFeedback(true)
-          }
+          break
+        }
+        case 401: {
+          setError("unauthorized")
+          setShowFeedback(true)
+          break
+        }
+        case 404: {
+          setError("not-found")
+          setShowFeedback(true)
+          break
+        }
+        default: {
+          setError("error")
+          setShowFeedback(true)
         }
       }
+
       setLoading(false)
       setShowFeedback(true)
     } catch (err) {
