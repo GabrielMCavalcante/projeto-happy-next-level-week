@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height
+    height: "100%"
   },
 
   success: {
@@ -99,14 +99,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 20
   },
 
   actionButton: {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    width: 120,
-    height: 56
+    height: 56,
+    paddingHorizontal: 10
   },
 
   actionButtonSuccess: {
