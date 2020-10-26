@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 
@@ -16,28 +16,28 @@ function Routes() {
     <NavigationContainer>
       <Navigator screenOptions={{ headerShown: false }} initialRouteName="OrphanagesMap">
         <Screen name="OrphanagesMap" component={OrphanagesMap} />
-        <Screen 
-          name="SelectMapPosition" 
-          component={SelectMapPosition} 
+        <Screen
+          name="SelectMapPosition"
+          component={SelectMapPosition}
           options={{
             headerShown: true,
-            header: () => <Header title="Selecione um local no mapa"/>
+            header: () => <Header title="Selecione um local no mapa" />
           }}
         />
-        <Screen 
-          name="OrphanageDetails" 
-          component={OrphanageDetails} 
+        <Screen
+          name="OrphanageDetails"
+          component={OrphanageDetails}
           options={{
             headerShown: true,
-            header: () => <Header showCloseBtn={false} title="Detalhes do orfanato"/>
+            header: () => <Header showCloseBtn={false} title="Detalhes do orfanato" />
           }}
         />
-        <Screen 
-          name="OrphanageData" 
-          component={OrphanageData} 
+        <Screen
+          name="OrphanageData"
+          component={OrphanageData}
           options={{
             headerShown: true,
-            header: () => <Header title="Informe os dados"/>
+            header: () => <Header title="Informe os dados" />
           }}
         />
       </Navigator>
