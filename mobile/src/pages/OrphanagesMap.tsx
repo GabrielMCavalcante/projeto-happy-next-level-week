@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { View, Text, Image, Dimensions, StyleSheet, ActivityIndicator } from "react-native"
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps"
 import * as Location from "expo-location"
@@ -25,7 +25,7 @@ function OrphanagesMap() {
   const navigation = useNavigation()
   const [loading, setLoading] = useState(true)
 
-  useFocusEffect(() => {
+  useFocusEffect(useCallback(() => {
     (async function () {
       const response = await api.get("orphanages")
       const data = response.data.result
@@ -40,7 +40,7 @@ function OrphanagesMap() {
 
       setLoading(false)
     })()
-  })
+  }, []))
 
   function handleNavigateToOrphanageDetails(orphanageId: number) {
     navigation.navigate("OrphanageDetails", { orphanageId })
