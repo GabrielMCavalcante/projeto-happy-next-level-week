@@ -7,7 +7,7 @@ import OrphanagesMap from "pages/OrphanagesMap"
 import SelectMapPosition from "pages/SelectMapPosition"
 import OrphanageDetails from "pages/OrphanageDetails"
 import Header from "components/Header"
-import OrphanageData from "pages/OrphanageData"
+import OrphanageInfo from "pages/OrphanageInfo"
 
 function Routes() {
   const { Navigator, Screen } = createStackNavigator()
@@ -29,15 +29,14 @@ function Routes() {
           component={OrphanageDetails}
           options={{
             headerShown: true,
-            header: () => <Header showCloseBtn={false} title="Detalhes do orfanato" />
+            header: () => <Header showCloseBtn={false} title="Orfanato" />
           }}
         />
         <Screen
-          name="OrphanageData"
-          component={OrphanageData}
+          name="OrphanageInfo"
+          component={OrphanageInfo}
           options={{
-            headerShown: true,
-            header: () => <Header title="Informe os dados" />
+            headerShown: false,
           }}
         />
       </Navigator>
