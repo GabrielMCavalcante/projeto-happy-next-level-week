@@ -15,7 +15,7 @@ export default function SelectMapPosition() {
   const [showHelp, setShowHelp] = useState(false)
 
   function handleNextStep() {
-    navigation.navigate("OrphanageData", {
+    navigation.navigate("OrphanageInfo", {
       orphanageCoords: {
         latitude: position[0],
         longitude: position[1]
