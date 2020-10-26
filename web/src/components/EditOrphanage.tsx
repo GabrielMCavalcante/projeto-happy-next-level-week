@@ -214,6 +214,7 @@ const EditOrphanage: React.FC<EditOrphanage> = (props) => {
     switch (status) {
       case 200: {
         setSuccess("reject")
+        setShowFeedback(true)
         break
       }
       case 401: {
