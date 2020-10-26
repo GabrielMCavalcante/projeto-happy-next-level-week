@@ -42,14 +42,14 @@ export default function SelectMapPosition() {
     <View style={styles.container}>
       {
         showHelp
-          && (
-            <View onTouchEnd={onHelpDismiss} style={styles.helpContainer}>
-              <Image source={touchIndicator} resizeMode="contain" />
-              <Text style={styles.helpText}>
-                Toque no mapa para adicionar um orfanato
+        && (
+          <View onTouchEnd={onHelpDismiss} style={styles.helpContainer}>
+            <Image source={touchIndicator} resizeMode="contain" />
+            <Text style={styles.helpText}>
+              Toque no mapa para adicionar um orfanato
                 </Text>
-            </View>
-          )
+          </View>
+        )
       }
       <MapView
         initialRegion={{
@@ -75,9 +75,16 @@ export default function SelectMapPosition() {
         </Marker>
       </MapView>
 
-      <RectButton style={styles.nextButton} onPress={handleNextStep}>
-        <Text style={styles.nextButtonText}>Próximo</Text>
-      </RectButton>
+      {
+        position[0] !== 0 && (
+          <RectButton
+            style={styles.nextButton}
+            onPress={handleNextStep}
+          >
+            <Text style={styles.nextButtonText}>Próximo</Text>
+          </RectButton>
+        )
+      }
     </View>
   )
 }
