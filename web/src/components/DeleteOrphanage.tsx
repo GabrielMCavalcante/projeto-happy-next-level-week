@@ -17,13 +17,13 @@ const DeleteOrphanage: React.FC<DeleteOrphanageProps> = ({ type }) => {
   const { id } = useParams() as any
   const dashboardContext = useDashboard()
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
   async function deleteOrphanage() {
     const status = await dashboardContext.deleteOrphanage(Number(id))
 
     if (status === 200) {
-      dashboardContext.callRefetch()
-      replace("/acesso-restrito/dashboard/orfanatos")
+      setSuccess(type === "registered" ? "deleted" : "reject")
     } else if (status === 401) {
       setError("unauthorized")
     } else if (status === 404) {
@@ -32,6 +32,24 @@ const DeleteOrphanage: React.FC<DeleteOrphanageProps> = ({ type }) => {
       setError("error")
     }
   }
+
+  const successFeedback = (
+    <Feedback
+      type="success"
+      title="Sucesso"
+      subtitle={`O orfanato foi ${type === "registered" ? "deletado" : "rejeitado"} com sucesso!`}
+      actionButtons={[
+        {
+          type: "success",
+          label: "Voltar para a dashboard",
+          action: () => {
+            dashboardContext.callRefetch()
+            replace("/acesso-restrito/dashboard/orfanatos")
+          }
+        }
+      ]}
+    />
+  )
 
   const errorByUnauthorizedFeedback = (
     <Feedback
@@ -86,41 +104,46 @@ const DeleteOrphanage: React.FC<DeleteOrphanageProps> = ({ type }) => {
   )
 
   return (
-    error
-      ? (
-        error === "unauthorized"
-          ? errorByUnauthorizedFeedback 
-          : (
-            error === "not-found"
-              ? errorByNotFoundFeedback
-              : errorFeedback
-          )
-      ) : (
-        <Feedback
-          type="error"
-          title={type === "registered" ? "Excluir" : "Rejeitar"
-          }
-          subtitle={
-            type === "registered"
-              ? "Tem certeza que quer excluir este orfanato?"
-              : "Tem certeza que quer rejeitar este orfanato?"
-          }
-          actionButtons={
-            [
-              {
-                type: "danger",
-                label: dashboardContext.loading
-                  ? <Loader type="ThreeDots" color="#FFFFFF" height={60} width={60} />
-                  : type === "registered" ? "Excluir orfanato" : "Rejeitar orfanato",
-                action: deleteOrphanage
-              },
-              {
-                type: "danger",
-                label: "Cancelar",
-                action: goBack
+    success
+      ? successFeedback
+      : (
+        error
+          ? (
+            error === "unauthorized"
+              ? errorByUnauthorizedFeedback
+              : (
+                error === "not-found"
+                  ? errorByNotFoundFeedback
+                  : errorFeedback
+              )
+          ) : (
+            <Feedback
+              type="error"
+              title={type === "registered" ? "Excluir" : "Rejeitar"
               }
-            ]}
-        />
+              subtitle={
+                type === "registered"
+                  ? "Tem certeza que quer excluir este orfanato?"
+                  : "Tem certeza que quer rejeitar este orfanato?"
+              }
+              actionButtons={
+                [
+                  {
+                    type: "danger",
+                    label: dashboardContext.loading
+                      ? <Loader type="ThreeDots" color="#FFFFFF" height={60} width={60} />
+                      : type === "registered" ? "Excluir orfanato" : "Rejeitar orfanato",
+                    action: deleteOrphanage
+                  },
+                  {
+                    type: "danger",
+                    label: "Cancelar",
+                    action: goBack
+                  }
+                ]}
+            />
+
+          )
       )
   )
 }
