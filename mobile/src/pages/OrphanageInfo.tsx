@@ -144,18 +144,28 @@ const OrphanageData: React.FC<OrphanageDataProps> = ({ coords }) => {
   )
 }
 
-function OrphanageVisiting() {
+const OrphanageVisiting: React.FC<{ onFeedback: () => void }> = ({ onFeedback }) => {
   const [instructions, setInstructions] = useState("")
   const [opening_hours, setOpeningHours] = useState("")
   const [open_on_weekends, setOpenOnWeekends] = useState(false)
   const [requestStatus, setRequestStatus] = useState("")
   const [loading, setLoading] = useState(false)
+  const [formValid, setFormValid] = useState(false)
 
   const navigation = useNavigation()
-  const orphanageData = useRoute() as unknown as OrphanageDataType
+  const { params } = useRoute()
+
+  useEffect(() => {
+    if (!instructions || !opening_hours) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [instructions, opening_hours])
 
   async function handleCreateOrphanage() {
     const formData = new FormData()
+    const orphanageData = params as OrphanageDataType
 
     formData.append("name", orphanageData.name)
     formData.append("about", orphanageData.about)
@@ -180,9 +190,11 @@ function OrphanageVisiting() {
 
       await api.post("/orphanages", formData)
 
+      onFeedback()
       setRequestStatus("success")
       setLoading(false)
     } catch (err) {
+      onFeedback()
       setRequestStatus("error")
       setLoading(false)
     }
@@ -250,7 +262,8 @@ function OrphanageVisiting() {
           </View>
 
           <RectButton
-            style={[styles.button, styles.confirmButton]}
+            enabled={formValid}
+            style={[styles.button, styles.confirmButton, !formValid && styles.buttonDisabled]}
             onPress={handleCreateOrphanage}
           >
             {
@@ -266,6 +279,7 @@ function OrphanageVisiting() {
 
 export default function OrphanageInfo() {
   const { Navigator, Screen } = createStackNavigator()
+  const [showHeader, setShowHeader] = useState(true)
 
   const coords = (useRoute() as any).params.orphanageCoords
 
@@ -293,12 +307,13 @@ export default function OrphanageInfo() {
       </Screen>
       <Screen
         name="OrphanageVisiting"
-        component={OrphanageVisiting}
         options={{
-          headerShown: true,
+          headerShown: showHeader,
           header: () => <Header title="Adicione um orfanato" />
         }}
-      />
+      >
+        {() => <OrphanageVisiting onFeedback={() => setShowHeader(false)} />}
+      </Screen>
     </Navigator>
   )
 }
