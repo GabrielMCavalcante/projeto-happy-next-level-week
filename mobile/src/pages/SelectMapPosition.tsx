@@ -1,15 +1,18 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { View, StyleSheet, Dimensions, Text, Image } from "react-native"
-import { useNavigation, useRoute } from "@react-navigation/native"
+import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native"
 import { RectButton } from "react-native-gesture-handler"
+import AsyncStorage from "@react-native-community/async-storage"
 import MapView, { Marker } from "react-native-maps"
 
 import happyFaceLogo from "assets/images/happy-face-logo.png"
+import touchIndicator from "assets/images/touch-indicator.png"
 
 export default function SelectMapPosition() {
   const navigation = useNavigation()
   const { params } = useRoute()
   const [position, setPosition] = useState<[number, number]>([0, 0])
+  const [showHelp, setShowHelp] = useState(false)
 
   function handleNextStep() {
     navigation.navigate("OrphanageData", {
@@ -20,8 +23,34 @@ export default function SelectMapPosition() {
     })
   }
 
+  useFocusEffect(useCallback(() => {
+    (async function () {
+      const help = await AsyncStorage.getItem("happy:app:map-help")
+
+      if (!help) {
+        setShowHelp(true)
+      }
+    })()
+  }, []))
+
+  async function onHelpDismiss() {
+    await AsyncStorage.setItem("happy:app:map-help", "true")
+    setShowHelp(false)
+  }
+
   return (
     <View style={styles.container}>
+      {
+        showHelp
+          && (
+            <View onTouchEnd={onHelpDismiss} style={styles.helpContainer}>
+              <Image source={touchIndicator} resizeMode="contain" />
+              <Text style={styles.helpText}>
+                Toque no mapa para adicionar um orfanato
+                </Text>
+            </View>
+          )
+      }
       <MapView
         initialRegion={{
           latitude: (params as any).userCoords.latitude,
@@ -59,6 +88,26 @@ const styles = StyleSheet.create({
     position: "relative"
   },
 
+  helpContainer: {
+    position: "absolute",
+    backgroundColor: "#15B6D699",
+    justifyContent: "center",
+    alignItems: "center",
+    width: Dimensions.get("window").width,
+    height: "100%",
+    flex: 1,
+    zIndex: 999
+  },
+
+  helpText: {
+    fontFamily: "Nunito_800ExtraBold",
+    fontSize: 20,
+    maxWidth: 250,
+    color: "#FFFFFF",
+    textAlign: "center",
+    marginTop: 20
+  },
+
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
@@ -80,6 +129,6 @@ const styles = StyleSheet.create({
   nextButtonText: {
     fontFamily: "Nunito_800ExtraBold",
     fontSize: 16,
-    color: "#FFF",
+    color: "#FFFFFF",
   }
 })
