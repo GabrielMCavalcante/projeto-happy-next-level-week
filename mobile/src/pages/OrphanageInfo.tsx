@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useEffect } from "react"
 import {
   View,
   Text,
@@ -7,10 +7,11 @@ import {
   Platform,
   TextInput,
   StyleSheet,
-  Dimensions,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from "react-native"
+import { DotIndicator } from "react-native-indicators"
 import { Entypo } from "@expo/vector-icons"
 import * as ImagePicker from "expo-image-picker"
 import { RectButton } from "react-native-gesture-handler"
@@ -44,8 +45,17 @@ const OrphanageData: React.FC<OrphanageDataProps> = ({ coords }) => {
   const [whatsapp, setWhatsapp] = useState("")
   const [images, setImages] = useState<string[]>([])
 
+  const [formValid, setFormValid] = useState(false)
+
   const navigation = useNavigation()
-  const { params } = useRoute() as any
+
+  useEffect(() => {
+    if (!name || !about || !whatsapp || images.length === 0) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [name, about, whatsapp, images])
 
   async function handleImageSelection() {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -105,7 +115,16 @@ const OrphanageData: React.FC<OrphanageDataProps> = ({ coords }) => {
       <View style={styles.imagesContainer}>
         {
           images.map((image, i) => (
-            <Image key={i} style={styles.selectedImage} source={{ uri: image }} />
+            <View key={i} style={styles.imageCard}>
+              <Image style={styles.selectedImage} source={{ uri: image }} />
+              <Entypo
+                onPress={() => setImages(images.filter((_, index) => index !== i))}
+                style={styles.removeImgBtn}
+                name="cross"
+                size={30}
+                color="#FF669D"
+              />
+            </View>
           ))
         }
 
@@ -114,7 +133,11 @@ const OrphanageData: React.FC<OrphanageDataProps> = ({ coords }) => {
         </TouchableOpacity>
       </View>
 
-      <RectButton style={[styles.button, styles.nextButton]} onPress={handleNextStep}>
+      <RectButton
+        enabled={formValid}
+        style={[styles.button, styles.nextButton, !formValid && styles.buttonDisabled]}
+        onPress={handleNextStep}
+      >
         <Text style={styles.buttonText}>Próximo</Text>
       </RectButton>
     </ScrollView>
@@ -226,11 +249,15 @@ function OrphanageVisiting() {
             />
           </View>
 
-          <RectButton 
-            style={[styles.button, styles.confirmButton]} 
+          <RectButton
+            style={[styles.button, styles.confirmButton]}
             onPress={handleCreateOrphanage}
           >
-            <Text style={styles.buttonText}>Cadastrar</Text>
+            {
+              loading
+                ? <DotIndicator color="#FFFFFF" size={10} count={3} />
+                : <Text style={styles.buttonText}>Cadastrar</Text>
+            }
           </RectButton>
         </ScrollView>
       )
@@ -255,7 +282,7 @@ export default function OrphanageInfo() {
 
   return (
     <Navigator initialRouteName="OrphanageData">
-      <Screen 
+      <Screen
         name="OrphanageData"
         options={{
           headerShown: true,
@@ -264,9 +291,9 @@ export default function OrphanageInfo() {
       >
         {() => <OrphanageData coords={coords} />}
       </Screen>
-      <Screen 
-        name="OrphanageVisiting" 
-        component={OrphanageVisiting} 
+      <Screen
+        name="OrphanageVisiting"
+        component={OrphanageVisiting}
         options={{
           headerShown: true,
           header: () => <Header title="Adicione um orfanato" />
@@ -318,9 +345,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "flex-start",
     width: Dimensions.get("window").width,
     marginBottom: 10
+  },
+
+  imageCard: {
+    position: "relative"
+  },
+
+  removeImgBtn: {
+    position: "absolute",
+    top: 0,
+    right: 10,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    backgroundColor: "#FFFFFFDD",
+    width: 35,
+    height: 35,
+    textAlign: "center"
   },
 
   selectedImage: {
@@ -355,7 +398,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 56,
-    marginTop: 32,
+    marginTop: 10,
   },
 
   buttonDisabled: {
