@@ -4,6 +4,7 @@ import Feedback from "components/Feedback"
 
 // Contexts
 import useAuth from "contexts/auth"
+import useDashboard from "contexts/dashboard"
 
 // Components
 import AuthenticationScreen from "components/AuthenticationScreen"
@@ -18,7 +19,8 @@ import Dashboard from "./Dashboard"
 function SigninFeedback() {
   const navigation = useHistory()
   const { status } = useParams<{ status: string }>()
-  const authContext = useAuth()
+  const authContext = useAuth() 
+  const dashboardContext = useDashboard()
 
   useEffect(() => {
     if (!authContext.signedIn) {
@@ -34,7 +36,10 @@ function SigninFeedback() {
       actionButtons={[{
         type: "success",
         label: "Entrar na dashboard",
-        action: () => navigation.replace("/acesso-restrito/dashboard")
+        action: () => {
+          dashboardContext.callRefetch()
+          navigation.replace("/acesso-restrito/dashboard")
+        }
       }]}
     />
   )
