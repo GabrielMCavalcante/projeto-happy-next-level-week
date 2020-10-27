@@ -132,27 +132,23 @@ Para fazer isso, siga os passos a seguir:
 ### Versão Mobile
 
 #### Telas de onboarding
-  <img src=".github/Mobile/onboarding1.jpeg" alt="Onboarding #1" width=300/>
-  <img src=".github/Mobile/onboarding2.jpeg" alt="Onboarding #2" width=300/>
+  <img src=".github/Mobile/onboarding1.jpeg" alt="Onboarding #1" width=300/> <img src=".github/Mobile/onboarding2.jpeg" alt="Onboarding #2" width=300/>
 
 
-#### Tela do mapa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tela de detalhes do orfanato
-  <img src=".github/Mobile/mapa.jpeg" alt="Página de login" width=300/>
-  <img src=".github/Mobile/detalhes.jpeg" alt="Tela de detalhes do orfanato" width=300/>
+#### Tela do mapa - Tela de detalhes do orfanato
+  <img src=".github/Mobile/mapa.jpeg" alt="Página de login" width=300/> <img src=".github/Mobile/detalhes.jpeg" alt="Tela de detalhes do orfanato" width=300/>
+  
+
+#### Tela de ajuda - Tela de escolher ponto no mapa
+  <img src=".github/Mobile/ajuda-mapa.jpeg" alt="Tela de ajuda" width=300/> <img src=".github/Mobile/add-mapa.jpeg" alt="Tela de escolher ponto no mapa" width=300/>
 
 
-#### Tela de ajuda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tela de escolher ponto no mapa
-  <img src=".github/Mobile/ajuda-mapa.jpeg" alt="Tela de ajuda" width=300/>
-  <img src=".github/Mobile/add-mapa.jpeg" alt="Tela de escolher ponto no mapa" width=300/>
+#### Tela de dados do orfanato - Tela de visitação do orfanato
+  <img src=".github/Mobile/dados-orfanato.jpeg" alt="Tela de dados do orfanato" width=300/> <img src=".github/Mobile/visitacao-orfanato.jpeg" alt="Tela de visitação do orfanato" width=300/>
 
-
-#### Tela de dados do orfanato&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tela de visitação do orfanato
-  <img src=".github/Mobile/dados-orfanato.jpeg" alt="Tela de dados do orfanato" width=300/> 
-  <img src=".github/Mobile/visitacao-orfanato.jpeg" alt="Tela de visitação do orfanato" width=300/>
 
 [Voltar ao sumário](#sumário) <br/>
 [Voltar ao topo](#projeto-happy-2.0)
-
 
 ## Sobre
 
