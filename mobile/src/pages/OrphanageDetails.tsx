@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { Image, View, ScrollView, Text, StyleSheet, Dimensions, Linking } from "react-native"
+import { Image, View, ScrollView, Text, StyleSheet, Dimensions, Linking, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { useRoute, useNavigation } from "@react-navigation/native"
 import MapView, { Marker } from "react-native-maps"
-import * as Location from "expo-location"
 import { Feather, FontAwesome } from "@expo/vector-icons"
 import { BorderlessButton, RectButton } from "react-native-gesture-handler"
 import api from "services/api"
@@ -29,7 +28,7 @@ export default function OrphanageDetails() {
   const { params } = useRoute()
   const [orphanage, setOrphanage] = useState<Orphanage>()
   const [images, setImages] = useState<OrphanageImage[]>([])
-  const [userLocation, setUserLocation] = useState<[number, number]>([0, 0])
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
     (async function () {
@@ -44,15 +43,16 @@ export default function OrphanageDetails() {
         await alert(err.message)
         navigation.goBack()
       }
-
-      const { status } = await Location.requestPermissionsAsync()
-      if (status === "granted") {
-        const loc = await Location.getCurrentPositionAsync({})
-        const coords: [number, number] = [loc.coords.latitude, loc.coords.longitude]
-        setUserLocation(coords)
-      }
     })()
   }, [])
+
+  function onScroll(event?: NativeSyntheticEvent<NativeScrollEvent>) {
+    if (!event) return
+
+    const xOffset = event.nativeEvent.contentOffset.x + 10
+    const currentPage = Math.floor(xOffset / Dimensions.get("window").width)
+    setCurrentIndex(currentPage)
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -60,7 +60,7 @@ export default function OrphanageDetails() {
         orphanage && (
           <>
             <View style={styles.imagesContainer}>
-              <ScrollView horizontal pagingEnabled>
+              <ScrollView onScroll={onScroll} horizontal pagingEnabled>
                 {
                   images.map(image => (
                     <Image
@@ -71,6 +71,22 @@ export default function OrphanageDetails() {
                   ))
                 }
               </ScrollView>
+
+              <View style={styles.imagesPaginationContainer}>
+                {
+                  images.map((_, i) => (
+                    <BorderlessButton 
+                      key={i} 
+                      style={[
+                        styles.imagesPaginationDot,
+                        i > 0 && styles.spacedPaginationDot, 
+                        i === currentIndex 
+                          && styles.selectedPaginationDot
+                      ]}
+                    />
+                  ))
+                }
+              </View>
             </View>
 
             <View style={styles.detailsContainer}>
@@ -186,6 +202,35 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: 240,
     resizeMode: "cover",
+  },
+
+  imagesPaginationContainer: {
+    flexDirection: "row",
+    borderRadius: 10,
+    backgroundColor: "#00000088",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    position: "absolute",
+    bottom: 10,
+    alignSelf: "center"
+  },
+
+  imagesPaginationDot: {
+    width: 10,
+    height: 6,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 4
+  },
+
+  spacedPaginationDot: {
+    marginLeft: 6
+  },
+
+  selectedPaginationDot: {
+    backgroundColor: "#FFD152",
+    width: 20
   },
 
   detailsContainer: {
