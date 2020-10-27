@@ -30,7 +30,7 @@ export default function OrphanageDetails() {
   const [orphanage, setOrphanage] = useState<Orphanage>()
   const [images, setImages] = useState<OrphanageImage[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [error, setError] = useState(true)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     (async function () {
