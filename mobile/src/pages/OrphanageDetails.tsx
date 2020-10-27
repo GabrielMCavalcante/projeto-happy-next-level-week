@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { Image, View, ScrollView, Text, StyleSheet, Dimensions, Linking, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
-import { useRoute, useNavigation } from "@react-navigation/native"
+import { useRoute, useNavigation, NavigationState } from "@react-navigation/native"
 import MapView, { Marker } from "react-native-maps"
 import { Feather, FontAwesome } from "@expo/vector-icons"
 import { BorderlessButton, RectButton } from "react-native-gesture-handler"
 import api from "services/api"
 
 import happyFaceLogo from "assets/images/happy-face-logo.png"
+import Feedback from "components/Feedback"
 
 interface OrphanageImage {
   id: number,
@@ -29,6 +30,7 @@ export default function OrphanageDetails() {
   const [orphanage, setOrphanage] = useState<Orphanage>()
   const [images, setImages] = useState<OrphanageImage[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [error, setError] = useState(true)
 
   useEffect(() => {
     (async function () {
@@ -40,11 +42,17 @@ export default function OrphanageDetails() {
         setOrphanage(data)
         setImages([...data.images])
       } catch (err) {
-        await alert(err.message)
-        navigation.goBack()
+        hideHeader()
+        setError(true)
       }
     })()
   }, [])
+
+  function hideHeader() {
+    navigation.setOptions({
+      headerShown: false
+    })
+  }
 
   function onScroll(event?: NativeSyntheticEvent<NativeScrollEvent>) {
     if (!event) return
@@ -55,137 +63,152 @@ export default function OrphanageDetails() {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      {
-        orphanage && (
-          <>
-            <View style={styles.imagesContainer}>
-              <ScrollView onScroll={onScroll} horizontal pagingEnabled>
-                {
-                  images.map(image => (
-                    <Image
-                      key={image.id}
-                      style={styles.image}
-                      source={{ uri: image.url }}
-                    />
-                  ))
-                }
-              </ScrollView>
-
-              <View style={styles.imagesPaginationContainer}>
-                {
-                  images.map((_, i) => (
-                    <BorderlessButton 
-                      key={i} 
-                      style={[
-                        styles.imagesPaginationDot,
-                        i > 0 && styles.spacedPaginationDot, 
-                        i === currentIndex 
-                          && styles.selectedPaginationDot
-                      ]}
-                    />
-                  ))
-                }
-              </View>
-            </View>
-
-            <View style={styles.detailsContainer}>
-              <Text style={styles.title}>{orphanage.name}</Text>
-              <Text style={styles.description}>{orphanage.about}</Text>
-
-              <View style={styles.mapContainer}>
-                <MapView
-                  initialRegion={{
-                    latitude: orphanage.latitude,
-                    longitude: orphanage.longitude,
-                    latitudeDelta: 0.008,
-                    longitudeDelta: 0.008,
-                  }}
-                  zoomEnabled={false}
-                  pitchEnabled={false}
-                  scrollEnabled={false}
-                  rotateEnabled={false}
-                  style={styles.mapStyle}
-                >
-                  <Marker
-                    coordinate={{
-                      latitude: orphanage.latitude,
-                      longitude: orphanage.longitude
-                    }}
-                  >
-                    <Image
-                      source={happyFaceLogo}
-                      style={{ width: 60, height: 60 }}
-                      resizeMode="contain"
-                    />
-                  </Marker>
-                </MapView>
-
-                <View style={styles.routesContainer}>
-                  <BorderlessButton onPress={() => {
-                    Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${orphanage.latitude},${orphanage.longitude}`)
-                  }}>
-                    <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
-                  </BorderlessButton>
-                </View>
-              </View>
-
-              <View style={styles.separator} />
-
-              <Text style={styles.title}>Instruções para visita</Text>
-              <Text style={styles.description}>{orphanage.instructions}</Text>
-
-              <View style={styles.scheduleContainer}>
-                <View style={[styles.scheduleItem, styles.scheduleItemBlue]}>
-                  <Feather name="clock" size={40} color="#2AB5D1" />
-                  <Text
-                    style={[
-                      styles.scheduleText,
-                      styles.scheduleTextBlue
-                    ]}
-                  >{orphanage.opening_hours}</Text>
-                </View>
-                <View
-                  style={[
-                    styles.scheduleItem,
-                    orphanage.open_on_weekends
-                      ? styles.scheduleItemGreen
-                      : styles.scheduleItemRed
-                  ]}
-                >
-                  <Feather
-                    name="info"
-                    size={40}
-                    color={
-                      orphanage.open_on_weekends
-                        ? "#39CC83"
-                        : "#FF669D"
+    error
+      ? (
+        <Feedback
+          type="error"
+          title="Ahhh!"
+          subtitle="Ocorreu um erro ao carregar as informações do orfanato. 
+          Por favor, tente novamente mais tarde."
+          actionButtons={[{
+            label: "Voltar ao mapa",
+            action: () => navigation.navigate("OrphanagesMap")
+          }]}
+        />
+      )
+      : (
+        <ScrollView style={styles.container}>
+          {
+            orphanage && (
+              <>
+                <View style={styles.imagesContainer}>
+                  <ScrollView onScroll={onScroll} horizontal pagingEnabled>
+                    {
+                      images.map(image => (
+                        <Image
+                          key={image.id}
+                          style={styles.image}
+                          source={{ uri: image.url }}
+                        />
+                      ))
                     }
-                  />
-                  <Text
-                    style={[
-                      styles.scheduleText,
-                      orphanage.open_on_weekends
-                        ? styles.scheduleTextGreen
-                        : styles.scheduleTextRed
-                    ]}
-                  >{
-                    orphanage.open_on_weekends
-                    ? "Atendemos fim de semana"
-                    : "Não atendemos fim de semana"
-                  }</Text>
-                </View>
-              </View>
+                  </ScrollView>
 
-              <RectButton style={styles.contactButton} onPress={() => { }}>
-                <FontAwesome name="whatsapp" size={24} color="#FFF" />
-                <Text style={styles.contactButtonText}>Entrar em contato</Text>
-              </RectButton>
-            </View>
-          </>
-        )
-      }
-    </ScrollView>
+                  <View style={styles.imagesPaginationContainer}>
+                    {
+                      images.map((_, i) => (
+                        <BorderlessButton
+                          key={i}
+                          style={[
+                            styles.imagesPaginationDot,
+                            i > 0 && styles.spacedPaginationDot,
+                            i === currentIndex
+                            && styles.selectedPaginationDot
+                          ]}
+                        />
+                      ))
+                    }
+                  </View>
+                </View>
+
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.title}>{orphanage.name}</Text>
+                  <Text style={styles.description}>{orphanage.about}</Text>
+
+                  <View style={styles.mapContainer}>
+                    <MapView
+                      initialRegion={{
+                        latitude: orphanage.latitude,
+                        longitude: orphanage.longitude,
+                        latitudeDelta: 0.008,
+                        longitudeDelta: 0.008,
+                      }}
+                      zoomEnabled={false}
+                      pitchEnabled={false}
+                      scrollEnabled={false}
+                      rotateEnabled={false}
+                      style={styles.mapStyle}
+                    >
+                      <Marker
+                        coordinate={{
+                          latitude: orphanage.latitude,
+                          longitude: orphanage.longitude
+                        }}
+                      >
+                        <Image
+                          source={happyFaceLogo}
+                          style={{ width: 60, height: 60 }}
+                          resizeMode="contain"
+                        />
+                      </Marker>
+                    </MapView>
+
+                    <View style={styles.routesContainer}>
+                      <BorderlessButton onPress={() => {
+                        Linking.openURL(`https://www.google.com/maps/dir/?api=1&destination=${orphanage.latitude},${orphanage.longitude}`)
+                      }}>
+                        <Text style={styles.routesText}>Ver rotas no Google Maps</Text>
+                      </BorderlessButton>
+                    </View>
+                  </View>
+
+                  <View style={styles.separator} />
+
+                  <Text style={styles.title}>Instruções para visita</Text>
+                  <Text style={styles.description}>{orphanage.instructions}</Text>
+
+                  <View style={styles.scheduleContainer}>
+                    <View style={[styles.scheduleItem, styles.scheduleItemBlue]}>
+                      <Feather name="clock" size={40} color="#2AB5D1" />
+                      <Text
+                        style={[
+                          styles.scheduleText,
+                          styles.scheduleTextBlue
+                        ]}
+                      >{orphanage.opening_hours}</Text>
+                    </View>
+                    <View
+                      style={[
+                        styles.scheduleItem,
+                        orphanage.open_on_weekends
+                          ? styles.scheduleItemGreen
+                          : styles.scheduleItemRed
+                      ]}
+                    >
+                      <Feather
+                        name="info"
+                        size={40}
+                        color={
+                          orphanage.open_on_weekends
+                            ? "#39CC83"
+                            : "#FF669D"
+                        }
+                      />
+                      <Text
+                        style={[
+                          styles.scheduleText,
+                          orphanage.open_on_weekends
+                            ? styles.scheduleTextGreen
+                            : styles.scheduleTextRed
+                        ]}
+                      >{
+                          orphanage.open_on_weekends
+                            ? "Atendemos fim de semana"
+                            : "Não atendemos fim de semana"
+                        }</Text>
+                    </View>
+                  </View>
+
+                  <RectButton style={styles.contactButton} onPress={() => { }}>
+                    <FontAwesome name="whatsapp" size={24} color="#FFF" />
+                    <Text style={styles.contactButtonText}>Entrar em contato</Text>
+                  </RectButton>
+                </View>
+              </>
+            )
+          }
+        </ScrollView >
+      )
   )
 }
 

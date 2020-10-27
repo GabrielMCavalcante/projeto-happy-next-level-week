@@ -144,7 +144,7 @@ const OrphanageData: React.FC<OrphanageDataProps> = ({ coords }) => {
   )
 }
 
-const OrphanageVisiting: React.FC<{ onFeedback: () => void }> = ({ onFeedback }) => {
+function OrphanageVisiting() {
   const [instructions, setInstructions] = useState("")
   const [opening_hours, setOpeningHours] = useState("")
   const [open_on_weekends, setOpenOnWeekends] = useState(false)
@@ -162,6 +162,12 @@ const OrphanageVisiting: React.FC<{ onFeedback: () => void }> = ({ onFeedback })
       setFormValid(true)
     }
   }, [instructions, opening_hours])
+
+  function hideHeader() {
+    navigation.setOptions({
+      headerShown: false
+    })
+  }
 
   async function handleCreateOrphanage() {
     const formData = new FormData()
@@ -190,11 +196,11 @@ const OrphanageVisiting: React.FC<{ onFeedback: () => void }> = ({ onFeedback })
 
       await api.post("/orphanages", formData)
 
-      onFeedback()
+      hideHeader()
       setRequestStatus("success")
       setLoading(false)
     } catch (err) {
-      onFeedback()
+      hideHeader()
       setRequestStatus("error")
       setLoading(false)
     }
@@ -279,7 +285,6 @@ const OrphanageVisiting: React.FC<{ onFeedback: () => void }> = ({ onFeedback })
 
 export default function OrphanageInfo() {
   const { Navigator, Screen } = createStackNavigator()
-  const [showHeader, setShowHeader] = useState(true)
 
   const coords = (useRoute() as any).params.orphanageCoords
 
@@ -307,13 +312,12 @@ export default function OrphanageInfo() {
       </Screen>
       <Screen
         name="OrphanageVisiting"
+        component={OrphanageVisiting}
         options={{
-          headerShown: showHeader,
+          headerShown: true,
           header: () => <Header title="Adicione um orfanato" />
         }}
-      >
-        {() => <OrphanageVisiting onFeedback={() => setShowHeader(false)} />}
-      </Screen>
+      />
     </Navigator>
   )
 }

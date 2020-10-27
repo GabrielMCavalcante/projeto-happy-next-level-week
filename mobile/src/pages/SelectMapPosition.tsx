@@ -23,12 +23,25 @@ export default function SelectMapPosition() {
     })
   }
 
+  function hideHeader() {
+    navigation.setOptions({
+      headerShown: false
+    })
+  }
+
+  function showHeader() {
+    navigation.setOptions({
+      headerShown: true
+    })
+  }
+
   useFocusEffect(useCallback(() => {
     (async function () {
       const help = await AsyncStorage.getItem("happy:app:map-help")
 
       if (!help) {
         setShowHelp(true)
+        hideHeader()
       }
     })()
   }, []))
@@ -36,6 +49,7 @@ export default function SelectMapPosition() {
   async function onHelpDismiss() {
     await AsyncStorage.setItem("happy:app:map-help", "true")
     setShowHelp(false)
+    showHeader()
   }
 
   return (
