@@ -62,7 +62,7 @@
 - [Imagens do projeto](#imagens-do-projeto)
 - [Sobre](#sobre)
 
-[Voltar ao topo](#projeto-happy-2.0)
+[Voltar ao topo](#projeto-happy-20)
 
 ## Instalação
 
@@ -98,7 +98,7 @@ Para fazer isso, siga os passos a seguir:
 1. Dentro do arquivo, altere o endereço ip antes da porta 3333 para o seu endereço ip.
 
 [Voltar ao sumário](#sumário) <br/>
-[Voltar ao topo](#projeto-happy-2.0)
+[Voltar ao topo](#projeto-happy-20)
 
 ## Imagens do projeto
 
@@ -148,7 +148,7 @@ Para fazer isso, siga os passos a seguir:
 
 
 [Voltar ao sumário](#sumário) <br/>
-[Voltar ao topo](#projeto-happy-2.0)
+[Voltar ao topo](#projeto-happy-20)
 
 ## Sobre
 
@@ -157,4 +157,4 @@ Para fazer isso, siga os passos a seguir:
 - LinkedIn - [Gabriel Cavalcante](https://linkedin.com/in/gabrielmcavalcante)
 
 [Voltar ao sumário](#sumário) <br/>
-[Voltar ao topo](#projeto-happy-2.0)
+[Voltar ao topo](#projeto-happy-20)
